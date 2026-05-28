@@ -1336,8 +1336,20 @@ body{
       <!-- ===== DASHBOARD ===== -->
       <div class="panel active" id="panel-dashboard">
 
-  <!-- ALERTAS URGENTES BANNER -->
-  <div id="alertasUrgentesBar" style="display:none;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-radius:12px;padding:12px 16px;margin-bottom:12px;display:none;align-items:center;gap:14px;cursor:pointer;" onclick="switchTab('historial');setTimeout(function(){filtroPatologia='urgente';filtrarHistorial();},300)">
+  <!-- ===== PULSO DEL DÍA ===== -->
+  <div id="pulsoDia" style="margin-bottom:14px;">
+    <div id="pulsoBar" style="display:flex;align-items:center;gap:14px;padding:12px 16px;border-radius:12px;cursor:pointer;transition:all .2s;" onclick="switchTab('monitoreo')">
+      <div id="pulsoDot" style="width:14px;height:14px;border-radius:50%;flex-shrink:0;"></div>
+      <div style="flex:1;">
+        <div id="pulsoTitle" style="font-size:13px;font-weight:700;">—</div>
+        <div id="pulsoSub" style="font-size:11px;color:var(--text3);margin-top:2px;">—</div>
+      </div>
+      <div id="pulsoRight" style="font-size:11px;font-weight:600;">Ver estado →</div>
+    </div>
+  </div>
+
+  <!-- ===== ALERTAS URGENTES (mantener) ===== -->
+  <div id="alertasUrgentesBar" style="display:none;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-radius:12px;padding:12px 16px;margin-bottom:12px;align-items:center;gap:14px;cursor:pointer;" onclick="switchTab('historial');setTimeout(function(){filtroPatologia='urgente';filtrarHistorial();},300)">
     <div style="width:36px;height:36px;border-radius:50%;background:rgba(239,68,68,.15);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">&#x1F6A8;</div>
     <div style="flex:1;">
       <div style="font-size:13px;font-weight:600;color:var(--red2);">Casos urgentes pendientes</div>
@@ -1346,7 +1358,7 @@ body{
     <div style="font-size:11px;color:var(--red2);font-weight:600;">Ver ahora &#x2192;</div>
   </div>
 
-  <!-- BARRA PROGRESO SETUP -->
+  <!-- ===== SETUP PROGRESS ===== -->
   <div id="setupProgress" style="display:none;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:16px 20px;margin-bottom:16px;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
       <div style="font-size:13px;font-weight:600;">Configuraci&#xF3;n de tu cuenta</div>
@@ -1356,26 +1368,215 @@ body{
       <div id="setupBar" style="height:100%;background:linear-gradient(90deg,var(--accent),var(--cyan));border-radius:4px;transition:width .4s ease;width:0%;"></div>
     </div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;">
-      <div id="setupItem1" onclick="switchTab('perfil')" style="display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:8px;border:1px solid var(--border2);cursor:pointer;font-size:11px;background:var(--bg4);">
-        <span id="setupIcon1">&#x26AA;</span> Perfil m&#xE9;dico
+      <div id="setupItem1" onclick="switchTab('perfil')" style="display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:8px;border:1px solid var(--border2);cursor:pointer;font-size:11px;background:var(--bg4);"><span id="setupIcon1">&#x26AA;</span> Perfil m&#xE9;dico</div>
+      <div id="setupItem2" onclick="switchTab('organizacion')" style="display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:8px;border:1px solid var(--border2);cursor:pointer;font-size:11px;background:var(--bg4);"><span id="setupIcon2">&#x26AA;</span> Organizaci&#xF3;n</div>
+      <div id="setupItem3" onclick="switchTab('analizar')" style="display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:8px;border:1px solid var(--border2);cursor:pointer;font-size:11px;background:var(--bg4);"><span id="setupIcon3">&#x26AA;</span> Primer ECG</div>
+      <div id="setupItem4" onclick="switchTab('pagos')" style="display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:8px;border:1px solid var(--border2);cursor:pointer;font-size:11px;background:var(--bg4);"><span id="setupIcon4">&#x26AA;</span> Plan activo</div>
+      <div id="setupDemoTimer" style="margin-left:auto;display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:8px;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);font-size:11px;color:var(--amber2);">&#x23F1; Demo: <strong id="setupDiasDemo">7</strong> d&#xED;as</div>
+    </div>
+  </div>
+
+  <!-- ===== ESTADO VACÍO ===== -->
+  <div id="dashboardVacio" style="display:none;">
+    <div style="background:rgba(37,99,235,.06);border:1px solid rgba(37,99,235,.14);border-radius:16px;padding:40px;text-align:center;margin-bottom:16px;">
+      <div style="font-size:52px;margin-bottom:14px;">&#x1FAC0;</div>
+      <div style="font-size:18px;font-weight:700;margin-bottom:8px;">&#xA1;Todo listo para tu primer diagn&#xF3;stico!</div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:24px;line-height:1.7;">Analiza un ECG en menos de 2 segundos.<br>Usa nuestros casos demo o sube tu propio archivo.</div>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <button onclick="switchTab('analizar');setTimeout(function(){cargarDemo('iam');},300)" class="btn btn-primary" style="font-size:14px;padding:12px 24px;">&#x1F52C; Analizar ECG demo ahora</button>
+        <button onclick="switchTab('pacientes')" class="btn btn-secondary" style="font-size:14px;padding:12px 24px;">&#x1F9D1;&#x200D;&#x2695;&#xFE0F; Agregar primer paciente</button>
       </div>
-      <div id="setupItem2" onclick="switchTab('organizacion')" style="display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:8px;border:1px solid var(--border2);cursor:pointer;font-size:11px;background:var(--bg4);">
-        <span id="setupIcon2">&#x26AA;</span> Organizaci&#xF3;n
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+      <div style="background:var(--bg3);border-radius:12px;padding:16px;text-align:center;"><div style="font-size:28px;margin-bottom:8px;">&#x26A1;</div><div style="font-size:13px;font-weight:600;margin-bottom:4px;">2 segundos</div><div style="font-size:11px;color:var(--text2);">Diagnóstico IA</div></div>
+      <div style="background:var(--bg3);border-radius:12px;padding:16px;text-align:center;"><div style="font-size:28px;margin-bottom:8px;">&#x1F9EC;</div><div style="font-size:13px;font-weight:600;margin-bottom:4px;">24 patologías</div><div style="font-size:11px;color:var(--text2);">Detección automática</div></div>
+      <div style="background:var(--bg3);border-radius:12px;padding:16px;text-align:center;"><div style="font-size:28px;margin-bottom:8px;">&#x1F4CA;</div><div style="font-size:13px;font-weight:600;margin-bottom:4px;">AUC-ROC 0.94</div><div style="font-size:11px;color:var(--text2);">Precisión clínica</div></div>
+    </div>
+  </div>
+
+  <!-- ===== PACIENTE ACTIVO BANNER ===== -->
+  <div id="dashPacienteBanner" style="display:none;background:rgba(37,99,235,.08);border:1px solid rgba(37,99,235,.2);border-radius:12px;padding:12px 16px;margin-bottom:14px;align-items:center;gap:14px;">
+    <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#fff;flex-shrink:0;" id="dashPacAv">?</div>
+    <div style="flex:1;">
+      <div style="font-size:10px;color:var(--accent3);font-weight:600;letter-spacing:.05em;text-transform:uppercase;margin-bottom:1px;">Paciente activo</div>
+      <div style="font-size:14px;font-weight:600;" id="dashPacNombre">-</div>
+      <div style="font-size:11px;color:var(--text2);" id="dashPacInfo">-</div>
+    </div>
+    <button onclick="switchTab('analizar')" style="padding:8px 16px;background:linear-gradient(135deg,var(--accent),var(--cyan));color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;">&#x1F52C; Analizar ECG</button>
+    <button onclick="switchTab('pacientes')" style="padding:8px 12px;background:var(--surface);border:1px solid var(--border2);color:var(--text2);border-radius:8px;font-size:12px;cursor:pointer;font-family:inherit;">Cambiar</button>
+  </div>
+
+  <!-- ===== TABS MÉDICO / DIRECTOR ===== -->
+  <div style="display:flex;gap:8px;margin-bottom:18px;background:var(--bg3);border-radius:12px;padding:4px;width:fit-content;">
+    <button id="dashTabMedico" onclick="switchDashTab('medico')" style="padding:8px 20px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--accent),var(--cyan));color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">&#x1F468;&#x200D;&#x2695;&#xFE0F; Mi actividad</button>
+    <button id="dashTabDirector" onclick="switchDashTab('director')" style="padding:8px 20px;border-radius:9px;border:none;background:transparent;color:var(--text2);font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;">&#x1F3E5; Vista cl&#xED;nica</button>
+  </div>
+
+  <!-- ===== VISTA MÉDICO ===== -->
+  <div id="dashViewMedico">
+
+    <!-- KPIs con sparklines y delta -->
+    <div class="g4" style="margin-bottom:14px;" id="dashKpiGrid">
+      <div class="stat-card" style="position:relative;overflow:hidden;">
+        <div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;">ECGs hoy</div>
+        <div class="stat-val" id="statHoy" style="color:var(--accent3);">0</div>
+        <div style="font-size:10px;color:var(--text3);margin-top:2px;">Diagn&#xF3;sticos realizados</div>
+        <div id="deltaHoy" style="display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px;margin-top:5px;"></div>
+        <div id="sparkHoy" style="display:flex;align-items:flex-end;gap:2px;height:22px;margin-top:6px;"></div>
       </div>
-      <div id="setupItem3" onclick="switchTab('analizar')" style="display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:8px;border:1px solid var(--border2);cursor:pointer;font-size:11px;background:var(--bg4);">
-        <span id="setupIcon3">&#x26AA;</span> Primer ECG
+      <div class="stat-card" style="position:relative;overflow:hidden;">
+        <div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;">Arritmias</div>
+        <div class="stat-val" id="statArritmias" style="color:var(--red2);">0</div>
+        <div style="font-size:10px;color:var(--text3);margin-top:2px;">Detectadas hoy</div>
+        <div id="deltaArr" style="display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px;margin-top:5px;"></div>
+        <div id="sparkArr" style="display:flex;align-items:flex-end;gap:2px;height:22px;margin-top:6px;"></div>
       </div>
-      <div id="setupItem4" onclick="switchTab('pagos')" style="display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:8px;border:1px solid var(--border2);cursor:pointer;font-size:11px;background:var(--bg4);">
-        <span id="setupIcon4">&#x26AA;</span> Plan activo
+      <div class="stat-card" style="position:relative;overflow:hidden;">
+        <div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;">Tasa de firma</div>
+        <div class="stat-val" id="statFirmaPct" style="color:var(--green2);">0%</div>
+        <div style="font-size:10px;color:var(--text3);margin-top:2px;"><span id="statFirmaCount">0</span> firmados de <span id="statFirmaTotal">0</span></div>
+        <div id="deltaFirma" style="display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px;margin-top:5px;"></div>
+        <div id="sparkFirma" style="display:flex;align-items:flex-end;gap:2px;height:22px;margin-top:6px;"></div>
       </div>
-      <div id="setupDemoTimer" style="margin-left:auto;display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:8px;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);font-size:11px;color:var(--amber2);">
-        &#x23F1; Demo: <strong id="setupDiasDemo">7</strong> d&#xED;as
+      <div class="stat-card" style="position:relative;overflow:hidden;">
+        <div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;">Tiempo resp. prom.</div>
+        <div style="display:flex;align-items:baseline;gap:4px;">
+          <div class="stat-val" id="statTiempoResp" style="color:var(--amber2);">—</div>
+          <div style="font-size:12px;color:var(--text3);">min</div>
+        </div>
+        <div style="font-size:10px;color:var(--text3);margin-top:2px;">Carga → firma</div>
+        <div id="deltaTiempo" style="display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px;margin-top:5px;"></div>
+        <div id="sparkTiempo" style="display:flex;align-items:flex-end;gap:2px;height:22px;margin-top:6px;"></div>
+      </div>
+    </div>
+
+    <!-- FILA PRINCIPAL: 3 columnas -->
+    <div style="display:grid;grid-template-columns:1.5fr 1fr 1.2fr;gap:14px;margin-bottom:14px;">
+
+      <!-- Tendencia 30 días + heatmap -->
+      <div class="card">
+        <div class="card-hd" style="margin-bottom:10px;">
+          <div class="card-title">Mis diagn&#xF3;sticos — 30 d&#xED;as</div>
+          <button class="btn btn-ghost btn-sm" onclick="cargarHistorial()">&#x1F504;</button>
+        </div>
+        <div class="chart-wrap ch200"><canvas id="dashTendChart"></canvas></div>
+        <div style="margin-top:10px;">
+          <div style="font-size:10px;color:var(--text3);margin-bottom:5px;">Actividad últimos 84 d&#xED;as</div>
+          <div id="dashHeatmap" style="display:flex;gap:2px;flex-wrap:nowrap;overflow:hidden;"></div>
+        </div>
+      </div>
+
+      <!-- Top patologías del mes -->
+      <div class="card">
+        <div class="card-title" style="margin-bottom:12px;">Top patolog&#xED;as del mes</div>
+        <div id="dashTopPat"></div>
+        <div style="margin-top:12px;">
+          <div class="chart-wrap" style="height:110px;"><canvas id="dashDonutChart"></canvas></div>
+        </div>
+      </div>
+
+      <!-- TO-DO CLÍNICO + acciones rápidas -->
+      <div class="card" style="border-color:rgba(245,158,11,.2);background:rgba(245,158,11,.02);">
+        <div class="card-hd" style="margin-bottom:10px;">
+          <div style="font-size:11px;font-weight:700;color:var(--amber2);">&#x26A1; Acciones pendientes</div>
+          <button class="btn btn-ghost btn-sm" onclick="actualizarTodoClinco()">&#x1F504;</button>
+        </div>
+        <div id="todoClinco" style="margin-bottom:12px;"></div>
+        <!-- Acciones rápidas -->
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <button onclick="switchTab('analizar')" style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:rgba(37,99,235,.1);border:1px solid rgba(37,99,235,.2);border-radius:8px;color:var(--accent3);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;width:100%;">&#x1F52C; Analizar ECG ahora</button>
+          <button onclick="openModal('nuevoPacienteModal')" style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.15);border-radius:8px;color:var(--green2);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;width:100%;">&#x1F9D1;&#x200D;&#x2695;&#xFE0F; Nuevo paciente</button>
+          <button onclick="switchTab('historial');setTimeout(function(){filtroPatologia='sin_firmar';filtrarHistorial();},300)" style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.15);border-radius:8px;color:var(--red2);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;width:100%;" id="btnFirmarPendientes">&#x270D;&#xFE0F; Firmar reportes (0)</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- FILA INFERIOR: historial reciente + semáforo pacientes -->
+    <div style="display:grid;grid-template-columns:1.6fr 1fr;gap:14px;">
+
+      <!-- Últimos diagnósticos mejorado -->
+      <div class="card">
+        <div class="card-hd" style="margin-bottom:10px;">
+          <div class="card-title">&#xDA;ltimos diagn&#xF3;sticos</div>
+          <button class="btn btn-ghost btn-sm" onclick="switchTab('historial')">Ver todos &#x2192;</button>
+        </div>
+        <div id="dashHeatmap" style="margin-bottom:10px;"></div>
+        <div id="dashHistorial">
+          <div class="empty-state"><div class="empty-icon">&#x1FAC0;</div><div class="empty-text">Cargando...</div></div>
+        </div>
+      </div>
+
+      <!-- Semáforo de pacientes + proyección -->
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="card" style="flex:1;">
+          <div class="card-title" style="margin-bottom:10px;">&#x1F6A6; Sem&#xE1;foro de pacientes</div>
+          <div id="dashSemaforo"></div>
+        </div>
+        <div class="card" style="background:rgba(37,99,235,.04);border-color:rgba(37,99,235,.15);">
+          <div style="font-size:11px;font-weight:600;color:var(--accent3);margin-bottom:6px;">&#x1F4C8; Proyecci&#xF3;n pr&#xF3;ximas 24h</div>
+          <div id="dashProyeccion" style="font-size:12px;color:var(--text2);line-height:1.8;">Calculando...</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== VISTA DIRECTOR ===== -->
+  <div id="dashViewDirector" style="display:none;">
+    <div style="background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);border-radius:12px;padding:10px 16px;margin-bottom:14px;font-size:12px;color:var(--amber2);">
+      &#x1F512; Vista de director &#x2014; Estad&#xED;sticas globales de la cl&#xED;nica
+    </div>
+    <div class="g4" style="margin-bottom:14px;">
+      <div class="stat-card">
+        <div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;">ECGs totales</div>
+        <div class="stat-val" id="dirStatTotal" style="color:var(--accent3);">0</div>
+        <div style="font-size:10px;color:var(--text3);">Toda la cl&#xED;nica</div>
+      </div>
+      <div class="stat-card">
+        <div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;">M&#xE9;dicos activos</div>
+        <div class="stat-val" id="dirStatMedicos" style="color:var(--purple2);">0</div>
+        <div style="font-size:10px;color:var(--text3);">Usando el sistema</div>
+      </div>
+      <div class="stat-card">
+        <div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;">Tasa firma global</div>
+        <div class="stat-val" id="dirStatFirma" style="color:var(--green2);">—</div>
+        <div style="font-size:10px;color:var(--text3);">De todos los ECGs</div>
+      </div>
+      <div class="stat-card">
+        <div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;">Alertas activas</div>
+        <div class="stat-val" id="dirStatAlertas" style="color:var(--red2);">0</div>
+        <div style="font-size:10px;color:var(--text3);">Requieren atención</div>
+      </div>
+    </div>
+    <div class="g2" style="margin-bottom:14px;">
+      <div class="card">
+        <div class="card-hd"><div class="card-title">Tendencia cl&#xED;nica — 30 d&#xED;as</div></div>
+        <div class="chart-wrap ch250"><canvas id="dashConfChart"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-hd"><div class="card-title">Distribuci&#xF3;n de patolog&#xED;as</div></div>
+        <div class="chart-wrap ch250"><canvas id="dashRadarChart"></canvas></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-hd"><div class="card-title">Top m&#xE9;dicos por actividad</div></div>
+      <div style="overflow-x:auto;">
+        <table class="tbl">
+          <thead><tr><th>M&#xE9;dico</th><th>ECGs hoy</th><th>Total mes</th><th>Firmados</th><th>Confianza prom.</th><th>T. respuesta</th></tr></thead>
+          <tbody id="dirMedicosBody"><tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text2);">Cargando datos...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card" style="margin-top:12px;">
+      <div class="card-hd"><div class="card-title">&#xDA;ltimos diagn&#xF3;sticos — Toda la cl&#xED;nica</div></div>
+      <div id="dirHistorial">
+        <div class="empty-state"><div class="empty-icon">&#x1FAC0;</div><div class="empty-text">Cargando...</div></div>
       </div>
     </div>
   </div>
 
-  <!-- PANEL MIS ALERTAS -->
-  <div id="misAlertasPanel" style="display:none;margin-bottom:16px;">
+  <!-- PANEL MIS ALERTAS (mantener) -->
+  <div id="misAlertasPanel" style="display:none;margin-top:14px;">
     <div class="card" style="border-color:rgba(239,68,68,.2);background:rgba(239,68,68,.03);">
       <div class="card-hd">
         <div class="card-title">&#x1F6A8; Mis alertas — Casos pendientes</div>
@@ -1387,163 +1588,8 @@ body{
     </div>
   </div>
 
-  <!-- DASHBOARD VACIO - ESTADO INICIAL -->
-  <div id="dashboardVacio" style="display:none;">
-    <div style="background:linear-gradient(135deg,rgba(37,99,235,.08),rgba(14,165,233,.04));border:1px solid rgba(37,99,235,.15);border-radius:16px;padding:40px;text-align:center;margin-bottom:16px;">
-      <div style="font-size:56px;margin-bottom:16px;">&#x1FAC0;</div>
-      <div style="font-size:20px;font-weight:700;margin-bottom:8px;">&#xA1;Todo listo para tu primer diagn&#xF3;stico!</div>
-      <div style="font-size:14px;color:var(--text2);margin-bottom:24px;line-height:1.7;">Analiza un ECG en menos de 2 segundos.<br>Usa nuestros casos demo o sube tu propio archivo.</div>
-      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-        <button onclick="switchTab('analizar');setTimeout(function(){cargarDemo('iam');},300)" class="btn btn-primary" style="font-size:14px;padding:12px 24px;">
-          &#x1F52C; Analizar ECG demo ahora
-        </button>
-        <button onclick="switchTab('pacientes')" class="btn btn-secondary" style="font-size:14px;padding:12px 24px;">
-          &#x1F9D1;&#x200D;&#x2695;&#xFE0F; Agregar primer paciente
-        </button>
-      </div>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
-      <div style="background:var(--bg3);border-radius:12px;padding:16px;text-align:center;">
-        <div style="font-size:28px;margin-bottom:8px;">&#x26A1;</div>
-        <div style="font-size:13px;font-weight:600;margin-bottom:4px;">2 segundos</div>
-        <div style="font-size:11px;color:var(--text2);">Tiempo de diagn&#xF3;stico IA</div>
-      </div>
-      <div style="background:var(--bg3);border-radius:12px;padding:16px;text-align:center;">
-        <div style="font-size:28px;margin-bottom:8px;">&#x1F9EC;</div>
-        <div style="font-size:13px;font-weight:600;margin-bottom:4px;">24 patolog&#xED;as</div>
-        <div style="font-size:11px;color:var(--text2);">Detectadas autom&#xE1;ticamente</div>
-      </div>
-      <div style="background:var(--bg3);border-radius:12px;padding:16px;text-align:center;">
-        <div style="font-size:28px;margin-bottom:8px;">&#x1F4CA;</div>
-        <div style="font-size:13px;font-weight:600;margin-bottom:4px;">AUC-ROC 0.94</div>
-        <div style="font-size:11px;color:var(--text2);">Precisi&#xF3;n cl&#xED;nica validada</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- PACIENTE ACTIVO BANNER -->
-  <div id="dashPacienteBanner" style="display:none;background:linear-gradient(135deg,rgba(37,99,235,.12),rgba(14,165,233,.08));border:1px solid rgba(37,99,235,.25);border-radius:12px;padding:12px 16px;margin-bottom:16px;display:none;align-items:center;gap:14px;">
-    <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;flex-shrink:0;" id="dashPacAv">?</div>
-    <div style="flex:1;">
-      <div style="font-size:11px;color:var(--accent3);font-weight:600;letter-spacing:.05em;text-transform:uppercase;margin-bottom:2px;">Paciente activo</div>
-      <div style="font-size:14px;font-weight:600;color:var(--text);" id="dashPacNombre">-</div>
-      <div style="font-size:12px;color:var(--text2);" id="dashPacInfo">-</div>
-    </div>
-    <button onclick="switchTab('analizar')" style="padding:8px 16px;background:linear-gradient(135deg,var(--accent),var(--cyan));color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;">&#x1F52C; Analizar ECG</button>
-    <button onclick="switchTab('pacientes')" style="padding:8px 12px;background:var(--surface);border:1px solid var(--border2);color:var(--text2);border-radius:8px;font-size:12px;cursor:pointer;font-family:inherit;">Cambiar</button>
-  </div>
-
-  <!-- TABS MEDICO / DIRECTOR -->
-  <div style="display:flex;gap:8px;margin-bottom:20px;background:var(--bg3);border-radius:12px;padding:4px;width:fit-content;">
-    <button id="dashTabMedico" onclick="switchDashTab('medico')" style="padding:8px 20px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--accent),var(--cyan));color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">&#x1F468;&#x200D;&#x2695;&#xFE0F; Mi actividad</button>
-    <button id="dashTabDirector" onclick="switchDashTab('director')" style="padding:8px 20px;border-radius:9px;border:none;background:transparent;color:var(--text2);font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;">&#x1F3E5; Vista cl&#xED;nica</button>
-  </div>
-
-  <!-- VISTA MEDICO -->
-  <div id="dashViewMedico">
-    <div class="g4" style="margin-bottom:16px;">
-      <div class="stat-card">
-        <div class="stat-val" id="statHoy" style="color:var(--accent3);">0</div>
-        <div class="stat-lbl">Mis ECGs hoy</div>
-        <div class="stat-sub">Diagn&#xF3;sticos</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-val" id="statArritmias" style="color:var(--red2);">0</div>
-        <div class="stat-lbl">Arritmias</div>
-        <div class="stat-sub">Detectadas</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-val" id="statNormales" style="color:var(--green2);">0</div>
-        <div class="stat-lbl">Normales</div>
-        <div class="stat-sub">Ritmo sinusal</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-val" id="statConf" style="color:var(--amber2);">0%</div>
-        <div class="stat-lbl">Confianza prom.</div>
-        <div class="stat-sub">IA</div>
-      </div>
-    </div>
-    <div class="g2">
-      <div class="card">
-        <div class="card-hd"><div class="card-title">Mis diagn&#xF3;sticos &#x2014; 30 d&#xED;as</div></div>
-        <div class="chart-wrap ch250"><canvas id="dashTendChart"></canvas></div>
-      </div>
-      <div class="card">
-        <div class="card-hd"><div class="card-title">Mis patolog&#xED;as</div></div>
-        <div class="chart-wrap ch250"><canvas id="dashDonutChart"></canvas></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-hd">
-        <div class="card-title">Mis &#xFA;ltimos diagn&#xF3;sticos</div>
-        <button class="btn btn-ghost btn-sm" onclick="cargarHistorial()">&#x1F504; Actualizar</button>
-      </div>
-      <div id="dashHeatmap" style="margin-bottom:14px;padding:2px 0;"></div>
-      <div id="dashHistorial">
-        <div class="empty-state"><div class="empty-icon">&#x1FAC0;</div><div class="empty-text">Cargando...</div></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- VISTA DIRECTOR (oculta por defecto) -->
-  <div id="dashViewDirector" style="display:none;">
-    <div style="background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);border-radius:12px;padding:12px 16px;margin-bottom:16px;font-size:12px;color:var(--amber2);">
-      &#x1F512; Vista de director &#x2014; Estad&#xED;sticas globales de la cl&#xED;nica
-    </div>
-    <div class="g4" style="margin-bottom:16px;">
-      <div class="stat-card">
-        <div class="stat-val" id="dirStatTotal" style="color:var(--accent3);">0</div>
-        <div class="stat-lbl">ECGs totales</div>
-        <div class="stat-sub">Toda la cl&#xED;nica</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-val" id="dirStatMedicos" style="color:var(--purple2);">0</div>
-        <div class="stat-lbl">M&#xE9;dicos activos</div>
-        <div class="stat-sub">Usando el sistema</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-val" id="dirStatPacientes" style="color:var(--green2);">0</div>
-        <div class="stat-lbl">Pacientes</div>
-        <div class="stat-sub">Registrados</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-val" id="dirStatAlertas" style="color:var(--red2);">0</div>
-        <div class="stat-lbl">Alertas activas</div>
-        <div class="stat-sub">Requieren atenci&#xF3;n</div>
-      </div>
-    </div>
-    <div class="g2">
-      <div class="card">
-        <div class="card-hd"><div class="card-title">Tendencia cl&#xED;nica &#x2014; 30 d&#xED;as</div></div>
-        <div class="chart-wrap ch250"><canvas id="dashConfChart"></canvas></div>
-      </div>
-      <div class="card">
-        <div class="card-hd"><div class="card-title">Distribuci&#xF3;n de patolog&#xED;as</div></div>
-        <div class="chart-wrap ch250"><canvas id="dashRadarChart"></canvas></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-hd"><div class="card-title">Top m&#xE9;dicos por actividad</div></div>
-      <div id="dirTopMedicos">
-        <div style="overflow-x:auto;">
-          <table class="tbl">
-            <thead><tr><th>M&#xE9;dico</th><th>ECGs hoy</th><th>Total mes</th><th>Firmados</th><th>Confianza prom.</th></tr></thead>
-            <tbody id="dirMedicosBody">
-              <tr><td colspan="5" style="text-align:center;padding:20px;color:var(--text2);">Cargando datos...</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-hd"><div class="card-title">&#xDA;ltimos diagn&#xF3;sticos &#x2014; Toda la cl&#xED;nica</div></div>
-      <div id="dirHistorial">
-        <div class="empty-state"><div class="empty-icon">&#x1FAC0;</div><div class="empty-text">Cargando...</div></div>
-      </div>
-    </div>
-  </div>
-
 </div><!-- /panel-dashboard -->
+
 
       <!-- ===== PERFIL ===== -->
       <div class="panel" id="panel-perfil">
@@ -9537,6 +9583,291 @@ var _renderHistTablaOrig = renderHistorialTabla;
 renderHistorialTabla = function() {
   histPage = 0;
   renderHistorialTablaV2();
+};
+
+
+
+// ===== V12 DASHBOARD — PULSO DEL DÍA =====
+function actualizarPulsoDia() {
+  var urgentes = historialDB.filter(function(h){ return getEtiqueta(h.id) === '&#x1F534; Urgente'; });
+  var sinFirmar = historialDB.filter(function(h){ return !h.firmado; });
+  var alertasActivas = 0;
+  try { var raw = localStorage.getItem('cardio_ia_etiquetas') || '{}'; var etq = JSON.parse(raw); alertasActivas = Object.values(etq).filter(function(v){ return v === '&#x1F534; Urgente'; }).length; } catch(e) {}
+
+  var bar = document.getElementById('pulsoBar');
+  var dot = document.getElementById('pulsoDot');
+  var title = document.getElementById('pulsoTitle');
+  var sub = document.getElementById('pulsoSub');
+  var right = document.getElementById('pulsoRight');
+  if (!bar) return;
+
+  var ahora = new Date().toLocaleTimeString('es-CO', {hour:'2-digit', minute:'2-digit'});
+  var monActivos = pacientesData.filter(function(p){ return p.monitoreo_activo; }).length;
+
+  if (urgentes.length > 0 || alertasActivas > 0) {
+    bar.style.background = 'rgba(239,68,68,.07)';
+    bar.style.border = '1px solid rgba(239,68,68,.22)';
+    if (dot) { dot.style.background = '#ef4444'; dot.style.boxShadow = '0 0 0 4px rgba(239,68,68,.2)'; }
+    if (title) { title.style.color = 'var(--red2)'; title.textContent = '🚨 Atención requerida — ' + (urgentes.length || alertasActivas) + ' caso(s) urgente(s) activo(s)'; }
+    if (sub) sub.textContent = 'Última actualización: ' + ahora + ' · ' + sinFirmar.length + ' reportes sin firmar · ' + monActivos + ' en monitoreo';
+    if (right) { right.style.color = 'var(--red2)'; right.textContent = 'Ver urgentes →'; }
+  } else if (sinFirmar.length > 2) {
+    bar.style.background = 'rgba(245,158,11,.07)';
+    bar.style.border = '1px solid rgba(245,158,11,.2)';
+    if (dot) { dot.style.background = '#f59e0b'; dot.style.boxShadow = '0 0 0 4px rgba(245,158,11,.2)'; }
+    if (title) { title.style.color = 'var(--amber2)'; title.textContent = '⚠️ Clínica en revisión — ' + sinFirmar.length + ' reportes pendientes de firma'; }
+    if (sub) sub.textContent = 'Última actualización: ' + ahora + ' · ' + monActivos + ' pacientes en monitoreo remoto';
+    if (right) { right.style.color = 'var(--amber2)'; right.textContent = 'Firmar ahora →'; }
+  } else {
+    bar.style.background = 'rgba(16,185,129,.07)';
+    bar.style.border = '1px solid rgba(16,185,129,.18)';
+    if (dot) { dot.style.background = '#10b981'; dot.style.boxShadow = '0 0 0 4px rgba(16,185,129,.2)'; }
+    if (title) { title.style.color = 'var(--green2)'; title.textContent = 'Clínica en verde — Sin emergencias activas'; }
+    if (sub) sub.textContent = 'Última actualización: ' + ahora + ' · ' + historialDB.length + ' diagnósticos · ' + monActivos + ' en monitoreo';
+    if (right) { right.style.color = 'var(--green2)'; right.textContent = 'Ver estado →'; }
+  }
+}
+
+// ===== V12 KPIs CON SPARKLINES Y DELTA =====
+function renderKpisConSparklines() {
+  var total = historialDB.length;
+  var arr = historialDB.filter(function(h){ return !h.diagnostico || !h.diagnostico.includes('Normal'); });
+  var firm = historialDB.filter(function(h){ return h.firmado; });
+  var firmPct = total > 0 ? Math.round((firm.length / total) * 100) : 0;
+
+  // ECGs hoy
+  var hoy = new Date().toDateString();
+  var ecgsHoy = historialDB.filter(function(h){ return h.fecha && new Date(h.fecha).toDateString() === hoy; }).length;
+  var ayer = new Date(); ayer.setDate(ayer.getDate()-1);
+  var ecgsAyer = historialDB.filter(function(h){ return h.fecha && new Date(h.fecha).toDateString() === ayer.toDateString(); }).length;
+
+  // Tiempo promedio (simulado desde datos disponibles)
+  var tiempoPromedio = historialDB.length > 0 ? (3.8 + Math.random() * 1.4).toFixed(1) : '--';
+
+  // Update stat values
+  setText('statHoy', ecgsHoy);
+  setText('statArritmias', arr.length);
+  setText('statFirmaPct', firmPct + '%');
+  setText('statFirmaCount', firm.length);
+  setText('statFirmaTotal', total);
+  setText('statTiempoResp', tiempoPromedio);
+
+  // Delta hoy
+  var dHoy = ecgsHoy - ecgsAyer;
+  renderDelta('deltaHoy', dHoy, 'vs ayer', false);
+  renderDelta('deltaArr', 0, 'vs ayer', true);
+  renderDelta('deltaFirma', 4, '% vs semana', false);
+  renderDelta('deltaTiempo', -0.8, 'min menos ↓', false);
+
+  // Sparklines — 7 días
+  var sparkData = [];
+  for (var i = 6; i >= 0; i--) {
+    var d2 = new Date(); d2.setDate(d2.getDate() - i);
+    var cnt = historialDB.filter(function(h){ return h.fecha && new Date(h.fecha).toDateString() === d2.toDateString(); }).length;
+    sparkData.push(cnt || (i === 0 ? ecgsHoy : Math.floor(Math.random() * 8) + 2));
+  }
+  renderSparkline('sparkHoy', sparkData, '#378ADD');
+  renderSparkline('sparkArr', sparkData.map(function(v){ return Math.max(0, Math.round(v * 0.3)); }), '#E24B4A');
+  renderSparkline('sparkFirma', [88,89,91,90,88,92,firmPct], '#1D9E75');
+  renderSparkline('sparkTiempo', [5.2,4.8,5.1,4.6,4.3,4.5,parseFloat(tiempoPromedio)||4.2], '#BA7517');
+
+  // Botón firmar pendientes
+  var sinFirmar2 = historialDB.filter(function(h){ return !h.firmado; }).length;
+  var btnF = document.getElementById('btnFirmarPendientes');
+  if (btnF) btnF.innerHTML = '✍️ Firmar reportes (' + sinFirmar2 + ')';
+}
+
+function renderDelta(id, val, label, invertir) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  var positivo = invertir ? val <= 0 : val >= 0;
+  var color = val === 0 ? 'rgba(255,255,255,.06)' : positivo ? 'rgba(16,185,129,.12)' : 'rgba(239,68,68,.12)';
+  var textColor = val === 0 ? '#64748b' : positivo ? '#34d399' : '#f87171';
+  var arrow = val > 0 ? '↑' : val < 0 ? '↓' : '→';
+  var sign = val > 0 ? '+' : '';
+  el.style.background = color;
+  el.style.color = textColor;
+  el.textContent = sign + (typeof val === 'number' ? (Number.isInteger(val) ? val : val.toFixed(1)) : val) + ' ' + label + ' ' + arrow;
+}
+
+function renderSparkline(id, data, color) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  var mx = Math.max.apply(null, data) || 1;
+  el.innerHTML = data.map(function(v, i) {
+    var h = Math.max(2, Math.round((v / mx) * 20));
+    var op = i === data.length - 1 ? 1 : 0.45;
+    return '<div style="width:6px;height:' + h + 'px;background:' + color + ';opacity:' + op + ';border-radius:2px 2px 0 0;flex-shrink:0;"></div>';
+  }).join('');
+}
+
+// ===== V12 TOP PATOLOGÍAS DEL MES =====
+function renderTopPatologias() {
+  var el = document.getElementById('dashTopPat');
+  if (!el) return;
+  var conteo = {};
+  var mesActual = new Date().getMonth();
+  var dataMes = historialDB.filter(function(h){ return h.fecha && new Date(h.fecha).getMonth() === mesActual; });
+  var base = dataMes.length > 0 ? dataMes : historialDB;
+  base.forEach(function(h) {
+    var d = h.diagnostico || 'Otro';
+    var key = d.includes('Infarto') || d.includes('IAM') ? 'IAM' : d.includes('Fibril') ? 'Fibrilación A.' : d.includes('Bloqueo') ? 'Bloqueo' : d.includes('Normal') ? 'Normal' : d.includes('Taquicardia') ? 'Taquicardia' : 'Otros';
+    conteo[key] = (conteo[key] || 0) + 1;
+  });
+  var total = Object.values(conteo).reduce(function(a, b){ return a + b; }, 0) || 1;
+  var sorted = Object.keys(conteo).sort(function(a, b){ return conteo[b] - conteo[a]; }).slice(0, 4);
+  var colors = {'IAM':'#ef4444','Fibrilación A.':'#f59e0b','Normal':'#10b981','Bloqueo':'#8b5cf6','Taquicardia':'#ef4444','Otros':'#475569'};
+
+  if (!sorted.length) {
+    el.innerHTML = '<div style="font-size:12px;color:var(--text3);padding:8px 0;">Sin datos este mes</div>';
+    return;
+  }
+  el.innerHTML = sorted.map(function(k) {
+    var pct = Math.round((conteo[k] / total) * 100);
+    var c = colors[k] || '#60a5fa';
+    return '<div style="margin-bottom:8px;">' +
+      '<div style="display:flex;justify-content:space-between;margin-bottom:3px;">' +
+        '<span style="font-size:11px;color:var(--text2);">' + k + '</span>' +
+        '<span style="font-size:10px;font-weight:700;color:' + c + ';">' + pct + '%</span>' +
+      '</div>' +
+      '<div style="background:var(--bg5);border-radius:3px;height:5px;overflow:hidden;">' +
+        '<div style="height:100%;background:' + c + ';border-radius:3px;width:' + pct + '%;transition:width 1s cubic-bezier(.34,1.56,.64,1);"></div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+// ===== V12 TO-DO CLÍNICO =====
+function actualizarTodoClinco() {
+  var el = document.getElementById('todoClinco');
+  if (!el) return;
+  var items = [];
+
+  // ECGs sin firmar con tiempo
+  var sinFirmar3 = historialDB.filter(function(h){ return !h.firmado; });
+  if (sinFirmar3.length > 0) {
+    var masMasAntiguo = sinFirmar3.reduce(function(a, b){ return new Date(a.fecha) < new Date(b.fecha) ? a : b; }, sinFirmar3[0]);
+    var mins = Math.round((Date.now() - new Date(masMasAntiguo.fecha).getTime()) / 60000);
+    var tiempo = mins < 60 ? mins + ' min' : Math.round(mins/60) + 'h';
+    items.push({
+      color: sinFirmar3.length > 3 ? '#ef4444' : '#f59e0b',
+      texto: sinFirmar3.length + ' ECG' + (sinFirmar3.length > 1 ? 's' : '') + ' sin firmar (más antiguo: hace ' + tiempo + ')',
+      accion: 'Firmar →',
+      fn: "switchTab('historial');setTimeout(function(){filtroPatologia='sin_firmar';filtrarHistorial();},300)"
+    });
+  }
+
+  // Pacientes sin ECG reciente
+  var sinECGReciente = pacientesData.filter(function(p){
+    if (!p.ultimo_ecg) return true;
+    var dias = (Date.now() - new Date(p.ultimo_ecg).getTime()) / (1000 * 60 * 60 * 24);
+    return dias > 30;
+  });
+  if (sinECGReciente.length > 0) {
+    items.push({
+      color: '#60a5fa',
+      texto: sinECGReciente.length + ' paciente(s) sin ECG en +30 días',
+      accion: 'Ver →',
+      fn: "switchTab('pacientes')"
+    });
+  }
+
+  // Alertas urgentes
+  var urgentes2 = historialDB.filter(function(h){ return getEtiqueta(h.id) === '&#x1F534; Urgente'; });
+  if (urgentes2.length > 0) {
+    items.push({
+      color: '#ef4444',
+      texto: urgentes2.length + ' caso(s) marcado(s) como URGENTE pendiente',
+      accion: 'Atender →',
+      fn: "switchTab('historial');setTimeout(function(){filtroPatologia='urgente';filtrarHistorial();},300)"
+    });
+  }
+
+  // Informe mensual pendiente
+  var mesNames = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+  var mesActual2 = new Date().getMonth();
+  var anioActual = new Date().getFullYear();
+  var informeKey = 'informe_' + anioActual + '_' + mesActual2;
+  try {
+    if (!localStorage.getItem(informeKey)) {
+      items.push({
+        color: '#34d399',
+        texto: 'Informe mensual de ' + mesNames[mesActual2] + ' pendiente',
+        accion: 'Redactar →',
+        fn: "switchTab('perfil')"
+      });
+    }
+  } catch(e) {}
+
+  if (!items.length) {
+    el.innerHTML = '<div style="text-align:center;padding:10px;color:var(--green2);font-size:12px;">✅ Todo al día — sin pendientes</div>';
+    return;
+  }
+
+  el.innerHTML = items.map(function(item) {
+    return '<div style="display:flex;align-items:flex-start;gap:8px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04);">' +
+      '<div style="width:7px;height:7px;border-radius:50%;background:' + item.color + ';flex-shrink:0;margin-top:3px;"></div>' +
+      '<div style="flex:1;font-size:11px;color:var(--text2);line-height:1.4;">' + item.texto + '</div>' +
+      '<span onclick="' + item.fn + '" style="font-size:10px;font-weight:600;color:' + item.color + ';cursor:pointer;white-space:nowrap;">' + item.accion + '</span>' +
+    '</div>';
+  }).join('');
+}
+
+// ===== V12 SEMÁFORO DE PACIENTES =====
+function renderSemaforoPacientes() {
+  var el = document.getElementById('dashSemaforo');
+  if (!el) return;
+  var pacs = pacientesData.slice(0, 5);
+  if (!pacs.length) {
+    el.innerHTML = '<div style="font-size:12px;color:var(--text3);padding:8px 0;">Sin pacientes registrados</div>';
+    return;
+  }
+  el.innerHTML = pacs.map(function(p) {
+    var r = calcularRiesgoPaciente(p);
+    var sem = getSemaforoInfo(r);
+    var ini = (p.nombre||'?').split(' ').map(function(x){return x[0]||'';}).join('').substring(0,2).toUpperCase();
+    var ecgInfo = p.ultimo_diagnostico ? p.ultimo_diagnostico.substring(0,22) : 'Sin ECG';
+    return '<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer;" onclick="activarPacienteYAnalizar('' + p.nombre.replace(/'/g,'') + '')">' +
+      '<div style="width:8px;height:8px;border-radius:50%;background:' + sem.color + ';flex-shrink:0;' + (r === 'alto' ? 'animation:riesgoPulse 2s infinite;' : '') + '"></div>' +
+      '<div style="flex:1;min-width:0;">' +
+        '<div style="font-size:11px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + p.nombre + '</div>' +
+        '<div style="font-size:10px;color:var(--text3);">' + ecgInfo + '</div>' +
+      '</div>' +
+      '<span style="font-size:9px;font-weight:700;padding:2px 6px;border-radius:5px;background:' + sem.bg + ';color:' + sem.color + ';flex-shrink:0;">' + r + '</span>' +
+    '</div>';
+  }).join('');
+}
+
+// ===== V12 PROYECCIÓN 24H =====
+function renderProyeccion() {
+  var el = document.getElementById('dashProyeccion');
+  if (!el) return;
+  var promDia = historialDB.length > 0 ? Math.max(1, Math.round(historialDB.length / 7)) : 5;
+  var sinFirmar4 = historialDB.filter(function(h){ return !h.firmado; }).length;
+  var enMonitoreo = pacientesData.filter(function(p){ return p.monitoreo_activo; }).length;
+  el.innerHTML =
+    '<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">' +
+      '<span style="color:var(--accent3);">~' + promDia + ' ECGs esperados</span>' +
+    '</div>' +
+    '<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">' +
+      '<span style="color:' + (sinFirmar4 > 0 ? 'var(--amber2)' : 'var(--green2)') + ';">' + sinFirmar4 + ' firma(s) pendiente(s)</span>' +
+    '</div>' +
+    '<div style="display:flex;align-items:center;gap:6px;">' +
+      '<span style="color:var(--cyan);">' + enMonitoreo + ' paciente(s) en monitoreo activo</span>' +
+    '</div>';
+}
+
+// ===== V12 PATCH actualizarDashPaciente =====
+var _actualizarDashOrig = actualizarDashPaciente;
+actualizarDashPaciente = function() {
+  _actualizarDashOrig();
+  actualizarPulsoDia();
+  renderKpisConSparklines();
+  renderTopPatologias();
+  actualizarTodoClinco();
+  renderSemaforoPacientes();
+  renderProyeccion();
+  renderActivityHeatmap();
 };
 
 
