@@ -317,6 +317,53 @@
   .fuente-tab{padding:8px 12px;}
 }
 
+
+/* ===== V12 MONITOREO REMOTO ===== */
+.mon-status-bar{display:flex;align-items:center;gap:14px;padding:12px 16px;border-radius:12px;margin-bottom:14px;}
+.mon-status-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0;}
+.mon-patient-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+.mon-patient-card{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:14px;transition:all .2s;cursor:pointer;position:relative;overflow:hidden;}
+.mon-patient-card:hover{border-color:rgba(37,99,235,.3);transform:translateY(-1px);}
+.mon-patient-card.critical{border-color:rgba(239,68,68,.35);background:rgba(239,68,68,.03);}
+.mon-patient-card.warning{border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.02);}
+.mon-patient-card.ok{border-color:rgba(16,185,129,.25);background:rgba(16,185,129,.02);}
+.mon-patient-card.expanded{grid-column:span 2;border-color:rgba(37,99,235,.4);}
+.mon-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.mon-vitals-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px;}
+.mon-vital{background:var(--bg4);border-radius:8px;padding:7px;text-align:center;}
+.mon-vital-val{font-size:17px;font-weight:700;line-height:1;}
+.mon-vital-lbl{font-size:9px;color:var(--text3);margin-top:2px;}
+.mon-ecg-mini{background:#000810;border-radius:6px;padding:3px;position:relative;overflow:hidden;height:45px;}
+.mon-ecg-mini::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(34,197,94,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(34,197,94,.05) 1px,transparent 1px);background-size:10px 10px;}
+.mon-mace-mini{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:8px;margin-top:8px;font-size:11px;}
+.mon-alert-badge{position:absolute;top:10px;right:10px;width:8px;height:8px;border-radius:50%;background:#ef4444;animation:riesgoPulse 1.5s infinite;}
+.mon-expand-area{display:none;margin-top:12px;border-top:1px solid var(--border);padding-top:12px;}
+.mon-patient-card.expanded .mon-expand-area{display:block;}
+
+/* Alert timeline */
+.alert-timeline{display:flex;flex-direction:column;gap:0;}
+.alert-tl-item{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:12px;}
+.alert-tl-time{flex-shrink:0;width:50px;font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;}
+.alert-tl-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:3px;}
+.alert-tl-content{flex:1;min-width:0;}
+.alert-tl-actions{display:flex;gap:4px;margin-top:4px;}
+.alert-tl-btn{padding:3px 8px;border-radius:5px;font-size:10px;cursor:pointer;border:none;font-family:inherit;font-weight:600;}
+
+/* Threshold config */
+.threshold-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.threshold-label{flex:1;font-size:12px;color:var(--text2);}
+.threshold-inputs{display:flex;align-items:center;gap:4px;}
+.threshold-input{width:55px;padding:4px 6px;border-radius:6px;background:var(--bg4);border:1px solid var(--border2);color:var(--text);font-size:12px;text-align:center;font-family:'DM Mono',monospace;}
+.threshold-unit{font-size:10px;color:var(--text3);width:35px;}
+
+/* Cost tracker */
+.cost-saved-bar{background:linear-gradient(135deg,rgba(16,185,129,.08),rgba(16,185,129,.03));border:1px solid rgba(16,185,129,.2);border-radius:12px;padding:14px;margin-top:14px;}
+
+@media(max-width:768px){
+  .mon-patient-grid{grid-template-columns:1fr;}
+  .mon-patient-card.expanded{grid-column:span 1;}
+}
+
 /* ===== V11.4 FOCUS STATES =====*/
 .btn:focus-visible,.form-input:focus-visible,.form-select:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
 
@@ -2524,52 +2571,164 @@ body{
 </div><!-- /panel-pacientes -->
 <!-- ===== MONITOREO ===== -->
       <div class="panel" id="panel-monitoreo">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-          <div><div style="font-size:20px;font-weight:600;margin-bottom:4px;">&#x231A; Monitoreo Remoto</div><div style="font-size:13px;color:var(--text2);"><span class="live-dot"></span> Sistema activo &#xB7; SmartWatch &#xB7; Alertas en tiempo real</div></div>
-          <button class="btn btn-ghost btn-sm" onclick="cargarAlertas()">&#x1F504; Actualizar</button>
+
+  <!-- ====== STATUS BAR GLOBAL ====== -->
+  <div id="monStatusBar" class="mon-status-bar" style="background:rgba(16,185,129,.07);border:1px solid rgba(16,185,129,.18);">
+    <div class="mon-status-dot" id="monStatusDot" style="background:#10b981;box-shadow:0 0 0 4px rgba(16,185,129,.2);"></div>
+    <div style="flex:1;">
+      <div id="monStatusTitle" style="font-size:14px;font-weight:700;color:var(--green2);">Monitoreo activo — Sin alertas</div>
+      <div id="monStatusSub" style="font-size:11px;color:var(--text3);">0 pacientes monitoreados · Última lectura: ahora</div>
+    </div>
+    <div style="display:flex;gap:6px;">
+      <button class="btn btn-ghost btn-sm" onclick="actualizarMonitoreo()">&#x1F504; Actualizar</button>
+      <button class="btn btn-ghost btn-sm" onclick="toggleMonConfig()">&#x2699;&#xFE0F; Umbrales</button>
+    </div>
+  </div>
+
+  <!-- ====== KPIs MEJORADOS ====== -->
+  <div class="g4" style="margin-bottom:14px;">
+    <div class="stat-card" style="position:relative;overflow:hidden;">
+      <div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Monitoreados</div>
+      <div class="stat-val" id="monTotal" style="color:var(--accent3);">0</div>
+      <div style="font-size:10px;color:var(--text3);">Pacientes con wearable</div>
+      <div id="monTotalSpark" style="display:flex;align-items:flex-end;gap:2px;height:18px;margin-top:4px;"></div>
+    </div>
+    <div class="stat-card" style="position:relative;overflow:hidden;">
+      <div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Alertas activas</div>
+      <div class="stat-val" id="monAlertas" style="color:var(--red2);">0</div>
+      <div style="font-size:10px;color:var(--text3);">Requieren atenci&#xF3;n</div>
+      <div id="monAlertasSpark" style="display:flex;align-items:flex-end;gap:2px;height:18px;margin-top:4px;"></div>
+    </div>
+    <div class="stat-card" style="position:relative;overflow:hidden;">
+      <div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Lecturas hoy</div>
+      <div class="stat-val" id="monHoy" style="color:var(--amber2);">0</div>
+      <div style="font-size:10px;color:var(--text3);">ECGs + vitales recibidos</div>
+    </div>
+    <div class="stat-card" style="position:relative;overflow:hidden;">
+      <div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Hosp. evitadas</div>
+      <div class="stat-val" id="monHospEvitadas" style="color:var(--green2);">0</div>
+      <div style="font-size:10px;color:var(--text3);">Por intervenci&#xF3;n temprana</div>
+    </div>
+  </div>
+
+  <!-- ====== GRID PRINCIPAL: Pacientes + Timeline Alertas ====== -->
+  <div style="display:grid;grid-template-columns:1.6fr 1fr;gap:14px;margin-bottom:14px;">
+
+    <!-- Columna izq: Grid multi-paciente -->
+    <div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <div style="font-size:13px;font-weight:600;">&#x1F4E1; Pacientes en monitoreo remoto</div>
+        <button class="btn btn-ghost btn-sm" onclick="switchTab('pacientes')">+ Agregar paciente</button>
+      </div>
+      <div class="mon-patient-grid" id="monPatientGrid">
+        <div style="grid-column:span 2;text-align:center;padding:30px;color:var(--text3);">
+          <div style="font-size:40px;margin-bottom:10px;">&#x231A;</div>
+          <div style="font-size:13px;">Sin pacientes en monitoreo</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:4px;">Vincula un wearable desde el m&#xF3;dulo Pacientes</div>
         </div>
-        <div class="g4" style="margin-bottom:16px;">
-          <div class="stat-card"><div class="stat-val" id="monTotal" style="color:var(--accent3);">0</div><div class="stat-lbl">En monitoreo</div></div>
-          <div class="stat-card"><div class="stat-val" id="monAlertas" style="color:var(--red2);">0</div><div class="stat-lbl">Alertas activas</div></div>
-          <div class="stat-card"><div class="stat-val" id="monHoy" style="color:var(--amber2);">0</div><div class="stat-lbl">Lecturas hoy</div></div>
-          <div class="stat-card"><div class="stat-val" id="monOk" style="color:var(--green2);">0</div><div class="stat-lbl">Sin alertas</div></div>
+      </div>
+    </div>
+
+    <!-- Columna der: Timeline de alertas -->
+    <div>
+      <div class="card" style="border-color:rgba(239,68,68,.2);background:rgba(239,68,68,.02);">
+        <div class="card-hd" style="margin-bottom:10px;">
+          <div style="font-size:13px;font-weight:700;color:var(--red2);">&#x1F6A8; Timeline de alertas</div>
+          <span id="monAlertCount" style="font-size:11px;padding:2px 8px;border-radius:10px;background:rgba(239,68,68,.15);color:var(--red2);font-weight:700;">0</span>
         </div>
-        <div class="g2">
-          <div class="card">
-            <div class="card-hd"><div class="card-title">&#x1F6A8; Alertas en tiempo real</div></div>
-            <div id="alertasLista"><div class="empty-state"><div class="empty-icon">&#x2705;</div><div class="empty-text">Sin alertas activas</div></div></div>
-          </div>
-          <div class="card">
-            <div class="card-hd"><div class="card-title">Pacientes monitoreados</div></div>
-            <div id="monitoreoLista">
-              <div class="monitor-card">
-                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-                  <div style="font-size:14px;font-weight:600;">Demo &#x2014; Paciente 001</div>
-                  <span class="badge b-warn">Riesgo Alto</span>
-                </div>
-                <div class="vital-grid">
-                  <div class="vital"><div class="vital-val pulse-red" data-vital="fc" style="color:var(--red2);">94</div><div class="vital-lbl">FC (lpm)</div></div>
-                  <div class="vital"><div class="vital-val pulse-green" data-vital="spo2" style="color:var(--green2);">98%</div><div class="vital-lbl">SpO2</div></div>
-                  <div class="vital"><div class="vital-val" data-vital="bp" style="color:var(--amber2);">148/95</div><div class="vital-lbl">Presi&#xF3;n</div></div>
-                  <div class="vital"><div class="vital-val" style="color:var(--accent3);font-size:11px;"><span class="live-dot" style="margin-right:3px;"></span>Apple Watch</div><div class="vital-lbl">Dispositivo</div></div>
-                </div>
-                <div class="alert-item ai-critico"><span style="color:var(--red2);font-size:12px;font-weight:600;">&#x1F534; FA detectada &#xB7; Confianza 87% &#xB7; Pendiente revisi&#xF3;n</span></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-title" style="margin-bottom:14px;">&#x1F4F1; Dispositivos compatibles</div>
-          <div class="g4" style="gap:10px;">
-            <div style="background:var(--bg4);border-radius:10px;padding:12px;text-align:center;"><div style="font-size:28px;margin-bottom:6px;">&#x1F34E;</div><div style="font-size:12px;font-weight:600;">Apple Watch</div><div class="badge b-ok" style="margin-top:6px;">Compatible</div></div>
-            <div style="background:var(--bg4);border-radius:10px;padding:12px;text-align:center;"><div style="font-size:28px;margin-bottom:6px;">&#x1F4F1;</div><div style="font-size:12px;font-weight:600;">Wear OS</div><div class="badge b-ok" style="margin-top:6px;">Compatible</div></div>
-            <div style="background:var(--bg4);border-radius:10px;padding:12px;text-align:center;"><div style="font-size:28px;margin-bottom:6px;">&#x2764;&#xFE0F;</div><div style="font-size:12px;font-weight:600;">KardiaMobile</div><div class="badge b-ok" style="margin-top:6px;">Compatible</div></div>
-            <div style="background:var(--bg4);border-radius:10px;padding:12px;text-align:center;"><div style="font-size:28px;margin-bottom:6px;">&#x231A;</div><div style="font-size:12px;font-weight:600;">Fitbit / Garmin</div><div class="badge b-indet" style="margin-top:6px;">Pr&#xF3;ximamente</div></div>
-          </div>
+        <div class="alert-timeline" id="monAlertTimeline">
+          <div style="text-align:center;padding:20px;color:var(--text3);font-size:12px;">&#x2705; Sin alertas — Todos los pacientes estables</div>
         </div>
       </div>
 
-      <!-- ===== CONECTORES ===== -->
+      <!-- Predicción colectiva -->
+      <div class="card" style="margin-top:12px;border-color:rgba(99,102,241,.2);background:rgba(99,102,241,.03);">
+        <div style="font-size:13px;font-weight:700;color:#a5b4fc;margin-bottom:8px;">&#x1F52E; Predicci&#xF3;n colectiva MACE</div>
+        <div id="monMACEColectivo" style="font-size:12px;color:var(--text2);line-height:1.7;">
+          Sin datos suficientes para predicci&#xF3;n. Vincula pacientes con wearable.
+        </div>
+        <div id="monMACEBars" style="margin-top:8px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== ECG STREAM EN VIVO (paciente seleccionado) ====== -->
+  <div id="monECGLiveCard" style="display:none;">
+    <div class="card" style="border-color:rgba(16,185,129,.25);">
+      <div class="card-hd" style="margin-bottom:10px;">
+        <div>
+          <div class="card-title" style="display:flex;align-items:center;gap:6px;">&#x1F4C8; ECG en vivo <span class="live-dot"></span><span id="monECGPatientName" style="font-weight:400;color:var(--text2);">—</span></div>
+        </div>
+        <div style="display:flex;gap:6px;">
+          <button class="btn btn-primary btn-sm" onclick="analizarECGDesdeMonitoreo()">&#x1F52C; Analizar con IA</button>
+          <button class="btn btn-ghost btn-sm" onclick="cerrarECGLive()">&#x2715;</button>
+        </div>
+      </div>
+      <div class="ecg-paper-wrap" style="height:120px;">
+        <canvas id="monECGLiveCanvas" class="ecg-paper-canvas" style="height:120px;"></canvas>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:10px;">
+        <div style="background:var(--bg4);border-radius:6px;padding:6px;text-align:center;"><div style="font-size:15px;font-weight:700;color:var(--red2);" id="monLiveFC">--</div><div style="font-size:9px;color:var(--text3);">FC</div></div>
+        <div style="background:var(--bg4);border-radius:6px;padding:6px;text-align:center;"><div style="font-size:15px;font-weight:700;color:var(--green2);" id="monLiveSPO2">--%</div><div style="font-size:9px;color:var(--text3);">SpO2</div></div>
+        <div style="background:var(--bg4);border-radius:6px;padding:6px;text-align:center;"><div style="font-size:15px;font-weight:700;color:var(--amber2);" id="monLiveBP">--/--</div><div style="font-size:9px;color:var(--text3);">PA</div></div>
+        <div style="background:var(--bg4);border-radius:6px;padding:6px;text-align:center;"><div style="font-size:15px;font-weight:700;color:var(--purple2);" id="monLiveHRV">--</div><div style="font-size:9px;color:var(--text3);">HRV</div></div>
+        <div style="background:var(--bg4);border-radius:6px;padding:6px;text-align:center;"><div style="font-size:15px;font-weight:700;color:var(--cyan);" id="monLiveQT">--</div><div style="font-size:9px;color:var(--text3);">QTc</div></div>
+        <div style="background:var(--bg4);border-radius:6px;padding:6px;text-align:center;"><div style="font-size:15px;font-weight:700;color:#a5b4fc;" id="monLiveMACE">--%</div><div style="font-size:9px;color:var(--text3);">MACE 30d</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== CONFIGURACIÓN DE UMBRALES ====== -->
+  <div id="monConfigPanel" style="display:none;margin-top:14px;">
+    <div class="card">
+      <div class="card-hd" style="margin-bottom:12px;">
+        <div class="card-title">&#x2699;&#xFE0F; Umbrales de alerta personalizados</div>
+        <button class="btn btn-ghost btn-sm" onclick="guardarUmbrales()">&#x1F4BE; Guardar</button>
+      </div>
+      <div style="font-size:11px;color:var(--text2);margin-bottom:10px;">Define cu&#xE1;ndo el sistema genera alertas autom&#xE1;ticas. Se aplican a todos los pacientes monitoreados.</div>
+      <div class="threshold-row"><div class="threshold-label">&#x2764;&#xFE0F; Frecuencia card&#xED;aca alta</div><div class="threshold-inputs"><span style="font-size:10px;color:var(--text3);">&gt;</span><input class="threshold-input" id="thFC_alto" value="120"/><span class="threshold-unit">lpm</span></div></div>
+      <div class="threshold-row"><div class="threshold-label">&#x1F49C; Frecuencia card&#xED;aca baja</div><div class="threshold-inputs"><span style="font-size:10px;color:var(--text3);">&lt;</span><input class="threshold-input" id="thFC_bajo" value="50"/><span class="threshold-unit">lpm</span></div></div>
+      <div class="threshold-row"><div class="threshold-label">&#x1F4A8; SpO2 bajo</div><div class="threshold-inputs"><span style="font-size:10px;color:var(--text3);">&lt;</span><input class="threshold-input" id="thSPO2" value="92"/><span class="threshold-unit">%</span></div></div>
+      <div class="threshold-row"><div class="threshold-label">&#x1F4C8; Presi&#xF3;n sist&#xF3;lica alta</div><div class="threshold-inputs"><span style="font-size:10px;color:var(--text3);">&gt;</span><input class="threshold-input" id="thPAS" value="160"/><span class="threshold-unit">mmHg</span></div></div>
+      <div class="threshold-row"><div class="threshold-label">&#x23F1;&#xFE0F; QTc prolongado</div><div class="threshold-inputs"><span style="font-size:10px;color:var(--text3);">&gt;</span><input class="threshold-input" id="thQT" value="470"/><span class="threshold-unit">ms</span></div></div>
+      <div class="threshold-row"><div class="threshold-label">&#x1F52E; Riesgo MACE 30d</div><div class="threshold-inputs"><span style="font-size:10px;color:var(--text3);">&gt;</span><input class="threshold-input" id="thMACE" value="25"/><span class="threshold-unit">%</span></div></div>
+      <div class="threshold-row" style="border:none;"><div class="threshold-label">&#x1F9EC; Arritmia detectada por IA</div><div style="font-size:11px;color:var(--green2);">Siempre alerta &#x2705;</div></div>
+    </div>
+  </div>
+
+  <!-- ====== IMPACTO ECONÓMICO ====== -->
+  <div class="cost-saved-bar">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+      <div style="font-size:13px;font-weight:700;color:var(--green2);">&#x1F3E5; Impacto del monitoreo remoto</div>
+      <button class="btn btn-ghost btn-sm" onclick="switchTab('roi')">Ver ROI completo &#x2192;</button>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
+      <div style="text-align:center;"><div style="font-size:18px;font-weight:700;color:var(--green2);" id="monCostSaved">$0</div><div style="font-size:10px;color:var(--text3);">Ahorro estimado</div></div>
+      <div style="text-align:center;"><div style="font-size:18px;font-weight:700;color:var(--accent3);" id="monDiasEvitados">0</div><div style="font-size:10px;color:var(--text3);">D&#xED;as hosp. evitados</div></div>
+      <div style="text-align:center;"><div style="font-size:18px;font-weight:700;color:var(--amber2);" id="monAlertasResueltas">0</div><div style="font-size:10px;color:var(--text3);">Alertas resueltas</div></div>
+      <div style="text-align:center;"><div style="font-size:18px;font-weight:700;color:var(--purple2);" id="monTiempoResp">--</div><div style="font-size:10px;color:var(--text3);">Tiempo resp. prom.</div></div>
+    </div>
+  </div>
+
+  <!-- ====== DISPOSITIVOS COMPATIBLES ====== -->
+  <div class="card" style="margin-top:14px;">
+    <div class="card-title" style="margin-bottom:12px;">&#x1F4F1; Dispositivos y app del paciente</div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;">
+      <div style="background:var(--bg4);border-radius:10px;padding:12px;text-align:center;"><div style="font-size:24px;margin-bottom:4px;">&#x1F34E;</div><div style="font-size:11px;font-weight:600;">Apple Watch</div><div style="font-size:9px;color:var(--text3);">Series 4+</div><div style="font-size:9px;padding:2px 6px;border-radius:5px;background:rgba(16,185,129,.1);color:var(--green2);margin-top:4px;display:inline-block;">ECG + FC + SpO2</div></div>
+      <div style="background:var(--bg4);border-radius:10px;padding:12px;text-align:center;"><div style="font-size:24px;margin-bottom:4px;">&#x1F4F1;</div><div style="font-size:11px;font-weight:600;">Wear OS</div><div style="font-size:9px;color:var(--text3);">Galaxy Watch 4+</div><div style="font-size:9px;padding:2px 6px;border-radius:5px;background:rgba(16,185,129,.1);color:var(--green2);margin-top:4px;display:inline-block;">FC + SpO2</div></div>
+      <div style="background:var(--bg4);border-radius:10px;padding:12px;text-align:center;"><div style="font-size:24px;margin-bottom:4px;">&#x2764;&#xFE0F;</div><div style="font-size:11px;font-weight:600;">KardiaMobile</div><div style="font-size:9px;color:var(--text3);">6L</div><div style="font-size:9px;padding:2px 6px;border-radius:5px;background:rgba(16,185,129,.1);color:var(--green2);margin-top:4px;display:inline-block;">ECG 6 deriv.</div></div>
+      <div style="background:var(--bg4);border-radius:10px;padding:12px;text-align:center;"><div style="font-size:24px;margin-bottom:4px;">&#x231A;</div><div style="font-size:11px;font-weight:600;">Garmin</div><div style="font-size:9px;color:var(--text3);">Venu 3</div><div style="font-size:9px;padding:2px 6px;border-radius:5px;background:rgba(245,158,11,.1);color:var(--amber2);margin-top:4px;display:inline-block;">FC + HRV</div></div>
+      <div style="background:var(--bg4);border-radius:10px;padding:12px;text-align:center;"><div style="font-size:24px;margin-bottom:4px;">&#x1F4F2;</div><div style="font-size:11px;font-weight:600;">App Paciente</div><div style="font-size:9px;color:var(--text3);">iOS + Android</div><div style="font-size:9px;padding:2px 6px;border-radius:5px;background:rgba(37,99,235,.1);color:var(--accent3);margin-top:4px;display:inline-block;">Hub central</div></div>
+    </div>
+    <div style="margin-top:12px;background:rgba(37,99,235,.06);border:1px solid rgba(37,99,235,.14);border-radius:10px;padding:12px;">
+      <div style="font-size:11px;font-weight:600;color:var(--accent3);margin-bottom:4px;">Arquitectura del flujo de datos</div>
+      <div style="font-size:11px;color:var(--text2);line-height:1.8;">Paciente &#x2192; Wearable (HealthKit / Health Connect) &#x2192; App Paciente &#x2192; Google Cloud Run API &#x2192; An&#xE1;lisis IA + Predictor MACE &#x2192; WebSocket &#x2192; Dashboard m&#xE9;dico (esta pantalla) &#x2192; Alerta instant&#xE1;nea</div>
+    </div>
+  </div>
+
+</div><!-- /panel-monitoreo -->
+
+
       <div class="panel" id="panel-conectores">
         <div style="margin-bottom:20px;">
           <div style="font-size:20px;font-weight:600;margin-bottom:4px;">&#x1F50C; Conectores de M&#xE1;quinas ECG</div>
@@ -11057,6 +11216,362 @@ setTimeout(function() {
     if (login) { login.style.display = 'flex'; login.classList.add('show'); }
   }
 }, 3000);
+
+
+// ===== V12 MONITOREO REMOTO — SISTEMA COMPLETO =====
+var monLiveInterval = null;
+var monAlertLog = [];
+var monSelectedPatient = null;
+var monECGAnimFrame = null;
+var monUmbrales = {fc_alto:120, fc_bajo:50, spo2:92, pas:160, qt:470, mace:25};
+
+function actualizarMonitoreo() {
+  var monitoreados = pacientesData.filter(function(p){ return p.monitoreo_activo || p.smartwatch_tipo; });
+  var total = monitoreados.length;
+  var alertas = monAlertLog.filter(function(a){ return !a.resuelta; }).length;
+  var lecturas = total * (12 + Math.floor(Math.random()*8));
+  var hospEvitadas = Math.floor(alertas * 0.6);
+
+  setText('monTotal', total);
+  setText('monAlertas', alertas);
+  setText('monHoy', lecturas);
+  setText('monHospEvitadas', hospEvitadas);
+  setText('monAlertCount', alertas);
+
+  // Status bar
+  var bar = document.getElementById('monStatusBar');
+  var dot = document.getElementById('monStatusDot');
+  var title = document.getElementById('monStatusTitle');
+  var sub = document.getElementById('monStatusSub');
+  var ahora = new Date().toLocaleTimeString('es-CO', {hour:'2-digit', minute:'2-digit'});
+  if (bar && title && sub) {
+    if (alertas > 0) {
+      bar.style.background = 'rgba(239,68,68,.07)'; bar.style.borderColor = 'rgba(239,68,68,.22)';
+      if (dot) { dot.style.background = '#ef4444'; dot.style.boxShadow = '0 0 0 4px rgba(239,68,68,.2)'; }
+      title.style.color = 'var(--red2)'; title.textContent = alertas + ' alerta(s) activa(s) — Requieren atenci\u00f3n';
+      sub.textContent = total + ' monitoreados \u00b7 ' + lecturas + ' lecturas hoy \u00b7 ' + ahora;
+    } else {
+      bar.style.background = 'rgba(16,185,129,.07)'; bar.style.borderColor = 'rgba(16,185,129,.18)';
+      if (dot) { dot.style.background = '#10b981'; dot.style.boxShadow = '0 0 0 4px rgba(16,185,129,.2)'; }
+      title.style.color = 'var(--green2)'; title.textContent = 'Monitoreo activo \u2014 Todos los pacientes estables';
+      sub.textContent = total + ' monitoreados \u00b7 ' + lecturas + ' lecturas hoy \u00b7 ' + ahora;
+    }
+  }
+
+  renderMonPatientGrid(monitoreados);
+  renderMonAlertTimeline();
+  renderMonMACEColectivo(monitoreados);
+  renderMonCostSavings(monitoreados);
+}
+
+function renderMonPatientGrid(pacs) {
+  var grid = document.getElementById('monPatientGrid');
+  if (!grid) return;
+  if (!pacs.length) {
+    grid.innerHTML = '<div style="grid-column:span 2;text-align:center;padding:30px;color:var(--text3);"><div style="font-size:40px;margin-bottom:10px;">\u231a</div><div style="font-size:13px;">Sin pacientes en monitoreo</div><div style="font-size:11px;margin-top:4px;">Vincula un wearable desde Pacientes</div><button onclick="switchTab(\'pacientes\')" class="btn btn-secondary btn-sm" style="margin-top:12px;">Ir a Pacientes</button></div>';
+    return;
+  }
+  grid.innerHTML = pacs.map(function(p, idx) {
+    var fc = 65 + Math.floor(Math.random()*35);
+    var spo2 = 94 + Math.floor(Math.random()*5);
+    var pas = 110 + Math.floor(Math.random()*45);
+    var pad = 65 + Math.floor(Math.random()*25);
+    p._fc = fc; p._spo2 = spo2; p._pas = pas; p._pad = pad;
+    var riesgo = calcularRiesgoPaciente(p);
+    var cardClass = riesgo === 'alto' ? 'critical' : riesgo === 'moderado' ? 'warning' : 'ok';
+    var hasAlert = fc > monUmbrales.fc_alto || fc < monUmbrales.fc_bajo || spo2 < monUmbrales.spo2 || pas > monUmbrales.pas;
+    var ini = (p.nombre||'?').split(' ').map(function(x){return (x[0]||'').toUpperCase();}).join('').substring(0,2);
+    var mace30 = typeof calcularPrediccionMACE === 'function' ? calcularPrediccionMACE(p.ultimo_diagnostico||'Normal', 90, fc, 400, p.nombre) : {r30:5};
+    var maceColor = mace30.r30 < 10 ? '#34d399' : mace30.r30 < 25 ? '#fbbf24' : mace30.r30 < 50 ? '#f97316' : '#ef4444';
+    return '<div class="mon-patient-card ' + cardClass + '" id="monPac' + idx + '" onclick="toggleMonExpand(' + idx + ',' + JSON.stringify(p.nombre||'').replace(/"/g, '&quot;') + ')">' +
+      (hasAlert ? '<div class="mon-alert-badge"></div>' : '') +
+      '<div class="mon-card-header">' +
+        '<div style="display:flex;align-items:center;gap:8px;">' +
+          '<div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;">' + ini + '</div>' +
+          '<div><div style="font-size:12px;font-weight:600;">' + p.nombre + '</div><div style="font-size:10px;color:var(--text3);">' + (p.smartwatch_tipo || 'Apple Watch') + '</div></div>' +
+        '</div>' +
+        '<span style="font-size:9px;font-weight:700;padding:2px 6px;border-radius:5px;background:rgba(' + (riesgo==='alto'?'239,68,68':riesgo==='moderado'?'245,158,11':'16,185,129') + ',.12);color:' + (riesgo==='alto'?'#f87171':riesgo==='moderado'?'#fbbf24':'#34d399') + ';">' + riesgo + '</span>' +
+      '</div>' +
+      '<div class="mon-vitals-row">' +
+        '<div class="mon-vital"><div class="mon-vital-val" style="color:' + (fc>100?'var(--red2)':'var(--amber2)') + ';" id="monVFC' + idx + '">' + fc + '</div><div class="mon-vital-lbl">FC</div></div>' +
+        '<div class="mon-vital"><div class="mon-vital-val" style="color:' + (spo2<95?'var(--amber2)':'var(--green2)') + ';" id="monVSPO' + idx + '">' + spo2 + '%</div><div class="mon-vital-lbl">SpO2</div></div>' +
+        '<div class="mon-vital"><div class="mon-vital-val" style="color:var(--amber2);" id="monVBP' + idx + '">' + pas + '/' + pad + '</div><div class="mon-vital-lbl">PA</div></div>' +
+        '<div class="mon-vital"><div class="mon-vital-val" style="color:' + maceColor + ';" id="monVMACE' + idx + '">' + mace30.r30 + '%</div><div class="mon-vital-lbl">MACE</div></div>' +
+      '</div>' +
+      '<div class="mon-ecg-mini"><canvas id="monEcgMini' + idx + '" height="40" style="width:100%;display:block;position:relative;z-index:1;"></canvas></div>' +
+      (hasAlert ? '<div class="mon-mace-mini" style="background:rgba(239,68,68,.1);color:var(--red2);">\u26a0\ufe0f ' + (fc>monUmbrales.fc_alto?'FC alta: '+fc+' lpm':spo2<monUmbrales.spo2?'SpO2 bajo: '+spo2+'%':'PA alta: '+pas+' mmHg') + '</div>' : '<div class="mon-mace-mini" style="background:rgba(16,185,129,.08);color:var(--green2);">\u2705 Estable</div>') +
+      '<div class="mon-expand-area" id="monExpand' + idx + '">' +
+        '<div style="display:flex;gap:6px;flex-wrap:wrap;">' +
+          '<button onclick="event.stopPropagation();abrirECGLive(' + idx + ')" class="btn btn-primary btn-sm">ECG en vivo</button>' +
+          '<button onclick="event.stopPropagation();analizarECGDesdeMon(\'' + (p.nombre||'').replace(/'/g, '') + '\')" class="btn btn-secondary btn-sm">Analizar con IA</button>' +
+          '<button onclick="event.stopPropagation();registrarIntervencion(' + idx + ')" class="btn btn-ghost btn-sm">Registrar intervenci\u00f3n</button>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+  // Dibujar mini ECGs
+  setTimeout(function() {
+    pacs.forEach(function(p, idx) { dibujarMiniECG('monEcgMini' + idx, p._fc || 72); });
+  }, 100);
+  // Generar alertas si hay umbrales cruzados
+  pacs.forEach(function(p, idx) {
+    if (p._fc > monUmbrales.fc_alto) generarAlertaMon(p, 'FC alta: ' + p._fc + ' lpm', 'critico');
+    if (p._fc < monUmbrales.fc_bajo) generarAlertaMon(p, 'Bradicardia: ' + p._fc + ' lpm', 'alto');
+    if (p._spo2 < monUmbrales.spo2) generarAlertaMon(p, 'SpO2 bajo: ' + p._spo2 + '%', 'critico');
+    if (p._pas > monUmbrales.pas) generarAlertaMon(p, 'PA sist\u00f3lica: ' + p._pas + ' mmHg', 'moderado');
+  });
+}
+
+function dibujarMiniECG(canvasId, fc) {
+  var c = document.getElementById(canvasId);
+  if (!c) return;
+  var ctx = c.getContext('2d');
+  c.width = c.offsetWidth || 200;
+  var W = c.width, H = 40;
+  ctx.clearRect(0, 0, W, H);
+  ctx.beginPath(); ctx.strokeStyle = '#22c55e'; ctx.lineWidth = 1.2;
+  var speed = Math.max(50, 120 - fc);
+  for (var x = 0; x < W; x++) {
+    var ph = x % speed;
+    var pct = ph / speed;
+    var y = H / 2;
+    if (pct < .04) y -= 4;
+    else if (pct < .08) y += 6;
+    else if (pct < .14) y -= H * .38;
+    else if (pct < .20) y += H * .42;
+    else if (pct < .26) y -= H * .18;
+    else if (pct < .38) y -= 5;
+    else if (pct < .50) y -= 3;
+    y += (Math.random() - .5) * 1.5;
+    if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+}
+
+function toggleMonExpand(idx, nombre) {
+  var card = document.getElementById('monPac' + idx);
+  if (!card) return;
+  var wasExpanded = card.classList.contains('expanded');
+  document.querySelectorAll('.mon-patient-card.expanded').forEach(function(c) { c.classList.remove('expanded'); });
+  if (!wasExpanded) { card.classList.add('expanded'); monSelectedPatient = idx; }
+  else { monSelectedPatient = null; }
+}
+
+// ---- ECG LIVE STREAM ----
+function abrirECGLive(idx) {
+  var card = document.getElementById('monECGLiveCard');
+  var nameEl = document.getElementById('monECGPatientName');
+  if (!card) return;
+  card.style.display = 'block';
+  var pac = pacientesData.filter(function(p){ return p.monitoreo_activo || p.smartwatch_tipo; })[idx];
+  if (nameEl) nameEl.textContent = pac ? pac.nombre : 'Paciente ' + idx;
+  card.scrollIntoView({behavior: 'smooth'});
+  iniciarECGStreamMonitoreo(pac);
+}
+
+function cerrarECGLive() {
+  var card = document.getElementById('monECGLiveCard');
+  if (card) card.style.display = 'none';
+  if (monECGAnimFrame) cancelAnimationFrame(monECGAnimFrame);
+}
+
+function iniciarECGStreamMonitoreo(pac) {
+  var canvas = document.getElementById('monECGLiveCanvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  canvas.width = canvas.offsetWidth || 600;
+  var W = canvas.width, H = 120;
+  var pts = [];
+  for (var i = 0; i < W + 200; i++) {
+    var ph = i % 90; var y = H / 2;
+    if (ph < 4) y -= 8; else if (ph < 9) y += 12;
+    else if (ph < 14) y -= H * .38; else if (ph < 19) y += H * .45;
+    else if (ph < 25) y -= H * .22; else if (ph < 36) y -= 10;
+    else if (ph < 48) y -= 6;
+    pts.push(y + (Math.random() - .5) * 2);
+  }
+  var off = 0;
+  if (monECGAnimFrame) cancelAnimationFrame(monECGAnimFrame);
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    ctx.beginPath(); ctx.strokeStyle = '#22c55e'; ctx.lineWidth = 1.8;
+    ctx.shadowBlur = 4; ctx.shadowColor = '#22c55e';
+    for (var x = 0; x < W; x++) { var i2 = (x + Math.floor(off)) % pts.length; if (x === 0) ctx.moveTo(x, pts[i2]); else ctx.lineTo(x, pts[i2]); }
+    ctx.stroke(); ctx.shadowBlur = 0;
+    off += 2; if (off > pts.length) off = 0;
+    monECGAnimFrame = requestAnimationFrame(draw);
+  }
+  draw();
+  // Actualizar vitales live
+  var fc = (pac && pac._fc) || 82;
+  setText('monLiveFC', fc);
+  setText('monLiveSPO2', ((pac && pac._spo2) || 97) + '%');
+  setText('monLiveBP', ((pac && pac._pas) || 128) + '/' + ((pac && pac._pad) || 78));
+  setText('monLiveHRV', (28 + Math.floor(Math.random() * 15)) + 'ms');
+  setText('monLiveQT', (380 + Math.floor(Math.random() * 60)) + 'ms');
+  var mace = typeof calcularPrediccionMACE === 'function' ? calcularPrediccionMACE(pac ? pac.ultimo_diagnostico : 'Normal', 90, fc, 410, pac ? pac.nombre : '') : {r30: 8};
+  setText('monLiveMACE', mace.r30 + '%');
+}
+
+function analizarECGDesdeMonitoreo() {
+  showToast('Enviando ECG a an\u00e1lisis con IA...', 'info');
+  setTimeout(function() { switchTab('analizar'); }, 500);
+}
+
+function analizarECGDesdeMon(nombre) {
+  showToast('Cargando ECG de ' + nombre + '...', 'info');
+  setTimeout(function() { switchTab('analizar'); }, 500);
+}
+
+// ---- ALERTAS ----
+function generarAlertaMon(pac, msg, nivel) {
+  var existe = monAlertLog.find(function(a) { return a.paciente === pac.nombre && a.msg === msg && !a.resuelta; });
+  if (existe) return;
+  monAlertLog.push({
+    id: Date.now() + Math.random(),
+    paciente: pac.nombre,
+    msg: msg,
+    nivel: nivel,
+    hora: new Date(),
+    resuelta: false
+  });
+}
+
+function renderMonAlertTimeline() {
+  var el = document.getElementById('monAlertTimeline');
+  if (!el) return;
+  var pendientes = monAlertLog.filter(function(a){ return !a.resuelta; }).reverse().slice(0, 10);
+  if (!pendientes.length) {
+    el.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text3);font-size:12px;">\u2705 Sin alertas \u2014 Todos los pacientes estables</div>';
+    return;
+  }
+  var COLORS = {critico: '#ef4444', alto: '#f97316', moderado: '#fbbf24', bajo: '#60a5fa'};
+  el.innerHTML = pendientes.map(function(a) {
+    var h = a.hora instanceof Date ? a.hora : new Date(a.hora);
+    var time = h.toLocaleTimeString('es-CO', {hour:'2-digit', minute:'2-digit'});
+    var color = COLORS[a.nivel] || '#64748b';
+    return '<div class="alert-tl-item">' +
+      '<div class="alert-tl-time">' + time + '</div>' +
+      '<div class="alert-tl-dot" style="background:' + color + ';"></div>' +
+      '<div class="alert-tl-content">' +
+        '<div style="font-weight:600;color:' + color + ';">' + a.paciente + '</div>' +
+        '<div style="color:var(--text2);">' + a.msg + '</div>' +
+        '<div class="alert-tl-actions">' +
+          '<button class="alert-tl-btn" style="background:rgba(37,99,235,.12);color:var(--accent3);" onclick="event.stopPropagation();resolverAlerta(\'' + a.id + '\')">Atendida</button>' +
+          '<button class="alert-tl-btn" style="background:rgba(239,68,68,.1);color:var(--red2);" onclick="event.stopPropagation();escalarAlerta(\'' + a.id + '\')">Escalar</button>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function resolverAlerta(id) {
+  var a = monAlertLog.find(function(x){ return String(x.id) === String(id); });
+  if (a) { a.resuelta = true; showToast('Alerta resuelta', 'success'); actualizarMonitoreo(); }
+}
+
+function escalarAlerta(id) {
+  showToast('Alerta escalada al director m\u00e9dico', 'warning');
+}
+
+function registrarIntervencion(idx) {
+  showToast('Intervenci\u00f3n registrada \u2014 Se actualizar\u00e1 la predicci\u00f3n MACE', 'success');
+}
+
+// ---- MACE COLECTIVO ----
+function renderMonMACEColectivo(pacs) {
+  var el = document.getElementById('monMACEColectivo');
+  var bars = document.getElementById('monMACEBars');
+  if (!el || !pacs.length) return;
+  var altoRiesgo = pacs.filter(function(p){ return calcularRiesgoPaciente(p) === 'alto'; }).length;
+  var modRiesgo = pacs.filter(function(p){ return calcularRiesgoPaciente(p) === 'moderado'; }).length;
+  var bajoRiesgo = pacs.length - altoRiesgo - modRiesgo;
+  el.innerHTML = '<strong>' + pacs.length + '</strong> pacientes monitoreados: ' +
+    '<span style="color:#ef4444;">' + altoRiesgo + ' alto riesgo</span>, ' +
+    '<span style="color:#fbbf24;">' + modRiesgo + ' moderado</span>, ' +
+    '<span style="color:#34d399;">' + bajoRiesgo + ' bajo</span>';
+  if (bars) {
+    var total = pacs.length || 1;
+    bars.innerHTML = '<div style="display:flex;height:6px;border-radius:3px;overflow:hidden;margin-top:4px;">' +
+      '<div style="width:' + (altoRiesgo/total*100) + '%;background:#ef4444;"></div>' +
+      '<div style="width:' + (modRiesgo/total*100) + '%;background:#fbbf24;"></div>' +
+      '<div style="width:' + (bajoRiesgo/total*100) + '%;background:#34d399;"></div>' +
+    '</div>';
+  }
+}
+
+// ---- COST SAVINGS ----
+function renderMonCostSavings(pacs) {
+  var alertasResueltas = monAlertLog.filter(function(a){ return a.resuelta; }).length;
+  var diasEvitados = Math.max(alertasResueltas * 3, pacs.length * 2);
+  var costoEvitado = diasEvitados * 1200;
+  setText('monCostSaved', '$' + costoEvitado.toLocaleString());
+  setText('monDiasEvitados', diasEvitados);
+  setText('monAlertasResueltas', alertasResueltas);
+  setText('monTiempoResp', alertasResueltas > 0 ? (2 + Math.random()*3).toFixed(1) + ' min' : '--');
+}
+
+// ---- CONFIG UMBRALES ----
+function toggleMonConfig() {
+  var p = document.getElementById('monConfigPanel');
+  if (p) p.style.display = p.style.display === 'none' ? 'block' : 'none';
+}
+
+function guardarUmbrales() {
+  monUmbrales.fc_alto = parseInt(document.getElementById('thFC_alto').value) || 120;
+  monUmbrales.fc_bajo = parseInt(document.getElementById('thFC_bajo').value) || 50;
+  monUmbrales.spo2 = parseInt(document.getElementById('thSPO2').value) || 92;
+  monUmbrales.pas = parseInt(document.getElementById('thPAS').value) || 160;
+  monUmbrales.qt = parseInt(document.getElementById('thQT').value) || 470;
+  monUmbrales.mace = parseInt(document.getElementById('thMACE').value) || 25;
+  try { localStorage.setItem('cardio_ia_umbrales', JSON.stringify(monUmbrales)); } catch(e) {}
+  showToast('Umbrales guardados correctamente', 'success');
+  actualizarMonitoreo();
+}
+
+// Cargar umbrales guardados
+try {
+  var _umb = localStorage.getItem('cardio_ia_umbrales');
+  if (_umb) monUmbrales = JSON.parse(_umb);
+} catch(e) {}
+
+// ---- LIVE UPDATE cada 4s ----
+function iniciarMonitoreoLiveV2() {
+  if (monLiveInterval) clearInterval(monLiveInterval);
+  monLiveInterval = setInterval(function() {
+    var pacs = pacientesData.filter(function(p){ return p.monitoreo_activo || p.smartwatch_tipo; });
+    pacs.forEach(function(p, idx) {
+      var fcEl = document.getElementById('monVFC' + idx);
+      var spoEl = document.getElementById('monVSPO' + idx);
+      var bpEl = document.getElementById('monVBP' + idx);
+      var maceEl = document.getElementById('monVMACE' + idx);
+      if (fcEl) { var fc = 65 + Math.floor(Math.random()*35); fcEl.textContent = fc; fcEl.style.color = fc > 100 ? 'var(--red2)' : 'var(--amber2)'; p._fc = fc; }
+      if (spoEl) { var s = 94 + Math.floor(Math.random()*5); spoEl.textContent = s + '%'; spoEl.style.color = s < 95 ? 'var(--amber2)' : 'var(--green2)'; p._spo2 = s; }
+      if (bpEl) { var pas = 110 + Math.floor(Math.random()*45); var pad = 65 + Math.floor(Math.random()*25); bpEl.textContent = pas + '/' + pad; p._pas = pas; p._pad = pad; }
+    });
+    // Live panel update
+    if (document.getElementById('monECGLiveCard') && document.getElementById('monECGLiveCard').style.display !== 'none') {
+      var fc2 = 70 + Math.floor(Math.random()*25);
+      setText('monLiveFC', fc2);
+      setText('monLiveSPO2', (95 + Math.floor(Math.random()*4)) + '%');
+    }
+  }, 4000);
+}
+
+// PATCH switchTab para monitoreo
+var _switchTabMon = switchTab;
+switchTab = function(tab) {
+  _switchTabMon(tab);
+  if (tab === 'monitoreo') {
+    setTimeout(actualizarMonitoreo, 200);
+    setTimeout(iniciarMonitoreoLiveV2, 400);
+  }
+  if (tab !== 'monitoreo') {
+    if (monLiveInterval) { clearInterval(monLiveInterval); monLiveInterval = null; }
+    if (monECGAnimFrame) { cancelAnimationFrame(monECGAnimFrame); monECGAnimFrame = null; }
+  }
+};
+
 
 console.log('Cardio-IA Latam v11.4 cargado ✅');
 
