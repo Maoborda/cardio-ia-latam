@@ -9818,17 +9818,7 @@ function initECGBackground() {
         if (splash) splash.style.display = 'none';
       }, 400);
     }
-    if (sesionPrevia) {
-      // Auto-login con sesión guardada
-      try {
-        var usr = JSON.parse(localStorage.getItem('cardio_ia_usuario'));
-        if (usr && typeof completarLogin === 'function') {
-          completarLogin(usr);
-          return;
-        }
-      } catch(e) {}
-    }
-    // Mostrar login
+    // Siempre mostrar login
     var login = document.getElementById('loginOverlay');
     if (login) {
       login.style.display = 'flex';
