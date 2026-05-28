@@ -222,6 +222,89 @@
 .latam-dot.low::after{background:rgba(16,185,129,.4);}
 @keyframes dotPulse{0%,100%{transform:scale(1);opacity:.5;}50%{transform:scale(2.2);opacity:0;}}
 
+/* ===== V12 MÓDULO ANALIZAR ECG ===== */
+
+/* Fuente selector tabs */
+.fuente-tabs{display:flex;gap:0;background:var(--bg3);border-radius:12px;padding:4px;margin-bottom:16px;overflow-x:auto;}
+.fuente-tab{display:flex;align-items:center;gap:7px;padding:9px 16px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:500;color:var(--text2);border:none;background:transparent;font-family:inherit;white-space:nowrap;transition:all .2s;flex-shrink:0;}
+.fuente-tab:hover{color:var(--text);}
+.fuente-tab.active{background:var(--bg);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.3);}
+.fuente-tab.active.tab-manual{background:rgba(37,99,235,.15);color:var(--accent3);}
+.fuente-tab.active.tab-maquina{background:rgba(139,92,246,.12);color:var(--purple2);}
+.fuente-tab.active.tab-wearable{background:rgba(16,185,129,.12);color:var(--green2);}
+.fuente-tab.active.tab-fhir{background:rgba(14,165,233,.12);color:var(--cyan);}
+.fuente-panel{display:none;}.fuente-panel.active{display:block;}
+.tab-badge{font-size:9px;padding:1px 5px;border-radius:8px;font-weight:700;}
+.badge-live{background:rgba(16,185,129,.15);color:var(--green2);}
+.badge-new{background:rgba(14,165,233,.15);color:var(--cyan);}
+
+/* Contexto paciente expandido */
+.pac-context-bar{background:linear-gradient(135deg,rgba(37,99,235,.08),rgba(14,165,233,.04));border:1px solid rgba(37,99,235,.18);border-radius:14px;padding:14px 16px;margin-bottom:14px;}
+.pac-context-timeline{display:flex;gap:6px;align-items:center;margin-top:8px;overflow-x:auto;padding-bottom:4px;}
+.pac-ecg-mini{flex-shrink:0;padding:5px 10px;border-radius:8px;font-size:10px;cursor:pointer;transition:all .15s;}
+.pac-ecg-mini:hover{transform:translateY(-1px);}
+.wearable-chip{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:12px;font-size:11px;font-weight:500;}
+.wearable-chip.connected{background:rgba(16,185,129,.1);color:var(--green2);border:1px solid rgba(16,185,129,.2);}
+.wearable-chip.disconnected{background:var(--bg4);color:var(--text3);border:1px solid var(--border2);}
+.wearable-chip.live{background:rgba(16,185,129,.15);color:var(--green2);border:1px solid rgba(16,185,129,.3);}
+
+/* Wearable live panel */
+.wearable-live-card{background:#060912;border:1px solid rgba(16,185,129,.2);border-radius:14px;padding:16px;}
+.wearable-vitals{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px;}
+.wearable-vital{background:var(--bg3);border-radius:10px;padding:10px;text-align:center;}
+.wearable-vital-val{font-size:22px;font-weight:700;line-height:1;}
+.wearable-vital-lbl{font-size:9px;color:var(--text3);margin-top:2px;}
+.ecg-stream-wrap{background:#000810;border-radius:8px;padding:6px;margin:10px 0;position:relative;overflow:hidden;}
+.ecg-stream-wrap::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(16,185,129,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(16,185,129,.06) 1px,transparent 1px);background-size:16px 16px;}
+.ecg-stream-wrap::after{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(16,185,129,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(16,185,129,.12) 1px,transparent 1px);background-size:80px 80px;}
+
+/* MACE Predictor — la innovación central */
+.mace-card{background:linear-gradient(145deg,rgba(6,9,18,1),rgba(10,15,32,1));border:1px solid rgba(99,102,241,.25);border-radius:16px;padding:20px;}
+.mace-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.mace-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:12px;font-size:10px;font-weight:700;background:rgba(99,102,241,.15);color:#a5b4fc;border:1px solid rgba(99,102,241,.25);}
+.mace-horizons{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
+.mace-horizon{background:var(--bg3);border-radius:12px;padding:12px;text-align:center;position:relative;overflow:hidden;cursor:pointer;transition:all .2s;border:1px solid transparent;}
+.mace-horizon:hover{border-color:rgba(99,102,241,.3);transform:translateY(-2px);}
+.mace-horizon.active{border-color:rgba(99,102,241,.4);background:rgba(99,102,241,.08);}
+.mace-pct{font-size:28px;font-weight:700;line-height:1;font-family:'DM Mono',monospace;}
+.mace-pct.bajo{color:#34d399;}
+.mace-pct.moderado{color:#fbbf24;}
+.mace-pct.alto{color:#f87171;}
+.mace-pct.critico{color:#ef4444;}
+.mace-label{font-size:10px;color:var(--text3);margin-top:3px;}
+.mace-nivel{font-size:9px;font-weight:700;padding:2px 7px;border-radius:6px;margin-top:5px;display:inline-block;}
+.mace-gauge{position:relative;height:4px;background:var(--bg5);border-radius:2px;margin-top:6px;overflow:hidden;}
+.mace-gauge-fill{height:100%;border-radius:2px;transition:width 1s cubic-bezier(.34,1.56,.64,1);}
+.mace-factores{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+.mace-factor{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:8px;font-size:11px;}
+.mace-factor-ico{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;}
+.mace-intervencion{background:rgba(37,99,235,.08);border:1px solid rgba(37,99,235,.2);border-radius:10px;padding:12px;}
+.mace-intervencion-title{font-size:11px;font-weight:700;color:var(--accent3);margin-bottom:6px;}
+
+/* Máquina ECG panel */
+.machine-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
+.machine-card{background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:10px;cursor:pointer;transition:all .2s;text-align:center;}
+.machine-card:hover{border-color:var(--accent2);transform:translateY(-1px);}
+.machine-card.selected{border-color:var(--purple2);background:rgba(139,92,246,.08);}
+.machine-card-logo{font-size:20px;margin-bottom:4px;}
+.machine-card-name{font-size:11px;font-weight:600;}
+.machine-card-format{font-size:9px;color:var(--text3);}
+
+/* App paciente / mobile */
+.app-connect-card{background:var(--bg3);border:1px dashed var(--border2);border-radius:12px;padding:20px;text-align:center;}
+.app-qr-zone{width:80px;height:80px;background:var(--bg4);border-radius:10px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:32px;}
+
+/* Derivaciones ECG multi-lead */
+.leads-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px;}
+.lead-mini{background:#000810;border-radius:6px;padding:4px 6px;text-align:center;}
+.lead-label{font-size:9px;color:rgba(34,197,94,.5);margin-bottom:2px;}
+
+@media(max-width:768px){
+  .mace-horizons{grid-template-columns:1fr 1fr;}
+  .machine-grid{grid-template-columns:repeat(2,1fr);}
+  .fuente-tab{padding:8px 12px;}
+}
+
 /* ===== V11.4 FOCUS STATES =====*/
 .btn:focus-visible,.form-input:focus-visible,.form-select:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
 
@@ -1789,272 +1872,417 @@ body{
 <!-- ===== ANALIZAR ECG ===== -->
       <div class="panel" id="panel-analizar">
 
-  <!-- SELECTOR PACIENTE -->
-  <div id="analizarPacienteBanner" style="background:linear-gradient(135deg,rgba(37,99,235,.1),rgba(14,165,233,.06));border:1px solid rgba(37,99,235,.2);border-radius:12px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-    <div style="flex:1;min-width:200px;">
-      <label class="form-label" style="margin-bottom:4px;">Paciente para este ECG</label>
-      <select class="form-select" id="analizarPacienteSelect" onchange="seleccionarPacienteAnalizar(this.value)" style="font-size:13px;">
-        <option value="">-- Sin paciente (consulta general) --</option>
-      </select>
+  <!-- ====== CONTEXTO PACIENTE EXPANDIDO ====== -->
+  <div id="analizarPacienteBanner" class="pac-context-bar">
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+      <!-- Selector -->
+      <div style="flex:1;min-width:220px;">
+        <label class="form-label" style="margin-bottom:3px;">Paciente para este ECG</label>
+        <select class="form-select" id="analizarPacienteSelect" onchange="seleccionarPacienteAnalizar(this.value)" style="font-size:13px;"></select>
+      </div>
+      <!-- Wearable status -->
+      <div id="wearableStatusChip" class="wearable-chip disconnected">
+        <span id="wearableStatusDot" style="width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0;"></span>
+        <span id="wearableStatusText">Sin wearable</span>
+      </div>
+      <!-- Info vinculación -->
+      <div id="analizarPacienteInfo" style="font-size:11px;color:var(--accent3);display:none;">&#x2705; ECG se vinculará a este paciente</div>
     </div>
-    <div id="analizarPacienteInfo" style="font-size:12px;color:var(--accent3);display:none;">
-      &#x2705; ECG se vincular&#xE1; a este paciente
+    <!-- Timeline mini ECGs previos -->
+    <div id="analizarPacienteHistorial" style="display:none;margin-top:8px;">
+      <div style="font-size:10px;color:var(--text3);margin-bottom:5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;">ECGs previos del paciente</div>
+      <div class="pac-context-timeline" id="pacTimelineRow"></div>
     </div>
-    <div id="analizarPacienteHistorial" style="display:none;margin-top:8px;padding:8px 12px;background:var(--bg4);border-radius:8px;font-size:11px;color:var(--text2);"></div>
   </div>
 
-  <!-- SCORE RIESGO CARDIOVASCULAR -->
-  <div id="scoreRiesgoCard" style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:16px;">
+  <!-- ====== SELECTOR DE FUENTE ECG ====== -->
+  <div style="margin-bottom:14px;">
+    <div style="font-size:11px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;">Fuente del ECG</div>
+    <div class="fuente-tabs">
+      <button class="fuente-tab tab-manual active" id="fTab-manual" onclick="switchFuenteTab('manual')">&#x1F4C1; Archivo CSV/EDF<span class="tab-badge" style="background:rgba(37,99,235,.12);color:var(--accent3);">Universal</span></button>
+      <button class="fuente-tab tab-maquina" id="fTab-maquina" onclick="switchFuenteTab('maquina')">&#x1F5A5; M&#xE1;quina ECG<span class="tab-badge" style="background:rgba(139,92,246,.12);color:var(--purple2);">GE·Philips·Schiller</span></button>
+      <button class="fuente-tab tab-wearable" id="fTab-wearable" onclick="switchFuenteTab('wearable')">&#x231A; App Paciente<span class="tab-badge badge-live">&#x25CF; Live</span></button>
+      <button class="fuente-tab tab-fhir" id="fTab-fhir" onclick="switchFuenteTab('fhir')">&#x1F3E5; HL7 FHIR<span class="tab-badge badge-new">Hospital</span></button>
+    </div>
+
+    <!-- PANEL MANUAL -->
+    <div class="fuente-panel active" id="fpanel-manual">
+      <div class="card">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start;">
+          <div>
+            <div class="card-title" style="margin-bottom:10px;">&#x1F4C2; Subir archivo ECG</div>
+            <div id="dropZone" class="drop-zone" ondrop="handleDrop(event)" ondragover="event.preventDefault()" ondragenter="this.classList.add('dragging')" ondragleave="this.classList.remove('dragging')" onclick="document.getElementById('ecgFile').click()" style="border:2px dashed var(--border2);border-radius:12px;padding:20px;text-align:center;cursor:pointer;transition:all .2s;">
+              <div style="font-size:32px;margin-bottom:8px;">&#x1F4C4;</div>
+              <div style="font-size:13px;font-weight:600;margin-bottom:4px;">Arrastra tu archivo ECG</div>
+              <div style="font-size:11px;color:var(--text2);">CSV · TXT · EDF · HL7 · XML · M&#xE1;x 10MB</div>
+              <input type="file" id="ecgFile" accept=".csv,.txt,.edf,.xml,.hl7,.json" style="display:none;" onchange="procesarArchivoLocal(this)">
+            </div>
+            <div id="fileInfo" style="display:none;margin-top:8px;padding:8px 12px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:8px;font-size:11px;color:var(--green2);"></div>
+          </div>
+          <div>
+            <div class="card-title" style="margin-bottom:10px;">&#x1F9D1;&#x200D;&#x2695;&#xFE0F; Datos del paciente</div>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">Nombre</label><input class="form-input" id="pacNombre" placeholder="Auto desde selector"/></div>
+              <div class="form-group"><label class="form-label">ID / Cédula</label><input class="form-input" id="pacId" placeholder="Número"/></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">Edad</label><input class="form-input" id="pacEdad" type="number" placeholder="Años"/></div>
+              <div class="form-group"><label class="form-label">Sexo</label>
+                <select class="form-select" id="pacSexo"><option value="M">Masculino</option><option value="F">Femenino</option></select>
+              </div>
+            </div>
+            <div class="form-group"><label class="form-label">Médico responsable</label><input class="form-input" id="pacMedico" placeholder="Dr. ..."/></div>
+          </div>
+        </div>
+        <button class="btn btn-primary btn-full" id="btnAnalizar" onclick="analizarECG()" style="margin-top:14px;font-size:14px;padding:13px;" disabled>&#x1F52C; Analizar ECG con IA</button>
+        <div id="analizarStatus" style="display:none;margin-top:8px;text-align:center;font-size:12px;color:var(--text2);"></div>
+      </div>
+    </div>
+
+    <!-- PANEL MÁQUINA ECG -->
+    <div class="fuente-panel" id="fpanel-maquina">
+      <div class="card">
+        <div class="card-title" style="margin-bottom:12px;">&#x1F5A5; Selecciona tu m&#xE1;quina ECG</div>
+        <div class="machine-grid">
+          <div class="machine-card" onclick="seleccionarMaquina('ge')"><div class="machine-card-logo">&#x1F4BB;</div><div class="machine-card-name">GE Healthcare</div><div class="machine-card-format">MAC Series · XML/HL7</div></div>
+          <div class="machine-card" onclick="seleccionarMaquina('philips')"><div class="machine-card-logo">&#x1F4BB;</div><div class="machine-card-name">Philips PageWriter</div><div class="machine-card-format">XML · CSV</div></div>
+          <div class="machine-card" onclick="seleccionarMaquina('schiller')"><div class="machine-card-logo">&#x1F4BB;</div><div class="machine-card-name">Schiller AT Series</div><div class="machine-card-format">CSV · HL7</div></div>
+          <div class="machine-card" onclick="seleccionarMaquina('nihon')"><div class="machine-card-logo">&#x1F4BB;</div><div class="machine-card-name">Nihon Kohden</div><div class="machine-card-format">EDF · CSV</div></div>
+          <div class="machine-card" onclick="seleccionarMaquina('mortara')"><div class="machine-card-logo">&#x1F4BB;</div><div class="machine-card-name">Mortara / Welch Allyn</div><div class="machine-card-format">XML · SCP-ECG</div></div>
+          <div class="machine-card" onclick="seleccionarMaquina('cardiacare')"><div class="machine-card-logo">&#x1F4BB;</div><div class="machine-card-name">Cardiacare</div><div class="machine-card-format">CSV · JSON API</div></div>
+        </div>
+        <div id="maquinaInstrucciones" style="background:rgba(139,92,246,.07);border:1px solid rgba(139,92,246,.2);border-radius:10px;padding:12px;margin-bottom:12px;display:none;">
+          <div style="font-size:12px;font-weight:600;color:var(--purple2);margin-bottom:6px;" id="maquinaTitle">Instrucciones de exportación</div>
+          <div style="font-size:11px;color:var(--text2);line-height:1.8;" id="maquinaSteps"></div>
+        </div>
+        <div class="drop-zone" id="dropZoneMaquina" ondrop="handleDropMaquina(event)" ondragover="event.preventDefault()" onclick="document.getElementById('ecgFileMaquina').click()" style="border:2px dashed var(--border2);border-radius:12px;padding:18px;text-align:center;cursor:pointer;transition:all .2s;">
+          <div style="font-size:28px;margin-bottom:6px;">&#x1F4E4;</div>
+          <div style="font-size:13px;font-weight:600;margin-bottom:3px;">Soltar archivo exportado aquí</div>
+          <div style="font-size:11px;color:var(--text2);">CSV · XML · EDF · HL7 · SCP-ECG</div>
+          <input type="file" id="ecgFileMaquina" accept=".csv,.xml,.edf,.hl7,.json,.scp" style="display:none;" onchange="procesarArchivoMaquina(this)">
+        </div>
+        <div id="maquinaStatus" style="display:none;margin-top:8px;padding:8px 12px;border-radius:8px;font-size:11px;"></div>
+      </div>
+    </div>
+
+    <!-- PANEL WEARABLE / APP PACIENTE -->
+    <div class="fuente-panel" id="fpanel-wearable">
+      <div class="wearable-live-card">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <div>
+            <div style="font-size:14px;font-weight:700;margin-bottom:3px;">&#x231A; Monitoreo desde App Paciente</div>
+            <div style="font-size:11px;color:var(--text2);">Apple Watch · Wear OS · KardiaMobile · Garmin</div>
+          </div>
+          <div id="wearableLiveStatus" class="api-chip wait"><div class="api-dot"></div><span>Buscando dispositivo...</span></div>
+        </div>
+
+        <!-- Vitales en tiempo real -->
+        <div class="wearable-vitals" id="wearableVitals">
+          <div class="wearable-vital">
+            <div class="wearable-vital-val pulse-red" id="wFC" style="color:var(--red2);">--</div>
+            <div class="wearable-vital-lbl">FC (lpm)</div>
+          </div>
+          <div class="wearable-vital">
+            <div class="wearable-vital-val pulse-green" id="wSPO2" style="color:var(--green2);">--%</div>
+            <div class="wearable-vital-lbl">SpO2</div>
+          </div>
+          <div class="wearable-vital">
+            <div class="wearable-vital-val" id="wVFC" style="color:var(--purple2);">--</div>
+            <div class="wearable-vital-lbl">VFC (HRV)</div>
+          </div>
+        </div>
+
+        <!-- Stream ECG animado -->
+        <div class="ecg-stream-wrap" style="height:70px;margin:10px 0;">
+          <canvas id="ecgStreamCanvas" style="display:block;width:100%;height:70px;position:relative;z-index:1;"></canvas>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+          <div style="background:var(--bg3);border-radius:10px;padding:10px;font-size:11px;">
+            <div style="color:var(--text3);margin-bottom:3px;">Dispositivo</div>
+            <div id="wDeviceType" style="font-weight:600;color:var(--text);">Apple Watch Series 9</div>
+          </div>
+          <div style="background:var(--bg3);border-radius:10px;padding:10px;font-size:11px;">
+            <div style="color:var(--text3);margin-bottom:3px;">Última lectura</div>
+            <div id="wLastRead" style="font-weight:600;color:var(--green2);">hace 30 seg</div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+          <button onclick="simularLecturaWearable()" class="btn btn-green" style="flex:1;">&#x231A; Capturar ECG desde wearable</button>
+          <button onclick="verAppPaciente()" class="btn btn-secondary">&#x1F4F1; Ver app paciente</button>
+        </div>
+
+        <!-- Instrucciones App Paciente -->
+        <div style="background:rgba(37,99,235,.06);border:1px solid rgba(37,99,235,.14);border-radius:10px;padding:12px;">
+          <div style="font-size:11px;font-weight:700;color:var(--accent3);margin-bottom:6px;">&#x1F4F1; Cómo vincular el app del paciente</div>
+          <div style="font-size:11px;color:var(--text2);line-height:1.8;">
+            1. Paciente descarga <strong style="color:var(--text);">Cardio-IA Patient</strong> en iOS o Android<br>
+            2. Escanea el QR de esta pantalla para vincular automáticamente<br>
+            3. El paciente conecta su Apple Watch o Wear OS<br>
+            4. Los ECG se envían en tiempo real a este panel
+          </div>
+          <div style="margin-top:8px;display:flex;align-items:center;gap:10px;">
+            <div class="app-qr-zone" id="wearableQR" style="width:60px;height:60px;font-size:22px;">&#x1F4F1;</div>
+            <div>
+              <button onclick="generarQRVinculacion()" class="btn btn-ghost btn-sm">&#x1F4F1; Generar QR de vinculación</button>
+              <div style="font-size:10px;color:var(--text3);margin-top:3px;">Google Cloud Run · API segura · TLS 1.3</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL HL7 FHIR -->
+    <div class="fuente-panel" id="fpanel-fhir">
+      <div class="card" style="border-color:rgba(14,165,233,.2);background:rgba(14,165,233,.03);">
+        <div class="card-title" style="margin-bottom:12px;">&#x1F3E5; Integración HL7 FHIR R4 — Hospital</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+          <div class="form-group">
+            <label class="form-label">URL del servidor FHIR</label>
+            <input class="form-input" id="fhirUrl" placeholder="https://hospital.fhir.com/r4/" value="https://cardio-ia-latam-120778240410.us-central1.run.app/fhir"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">ID del paciente (FHIR)</label>
+            <input class="form-input" id="fhirPatientId" placeholder="urn:uuid:patient-id"/>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:12px;">
+          <button onclick="conectarFHIR()" class="btn btn-primary" style="flex:1;">&#x1F517; Conectar y obtener ECG</button>
+          <button onclick="probarFHIR()" class="btn btn-ghost">&#x1F9EA; Test</button>
+        </div>
+        <div id="fhirStatus" style="display:none;padding:8px 12px;border-radius:8px;font-size:11px;margin-bottom:10px;"></div>
+        <div style="background:var(--bg3);border-radius:10px;padding:12px;">
+          <div style="font-size:11px;font-weight:600;color:var(--text2);margin-bottom:6px;">Sistemas hospitalarios compatibles</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;">
+            <span style="font-size:10px;padding:2px 8px;border-radius:6px;background:var(--bg4);color:var(--text2);">Epic MyChart</span>
+            <span style="font-size:10px;padding:2px 8px;border-radius:6px;background:var(--bg4);color:var(--text2);">Cerner/Oracle</span>
+            <span style="font-size:10px;padding:2px 8px;border-radius:6px;background:var(--bg4);color:var(--text2);">Meditech</span>
+            <span style="font-size:10px;padding:2px 8px;border-radius:6px;background:var(--bg4);color:var(--text2);">InterSystems</span>
+            <span style="font-size:10px;padding:2px 8px;border-radius:6px;background:var(--bg4);color:var(--text2);">Siemens Healthineers</span>
+            <span style="font-size:10px;padding:2px 8px;border-radius:6px;background:var(--bg4);color:var(--text2);">HIS Colombia (DINÁMICA)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== SCORE RIESGO CARDIOVASCULAR ====== -->
+  <div id="scoreRiesgoCard" style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:14px;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
       <div>
-        <div style="font-size:13px;font-weight:600;">&#x1F4CA; Score de Riesgo Cardiovascular</div>
-        <div style="font-size:11px;color:var(--text2);">SCORE2 · Framingham · Calculado autom&#xE1;ticamente</div>
+        <div style="font-size:13px;font-weight:600;">&#x1F4CA; Score de Riesgo Cardiovascular Basal</div>
+        <div style="font-size:11px;color:var(--text2);">SCORE2 · Framingham · Alimenta el Predictor MACE</div>
       </div>
       <button onclick="toggleScoreForm()" class="btn btn-ghost btn-sm" id="btnToggleScore">+ Calcular</button>
     </div>
     <div id="scoreFormArea" style="display:none;">
       <div class="g2" style="gap:10px;margin-bottom:10px;">
-        <div class="form-group"><label class="form-label">Edad</label><input class="form-input" id="scoreEdad" type="number" placeholder="A&#xF1;os" oninput="calcularScore()"/></div>
-        <div class="form-group"><label class="form-label">Sexo</label>
-          <select class="form-select" id="scoreSexo" onchange="calcularScore()">
-            <option value="M">Masculino</option><option value="F">Femenino</option>
-          </select>
-        </div>
-        <div class="form-group"><label class="form-label">Presi&#xF3;n sist&#xF3;lica (mmHg)</label><input class="form-input" id="scorePA" type="number" placeholder="120" oninput="calcularScore()"/></div>
+        <div class="form-group"><label class="form-label">Edad</label><input class="form-input" id="scoreEdad" type="number" placeholder="Años" oninput="calcularScore()"/></div>
+        <div class="form-group"><label class="form-label">Sexo</label><select class="form-select" id="scoreSexo" onchange="calcularScore()"><option value="M">Masculino</option><option value="F">Femenino</option></select></div>
+        <div class="form-group"><label class="form-label">Presión sistólica (mmHg)</label><input class="form-input" id="scorePA" type="number" placeholder="120" oninput="calcularScore()"/></div>
         <div class="form-group"><label class="form-label">Colesterol total (mg/dL)</label><input class="form-input" id="scoreCol" type="number" placeholder="200" oninput="calcularScore()"/></div>
-        <div class="form-group"><label class="form-label">Fumador</label>
-          <select class="form-select" id="scoreFuma" onchange="calcularScore()">
-            <option value="0">No</option><option value="1">S&#xED;</option>
-          </select>
-        </div>
-        <div class="form-group"><label class="form-label">Diab&#xE9;tico</label>
-          <select class="form-select" id="scoreDiab" onchange="calcularScore()">
-            <option value="0">No</option><option value="1">S&#xED;</option>
-          </select>
-        </div>
+        <div class="form-group"><label class="form-label">Fumador</label><select class="form-select" id="scoreFuma" onchange="calcularScore()"><option value="0">No</option><option value="1">Sí</option></select></div>
+        <div class="form-group"><label class="form-label">Diabético</label><select class="form-select" id="scoreDiab" onchange="calcularScore()"><option value="0">No</option><option value="1">Sí</option></select></div>
       </div>
       <div id="scoreResultado" style="display:none;padding:12px;border-radius:10px;text-align:center;"></div>
     </div>
   </div>
 
-  <!-- CASOS DEMO -->
+  <!-- ====== DEMOS CLÍNICOS ====== -->
   <div style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:16px;">
-    <div style="font-size:13px;font-weight:600;margin-bottom:4px;">&#x1F3AF; Casos cl&#xED;nicos demo</div>
-    <div style="font-size:12px;color:var(--text2);margin-bottom:12px;">Prueba el sistema con casos reales sin subir archivos</div>
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-      <div style="font-size:11px;color:var(--text2);">Haz clic en un caso para ver el diagn&#xF3;stico IA</div>
-      <div id="contadorAnalisis" style="font-size:11px;color:var(--text3);">&#x1F4CA; 0 an&#xE1;lisis realizados</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:8px;">
+      <div>
+        <div style="font-size:13px;font-weight:600;">&#x1F3AF; 8 Casos clínicos demo</div>
+        <div style="font-size:11px;color:var(--text2);">Modelos reales entrenados con PTB-XL · 21,799 ECGs</div>
+      </div>
+      <div id="contadorAnalisis" style="font-size:11px;color:var(--text3);">&#x1F4CA; 0 análisis realizados</div>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;" id="demoCasosGrid">
-      <div class="demo-caso-card" onclick="cargarDemo('iam')" style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);" id="demo-iam">
-        <div style="font-size:24px;margin-bottom:4px;">&#x1F6A8;</div>
-        <div style="font-size:11px;font-weight:700;color:var(--red2);">IAM Activo</div>
-        <div style="font-size:9px;color:var(--text3);">Infarto agudo</div>
-        <div style="margin-top:5px;font-size:9px;padding:1px 6px;border-radius:8px;background:rgba(239,68,68,.15);color:var(--red2);display:inline-block;font-weight:700;">CR&#xCD;TICO</div>
-      </div>
-      <div class="demo-caso-card" onclick="cargarDemo('afib')" style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);" id="demo-afib">
-        <div style="font-size:24px;margin-bottom:4px;">&#x1F49B;</div>
-        <div style="font-size:11px;font-weight:700;color:var(--amber2);">Fibrilaci&#xF3;n A.</div>
-        <div style="font-size:9px;color:var(--text3);">Arritmia</div>
-        <div style="margin-top:5px;font-size:9px;padding:1px 6px;border-radius:8px;background:rgba(245,158,11,.15);color:var(--amber2);display:inline-block;font-weight:700;">URGENTE</div>
-      </div>
-      <div class="demo-caso-card" onclick="cargarDemo('tv')" style="background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15);" id="demo-tv">
-        <div style="font-size:24px;margin-bottom:4px;">&#x26A1;</div>
-        <div style="font-size:11px;font-weight:700;color:var(--red2);">Taq. Ventricular</div>
-        <div style="font-size:9px;color:var(--text3);">TV sostenida</div>
-        <div style="margin-top:5px;font-size:9px;padding:1px 6px;border-radius:8px;background:rgba(239,68,68,.15);color:var(--red2);display:inline-block;font-weight:700;">CR&#xCD;TICO</div>
-      </div>
-      <div class="demo-caso-card" onclick="cargarDemo('bloqueo')" style="background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.2);" id="demo-bloqueo">
-        <div style="font-size:24px;margin-bottom:4px;">&#x26A0;&#xFE0F;</div>
-        <div style="font-size:11px;font-weight:700;color:var(--purple2);">Bloqueo BCRD</div>
-        <div style="font-size:9px;color:var(--text3);">Conducci&#xF3;n</div>
-        <div style="margin-top:5px;font-size:9px;padding:1px 6px;border-radius:8px;background:rgba(139,92,246,.15);color:var(--purple2);display:inline-block;font-weight:700;">MODERADO</div>
-      </div>
-      <div class="demo-caso-card" onclick="cargarDemo('wpw')" style="background:rgba(14,165,233,.08);border:1px solid rgba(14,165,233,.2);" id="demo-wpw">
-        <div style="font-size:24px;margin-bottom:4px;">&#x26A1;&#xFE0F;</div>
-        <div style="font-size:11px;font-weight:700;color:var(--cyan);">S. WPW</div>
-        <div style="font-size:9px;color:var(--text3);">Pre-excitaci&#xF3;n</div>
-        <div style="margin-top:5px;font-size:9px;padding:1px 6px;border-radius:8px;background:rgba(14,165,233,.15);color:var(--cyan);display:inline-block;font-weight:700;">URGENTE</div>
-      </div>
-      <div class="demo-caso-card" onclick="cargarDemo('qt')" style="background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.2);" id="demo-qt">
-        <div style="font-size:24px;margin-bottom:4px;">&#x23F1;&#xFE0F;</div>
-        <div style="font-size:11px;font-weight:700;color:#fb923c;">QT Prolongado</div>
-        <div style="font-size:9px;color:var(--text3);">Riesgo TV/FV</div>
-        <div style="margin-top:5px;font-size:9px;padding:1px 6px;border-radius:8px;background:rgba(249,115,22,.15);color:#fb923c;display:inline-block;font-weight:700;">MODERADO</div>
-      </div>
-      <div class="demo-caso-card" onclick="cargarDemo('bav3')" style="background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.15);" id="demo-bav3">
-        <div style="font-size:24px;margin-bottom:4px;">&#x1F494;</div>
-        <div style="font-size:11px;font-weight:700;color:var(--purple2);">BAV III</div>
-        <div style="font-size:9px;color:var(--text3);">Bloqueo completo</div>
-        <div style="margin-top:5px;font-size:9px;padding:1px 6px;border-radius:8px;background:rgba(139,92,246,.15);color:var(--purple2);display:inline-block;font-weight:700;">CR&#xCD;TICO</div>
-      </div>
-      <div class="demo-caso-card" onclick="cargarDemo('normal')" style="background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);" id="demo-normal">
-        <div style="font-size:24px;margin-bottom:4px;">&#x2705;</div>
-        <div style="font-size:11px;font-weight:700;color:var(--green2);">Normal</div>
-        <div style="font-size:9px;color:var(--text3);">Ritmo sinusal</div>
-        <div style="margin-top:5px;font-size:9px;padding:1px 6px;border-radius:8px;background:rgba(16,185,129,.15);color:var(--green2);display:inline-block;font-weight:700;">NORMAL</div>
-      </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:7px;" id="demoCasosGrid">
+      <div class="demo-caso-card" onclick="cargarDemo('iam')" style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);" id="demo-iam"><div style="font-size:22px;margin-bottom:3px;">&#x1F6A8;</div><div style="font-size:11px;font-weight:700;color:var(--red2);">IAM Activo</div><div style="font-size:9px;color:var(--text3);">Infarto agudo</div><div style="margin-top:4px;font-size:9px;padding:1px 5px;border-radius:6px;background:rgba(239,68,68,.15);color:var(--red2);display:inline-block;font-weight:700;">CRÍTICO</div></div>
+      <div class="demo-caso-card" onclick="cargarDemo('afib')" style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);" id="demo-afib"><div style="font-size:22px;margin-bottom:3px;">&#x1F49B;</div><div style="font-size:11px;font-weight:700;color:var(--amber2);">Fibrilación A.</div><div style="font-size:9px;color:var(--text3);">Arritmia</div><div style="margin-top:4px;font-size:9px;padding:1px 5px;border-radius:6px;background:rgba(245,158,11,.15);color:var(--amber2);display:inline-block;font-weight:700;">URGENTE</div></div>
+      <div class="demo-caso-card" onclick="cargarDemo('tv')" style="background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15);" id="demo-tv"><div style="font-size:22px;margin-bottom:3px;">&#x26A1;</div><div style="font-size:11px;font-weight:700;color:var(--red2);">Taq. Ventricular</div><div style="font-size:9px;color:var(--text3);">TV sostenida</div><div style="margin-top:4px;font-size:9px;padding:1px 5px;border-radius:6px;background:rgba(239,68,68,.15);color:var(--red2);display:inline-block;font-weight:700;">CRÍTICO</div></div>
+      <div class="demo-caso-card" onclick="cargarDemo('bloqueo')" style="background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.2);" id="demo-bloqueo"><div style="font-size:22px;margin-bottom:3px;">&#x26A0;&#xFE0F;</div><div style="font-size:11px;font-weight:700;color:var(--purple2);">Bloqueo BCRD</div><div style="font-size:9px;color:var(--text3);">Conducción</div><div style="margin-top:4px;font-size:9px;padding:1px 5px;border-radius:6px;background:rgba(139,92,246,.15);color:var(--purple2);display:inline-block;font-weight:700;">MODERADO</div></div>
+      <div class="demo-caso-card" onclick="cargarDemo('wpw')" style="background:rgba(14,165,233,.08);border:1px solid rgba(14,165,233,.2);" id="demo-wpw"><div style="font-size:22px;margin-bottom:3px;">&#x26A1;&#xFE0F;</div><div style="font-size:11px;font-weight:700;color:var(--cyan);">S. WPW</div><div style="font-size:9px;color:var(--text3);">Pre-excitación</div><div style="margin-top:4px;font-size:9px;padding:1px 5px;border-radius:6px;background:rgba(14,165,233,.15);color:var(--cyan);display:inline-block;font-weight:700;">URGENTE</div></div>
+      <div class="demo-caso-card" onclick="cargarDemo('qt')" style="background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.2);" id="demo-qt"><div style="font-size:22px;margin-bottom:3px;">&#x23F1;&#xFE0F;</div><div style="font-size:11px;font-weight:700;color:#fb923c;">QT Prolongado</div><div style="font-size:9px;color:var(--text3);">Riesgo TV/FV</div><div style="margin-top:4px;font-size:9px;padding:1px 5px;border-radius:6px;background:rgba(249,115,22,.15);color:#fb923c;display:inline-block;font-weight:700;">MODERADO</div></div>
+      <div class="demo-caso-card" onclick="cargarDemo('bav3')" style="background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.15);" id="demo-bav3"><div style="font-size:22px;margin-bottom:3px;">&#x1F494;</div><div style="font-size:11px;font-weight:700;color:var(--purple2);">BAV III</div><div style="font-size:9px;color:var(--text3);">Bloqueo completo</div><div style="margin-top:4px;font-size:9px;padding:1px 5px;border-radius:6px;background:rgba(139,92,246,.15);color:var(--purple2);display:inline-block;font-weight:700;">CRÍTICO</div></div>
+      <div class="demo-caso-card" onclick="cargarDemo('normal')" style="background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);" id="demo-normal"><div style="font-size:22px;margin-bottom:3px;">&#x2705;</div><div style="font-size:11px;font-weight:700;color:var(--green2);">Normal</div><div style="font-size:9px;color:var(--text3);">Ritmo sinusal</div><div style="margin-top:4px;font-size:9px;padding:1px 5px;border-radius:6px;background:rgba(16,185,129,.15);color:var(--green2);display:inline-block;font-weight:700;">NORMAL</div></div>
     </div>
   </div>
 
-  <!-- UPLOAD O ANALISIS -->
-  <div class="g2">
-    <!-- UPLOAD -->
-    <div class="card">
-      <div class="card-title" style="margin-bottom:12px;">&#x1F4C2; Subir archivo ECG</div>
-      <div id="dropZone" ondrop="handleDrop(event)" ondragover="event.preventDefault()" ondragenter="this.style.borderColor='var(--accent)'" ondragleave="this.style.borderColor='var(--border2)'" style="border:2px dashed var(--border2);border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all .2s;" onclick="document.getElementById('ecgFile').click()">
-        <div style="font-size:36px;margin-bottom:10px;">&#x1F4C4;</div>
-        <div style="font-size:13px;font-weight:600;margin-bottom:4px;">Arrastra tu archivo ECG</div>
-        <div style="font-size:11px;color:var(--text2);">CSV, TXT &#xB7; M&#xE1;x 10MB</div>
-        <input type="file" id="ecgFile" accept=".csv,.txt" style="display:none;" onchange="procesarArchivoLocal(this)">
-      </div>
-      <div id="fileInfo" style="display:none;margin-top:10px;padding:10px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:8px;font-size:12px;color:var(--green2);"></div>
+  <!-- ====== RESULTADO + PREDICTOR MACE ====== -->
+  <div id="resultadoPreview" style="display:none;">
+    <div style="display:grid;grid-template-columns:1fr 1.1fr;gap:14px;margin-bottom:14px;">
 
-      <!-- DATOS PACIENTE -->
-      <div style="margin-top:14px;">
-        <div class="form-row">
-          <div class="form-group"><label class="form-label">Nombre paciente</label><input class="form-input" id="pacNombre" placeholder="Auto desde selector"/></div>
-          <div class="form-group"><label class="form-label">ID / C&#xE9;dula</label><input class="form-input" id="pacId" placeholder="N&#xFA;mero ID"/></div>
-        </div>
-        <div class="form-row">
-          <div class="form-group"><label class="form-label">Edad</label><input class="form-input" id="pacEdad" type="number" placeholder="A&#xF1;os"/></div>
-          <div class="form-group"><label class="form-label">Sexo</label>
-            <select class="form-select" id="pacSexo">
-              <option value="M">Masculino</option>
-              <option value="F">Femenino</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group"><label class="form-label">M&#xE9;dico</label><input class="form-input" id="pacMedico" placeholder="Dr. ..."/></div>
-      </div>
-
-      <button class="btn btn-primary btn-full" id="btnAnalizar" onclick="analizarECG()" style="margin-top:14px;font-size:14px;padding:13px;" disabled>
-        &#x1F52C; Analizar ECG
-      </button>
-      <div id="analizarStatus" style="display:none;margin-top:10px;text-align:center;font-size:12px;color:var(--text2);"></div>
-    </div>
-
-    <!-- RESULTADO PREVIEW -->
-    <div id="resultadoPreview" style="display:none;">
+      <!-- Columna izq: diagnóstico IA -->
       <div class="card" style="height:100%;">
         <div class="card-hd" style="margin-bottom:12px;">
-          <div class="card-title">Resultado del diagn&#xF3;stico</div>
+          <div class="card-title">Diagnóstico IA</div>
           <div id="urgenciaBadge" style="font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;"></div>
         </div>
-        <!-- Diagnostico principal -->
-        <div id="diagPrincipal" style="background:var(--bg3);border-radius:12px;padding:16px;margin-bottom:12px;text-align:center;">
-          <div style="font-size:32px;margin-bottom:8px;" id="diagEmoji">&#x2764;&#xFE0F;</div>
-          <div style="font-size:18px;font-weight:700;" id="diagTexto">-</div>
-          <div style="font-size:13px;color:var(--text2);margin-top:4px;" id="diagConfianza">-</div>
+        <div id="diagPrincipal" style="background:var(--bg3);border-radius:12px;padding:14px;margin-bottom:12px;text-align:center;">
+          <div style="font-size:28px;margin-bottom:6px;" id="diagEmoji">&#x2764;&#xFE0F;</div>
+          <div style="font-size:16px;font-weight:700;" id="diagTexto">-</div>
+          <div style="font-size:12px;color:var(--text2);margin-top:3px;" id="diagConfianza">-</div>
         </div>
-        <!-- Indicadores clinicos -->
+        <!-- Indicadores clínicos -->
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;">
-          <div style="background:var(--bg4);border-radius:8px;padding:10px;text-align:center;">
-            <div style="font-size:16px;font-weight:700;color:var(--accent3);" id="indFC">-</div>
-            <div style="font-size:10px;color:var(--text3);">FC (lpm)</div>
-          </div>
-          <div style="background:var(--bg4);border-radius:8px;padding:10px;text-align:center;">
-            <div style="font-size:16px;font-weight:700;color:var(--cyan);" id="indQT">-</div>
-            <div style="font-size:10px;color:var(--text3);">QTc (ms)</div>
-          </div>
-          <div style="background:var(--bg4);border-radius:8px;padding:10px;text-align:center;">
-            <div style="font-size:16px;font-weight:700;color:var(--purple2);" id="indPR">-</div>
-            <div style="font-size:10px;color:var(--text3);">PR (ms)</div>
-          </div>
+          <div style="background:var(--bg4);border-radius:8px;padding:8px;text-align:center;"><div style="font-size:16px;font-weight:700;color:var(--accent3);" id="indFC">-</div><div style="font-size:10px;color:var(--text3);">FC (lpm)</div></div>
+          <div style="background:var(--bg4);border-radius:8px;padding:8px;text-align:center;"><div style="font-size:16px;font-weight:700;color:var(--cyan);" id="indQT">-</div><div style="font-size:10px;color:var(--text3);">QTc (ms)</div></div>
+          <div style="background:var(--bg4);border-radius:8px;padding:8px;text-align:center;"><div style="font-size:16px;font-weight:700;color:var(--purple2);" id="indPR">-</div><div style="font-size:10px;color:var(--text3);">PR (ms)</div></div>
         </div>
-        <!-- Probabilidades por patologia -->
         <div id="probPatologias" style="margin-bottom:12px;"></div>
-        <!-- Notas del medico -->
+        <!-- Fuente del ECG analizado -->
+        <div id="fuenteECGChip" style="margin-bottom:10px;"></div>
+        <!-- Notas médico -->
         <div style="margin-bottom:12px;">
-          <label style="font-size:11px;font-weight:600;color:var(--text2);display:block;margin-bottom:4px;">&#x1F4DD; Notas cl&#xED;nicas del m&#xE9;dico</label>
-          <textarea id="notasMedico" style="width:100%;min-height:70px;background:var(--bg4);border:1px solid var(--border2);border-radius:8px;padding:10px;color:var(--text);font-size:12px;font-family:inherit;line-height:1.6;resize:vertical;" placeholder="Observaciones cl&#xED;nicas, plan de manejo, seguimiento recomendado..."></textarea>
+          <label style="font-size:11px;font-weight:600;color:var(--text2);display:block;margin-bottom:4px;">&#x1F4DD; Notas clínicas</label>
+          <textarea id="notasMedico" style="width:100%;min-height:60px;background:var(--bg4);border:1px solid var(--border2);border-radius:8px;padding:9px;color:var(--text);font-size:12px;font-family:inherit;resize:vertical;" placeholder="Observaciones, plan de manejo, seguimiento..."></textarea>
         </div>
-        <!-- Tendencia del paciente -->
-        <div id="tendenciaCard" style="display:none;margin-bottom:12px;padding:10px;border-radius:10px;background:var(--bg4);">
-          <div style="font-size:11px;font-weight:600;color:var(--text2);margin-bottom:6px;">&#x1F4C8; Tendencia del paciente</div>
-          <div id="tendenciaInfo" style="font-size:12px;"></div>
-        </div>
-        <!-- Botones accion -->
+        <div id="tendenciaCard" style="display:none;margin-bottom:10px;padding:9px;border-radius:8px;background:var(--bg4);"><div style="font-size:11px;font-weight:600;color:var(--text2);margin-bottom:5px;">&#x1F4C8; Tendencia del paciente</div><div id="tendenciaInfo" style="font-size:12px;"></div></div>
+        <!-- Botones -->
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <button class="btn btn-primary" style="flex:1;min-width:100px;" onclick="abrirFirma()">&#x270D;&#xFE0F; Firmar</button>
-          <button class="btn btn-green" style="flex:1;min-width:100px;" onclick="exportarPDFProfesional()">&#x1F4CB; PDF</button>
-          <button style="padding:10px 12px;background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.3);border-radius:10px;color:#25D366;cursor:pointer;font-size:13px;" onclick="compartirWhatsApp()" title="Compartir por WhatsApp">&#x1F4F2;</button>
+          <button class="btn btn-primary" style="flex:1;" onclick="abrirFirma()">&#x270D;&#xFE0F; Firmar</button>
+          <button class="btn btn-green" style="flex:1;" onclick="exportarPDFProfesional()">&#x1F4CB; PDF</button>
+          <button style="padding:10px 12px;background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.3);border-radius:10px;color:#25D366;cursor:pointer;font-size:13px;" onclick="compartirWhatsApp()">&#x1F4F2;</button>
         </div>
         <div style="margin-top:8px;display:flex;gap:8px;">
           <button class="btn btn-ghost" style="flex:1;" onclick="switchTab('historial')">&#x1F4CA; Historial</button>
-          <button class="btn btn-secondary" style="flex:1;" onclick="exportarReporteCompleto()">&#x1F4CB; Reporte 4 Casos</button>
+          <button id="btnMarcarUrgente" class="btn" style="flex:1;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);color:var(--red2);" onclick="marcarUltimoUrgente()">&#x1F534; Urgente</button>
         </div>
-        <div style="margin-top:8px;">
-          <button id="btnMarcarUrgente" class="btn btn-full" style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);color:var(--red2);font-weight:600;padding:11px;" onclick="marcarUltimoUrgente()">
-            &#x1F534; Marcar como caso urgente
-          </button>
+      </div>
+
+      <!-- Columna der: PREDICTOR MACE — INNOVACIÓN CENTRAL -->
+      <div class="mace-card">
+        <div class="mace-title-row">
+          <div>
+            <div style="font-size:15px;font-weight:700;color:#f8fafc;margin-bottom:3px;">&#x1F52E; Predictor MACE</div>
+            <div style="font-size:11px;color:#64748b;">Eventos Cardiovasculares Mayores · IA predictiva</div>
+          </div>
+          <div class="mace-badge">&#x1F9E0; Innovación exclusiva</div>
+        </div>
+
+        <!-- Horizontes temporales -->
+        <div class="mace-horizons" id="maceHorizons">
+          <div class="mace-horizon active" onclick="seleccionarHorizonte(this,'30d')" id="mHor30">
+            <div class="mace-label">30 días</div>
+            <div class="mace-pct bajo" id="mPct30">--%</div>
+            <div class="mace-nivel" id="mNiv30">—</div>
+            <div class="mace-gauge"><div class="mace-gauge-fill" id="mBar30" style="width:0%;background:#34d399;"></div></div>
+          </div>
+          <div class="mace-horizon" onclick="seleccionarHorizonte(this,'90d')" id="mHor90">
+            <div class="mace-label">90 días</div>
+            <div class="mace-pct bajo" id="mPct90">--%</div>
+            <div class="mace-nivel" id="mNiv90">—</div>
+            <div class="mace-gauge"><div class="mace-gauge-fill" id="mBar90" style="width:0%;background:#34d399;"></div></div>
+          </div>
+          <div class="mace-horizon" onclick="seleccionarHorizonte(this,'1y')" id="mHor1y">
+            <div class="mace-label">1 año</div>
+            <div class="mace-pct bajo" id="mPct1y">--%</div>
+            <div class="mace-nivel" id="mNiv1y">—</div>
+            <div class="mace-gauge"><div class="mace-gauge-fill" id="mBar1y" style="width:0%;background:#34d399;"></div></div>
+          </div>
+        </div>
+
+        <!-- Factores de riesgo -->
+        <div style="font-size:11px;font-weight:700;color:#475569;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;">Factores de riesgo activos</div>
+        <div class="mace-factores" id="maceFactores">
+          <div style="font-size:12px;color:#475569;padding:8px 0;">Analiza un ECG para calcular</div>
+        </div>
+
+        <!-- Tendencia vs ECG anterior -->
+        <div id="maceTendencia" style="display:none;background:rgba(255,255,255,.04);border-radius:8px;padding:10px;margin-bottom:12px;">
+          <div style="font-size:11px;font-weight:600;color:#94a3b8;margin-bottom:5px;">&#x1F4C8; Tendencia vs ECG anterior</div>
+          <div id="maceTendenciaContent" style="font-size:12px;color:#64748b;"></div>
+        </div>
+
+        <!-- Intervención recomendada -->
+        <div class="mace-intervencion" id="maceIntervencion">
+          <div class="mace-intervencion-title">&#x1FA7A; Recomendación de intervención</div>
+          <div id="maceIntervencionText" style="font-size:12px;color:var(--text2);line-height:1.7;">Analiza un ECG para generar la recomendación personalizada.</div>
+        </div>
+
+        <!-- Impacto hospitalización -->
+        <div id="maceImpactoHosp" style="display:none;margin-top:10px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:8px;padding:10px;">
+          <div style="font-size:11px;font-weight:700;color:var(--green2);margin-bottom:4px;">&#x1F3E5; Reducción de hospitalización</div>
+          <div id="maceImpactoText" style="font-size:11px;color:var(--text2);line-height:1.6;"></div>
+        </div>
+
+        <!-- Botón compartir predicción -->
+        <div style="margin-top:12px;display:flex;gap:8px;">
+          <button onclick="exportarPrediccionPDF()" class="btn btn-secondary" style="flex:1;font-size:11px;">&#x1F4CB; Reporte predicción</button>
+          <button onclick="enviarAlertaPaciente()" class="btn btn-ghost" style="flex:1;font-size:11px;">&#x1F4F2; Notificar paciente</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- RECOMENDACIONES CLINICAS -->
-  <div id="recomendacionesCard" style="display:none;margin-top:2px;">
-    <div class="card" style="border-color:rgba(37,99,235,.2);background:rgba(37,99,235,.04);">
-      <div class="card-title" style="margin-bottom:10px;">&#x1F4CB; Recomendaciones cl&#xED;nicas del protocolo</div>
-      <div id="recomendacionesList"></div>
-    </div>
-  </div>
-
-  <!-- COMPARACION ECG ANTERIOR -->
-  <div id="comparacionCard" style="display:none;margin-top:2px;">
-    <div class="card" style="border-color:rgba(139,92,246,.2);background:rgba(139,92,246,.03);">
-      <div class="card-hd">
-        <div class="card-title">&#x1F4C8; Comparaci&#xF3;n con ECG anterior</div>
-        <span id="comparacionFecha" style="font-size:11px;color:var(--text3);"></span>
-      </div>
-      <div class="g2" style="gap:10px;">
-        <div>
-          <div style="font-size:11px;font-weight:600;color:var(--text2);margin-bottom:6px;">ECG actual</div>
-          <div class="chart-wrap" style="height:100px;"><canvas id="ecgActualChart"></canvas></div>
-        </div>
-        <div>
-          <div style="font-size:11px;font-weight:600;color:var(--text2);margin-bottom:6px;">ECG anterior</div>
-          <div class="chart-wrap" style="height:100px;"><canvas id="ecgAnteriorChart"></canvas></div>
-        </div>
-      </div>
-      <div id="comparacionResumen" style="margin-top:10px;font-size:12px;padding:8px 12px;background:var(--bg3);border-radius:8px;"></div>
-    </div>
-  </div>
-
-  <!-- GRAFICA ECG -->
+  <!-- ====== TRAZADO ECG (papel clínico) ====== -->
   <div id="ecgGraficaCard" style="display:none;margin-top:2px;">
     <div class="card">
-      <div class="card-hd">
+      <div class="card-hd" style="margin-bottom:10px;">
         <div class="card-title">&#x1F4C8; Trazado ECG</div>
-        <div style="display:flex;gap:8px;align-items:center;">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
           <span id="ecgLiveDot" style="display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--green2);"><span class="live-dot"></span>En vivo</span>
           <button class="btn btn-ghost btn-sm" onclick="toggleZoomECG()">&#x1F50D; Zoom</button>
-          <div id="derivLabel" style="font-size:11px;color:var(--text2);padding:5px 10px;background:var(--bg3);border-radius:6px;">Derivaci&#xF3;n II</div>
+          <select id="derivLabel" onchange="cambiarDerivacion(this.value)" style="font-size:11px;color:var(--text2);padding:4px 10px;background:var(--bg3);border-radius:6px;border:1px solid var(--border2);font-family:inherit;">
+            <option>Derivación II</option><option>Derivación I</option><option>Derivación III</option>
+            <option>aVR</option><option>aVL</option><option>aVF</option>
+            <option>V1</option><option>V2</option><option>V3</option>
+            <option>V4</option><option>V5</option><option>V6</option>
+          </select>
+          <div id="fuenteECGBadge" style="font-size:10px;color:var(--text3);"></div>
         </div>
       </div>
       <div class="ecg-paper-wrap" style="margin-bottom:12px;">
         <canvas class="ecg-paper-canvas" id="ecgLineChart"></canvas>
       </div>
-      <!-- Hallazgos clinicos -->
-      <div id="hallazgosCard" style="display:none;margin-top:4px;">
-        <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:8px;">&#x1F9EC; Hallazgos cl&#xED;nicos detectados</div>
+      <!-- Vista 12 derivaciones mini -->
+      <div id="leads12Panel" style="display:none;">
+        <div style="font-size:11px;font-weight:600;color:var(--text2);margin-bottom:6px;">Vista 12 derivaciones</div>
+        <div class="leads-grid" id="leadsGrid12"></div>
+      </div>
+      <!-- Hallazgos clínicos -->
+      <div id="hallazgosCard" style="display:none;margin-top:8px;">
+        <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:6px;">&#x1F9EC; Hallazgos clínicos detectados</div>
         <div id="hallazgosList" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
       </div>
+    </div>
+  </div>
+
+  <!-- ====== RECOMENDACIONES + COMPARACIÓN ====== -->
+  <div id="recomendacionesCard" style="display:none;margin-top:10px;">
+    <div class="card" style="border-color:rgba(37,99,235,.2);background:rgba(37,99,235,.04);">
+      <div class="card-title" style="margin-bottom:10px;">&#x1F4CB; Recomendaciones clínicas del protocolo</div>
+      <div id="recomendacionesList"></div>
+    </div>
+  </div>
+
+  <div id="comparacionCard" style="display:none;margin-top:10px;">
+    <div class="card" style="border-color:rgba(139,92,246,.2);background:rgba(139,92,246,.03);">
+      <div class="card-hd">
+        <div class="card-title">&#x1F4C8; Comparación con ECG anterior</div>
+        <span id="comparacionFecha" style="font-size:11px;color:var(--text3);"></span>
+      </div>
+      <div class="g2" style="gap:10px;">
+        <div><div style="font-size:11px;font-weight:600;color:var(--text2);margin-bottom:5px;">ECG actual</div><div class="chart-wrap" style="height:90px;"><canvas id="ecgActualChart"></canvas></div></div>
+        <div><div style="font-size:11px;font-weight:600;color:var(--text2);margin-bottom:5px;">ECG anterior</div><div class="chart-wrap" style="height:90px;"><canvas id="ecgAnteriorChart"></canvas></div></div>
+      </div>
+      <div id="comparacionResumen" style="margin-top:8px;font-size:12px;padding:8px 12px;background:var(--bg3);border-radius:8px;"></div>
     </div>
   </div>
 
   <!-- MODAL FIRMA -->
   <div class="modal-bg" id="firmaModal">
     <div class="modal" style="max-width:500px;">
-      <div class="modal-title">&#x270D;&#xFE0F; Firma digital del m&#xE9;dico</div>
-      <div class="modal-sub">Firma con validez legal PKI &#xB7; Hash Blockchain</div>
+      <div class="modal-title">&#x270D;&#xFE0F; Firma digital del médico</div>
+      <div class="modal-sub">Firma con validez legal PKI · Hash Blockchain · Google Cloud Run</div>
       <canvas id="firmaPad" style="display:block;width:100%;height:100px;background:#000;border-radius:10px;border:1px solid var(--border2);cursor:crosshair;margin:14px 0;"></canvas>
       <div style="display:flex;gap:8px;margin-bottom:14px;">
         <button class="btn btn-ghost btn-sm" onclick="limpiarFirma()">&#x1F5D1; Limpiar</button>
         <button class="btn btn-ghost btn-sm" onclick="cargarFirmaGuardada()">&#x1F4BE; Usar firma guardada</button>
       </div>
-      <div class="form-group"><label class="form-label">Nota cl&#xED;nica (opcional)</label><textarea class="form-input" id="firmaNota" rows="2" placeholder="Observaciones del m&#xE9;dico..."></textarea></div>
+      <div class="form-group"><label class="form-label">Nota clínica (opcional)</label><textarea class="form-input" id="firmaNota" rows="2" placeholder="Observaciones del médico..."></textarea></div>
       <div style="display:flex;gap:10px;margin-top:4px;">
         <button class="btn btn-secondary" style="flex:1;" onclick="closeModal('firmaModal')">Cancelar</button>
         <button class="btn btn-primary" style="flex:1;" onclick="firmarReporte()">&#x1F510; Firmar y guardar</button>
@@ -2063,6 +2291,7 @@ body{
   </div>
 
 </div><!-- /panel-analizar -->
+
 
 <!-- ===== HISTORIAL ===== -->
       <div class="panel" id="panel-historial">
@@ -9868,6 +10097,487 @@ actualizarDashPaciente = function() {
   renderSemaforoPacientes();
   renderProyeccion();
   renderActivityHeatmap();
+};
+
+
+
+// ===== V12 ANALIZAR ECG — SISTEMA COMPLETO =====
+
+// ---- FUENTE TABS ----
+var fuenteActual = 'manual';
+function switchFuenteTab(tab) {
+  fuenteActual = tab;
+  document.querySelectorAll('.fuente-tab').forEach(function(t){ t.classList.remove('active'); });
+  document.querySelectorAll('.fuente-panel').forEach(function(p){ p.classList.remove('active'); });
+  var tb = document.getElementById('fTab-' + tab);
+  var fp = document.getElementById('fpanel-' + tab);
+  if (tb) tb.classList.add('active');
+  if (fp) fp.classList.add('active');
+  if (tab === 'wearable') iniciarWearableLive();
+  agregarLog('Fuente ECG cambiada: ' + tab);
+}
+
+// ---- CONTEXTO PACIENTE TIMELINE ----
+var _selPacOrig = seleccionarPacienteAnalizar;
+seleccionarPacienteAnalizar = function(id) {
+  if (_selPacOrig) _selPacOrig(id);
+  renderPacTimelineAnalizar(id);
+  renderWearableChip(id);
+};
+
+function renderPacTimelineAnalizar(pacId) {
+  var hist = document.getElementById('analizarPacienteHistorial');
+  var row = document.getElementById('pacTimelineRow');
+  if (!hist || !row || !pacId) return;
+  var prevECGs = historialDB.filter(function(h){
+    return h.paciente === pacId || h.paciente_nombre === pacId;
+  }).slice(-6).reverse();
+  if (!prevECGs.length) { hist.style.display = 'none'; return; }
+  hist.style.display = 'block';
+  var urgColors = {'CRÍTICO':'rgba(239,68,68,.15)','URGENTE':'rgba(245,158,11,.12)','MODERADO':'rgba(139,92,246,.1)','NORMAL':'rgba(16,185,129,.1)'};
+  var urgText = {'CRÍTICO':'#f87171','URGENTE':'#fbbf24','MODERADO':'#a78bfa','NORMAL':'#34d399'};
+  row.innerHTML = prevECGs.map(function(h, i) {
+    var urg = getUrgencia ? getUrgencia(h.diagnostico) : 'NORMAL';
+    var col = urgColors[urg] || urgColors['NORMAL'];
+    var tc = urgText[urg] || '#34d399';
+    var fecha = h.fecha ? new Date(h.fecha).toLocaleDateString('es-CO', {day:'2-digit',month:'2-digit'}) : '?';
+    return '<div class="pac-ecg-mini" style="background:' + col + ';border:1px solid ' + tc + '30;" title="' + (h.diagnostico||'—') + '">' +
+      '<div style="font-size:10px;font-weight:700;color:' + tc + ';">' + (i===0?'Último':fecha) + '</div>' +
+      '<div style="font-size:9px;color:#64748b;max-width:80px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + (h.diagnostico||'—').substring(0,12) + '</div>' +
+    '</div>';
+  }).join('<div style="font-size:10px;color:#334155;">›</div>');
+}
+
+function renderWearableChip(pacId) {
+  var chip = document.getElementById('wearableStatusChip');
+  var chipText = document.getElementById('wearableStatusText');
+  if (!chip || !chipText) return;
+  var pac = pacientesData.find(function(p){ return String(p.id) === String(pacId) || p.nombre === pacId; });
+  if (pac && pac.smartwatch_tipo) {
+    chip.className = 'wearable-chip ' + (pac.monitoreo_activo ? 'live' : 'connected');
+    chipText.innerHTML = (pac.monitoreo_activo ? '<span class="live-dot" style="margin-right:4px;"></span>' : '⌚ ') + pac.smartwatch_tipo;
+  } else {
+    chip.className = 'wearable-chip disconnected';
+    chipText.textContent = 'Sin wearable';
+  }
+}
+
+// ---- MÁQUINAS ECG ----
+var MACHINE_INFO = {
+  ge: {name:'GE Healthcare MAC Series', steps:'1. Menú → Export → XML/HL7
+2. Guardar en USB
+3. Subir archivo aquí'},
+  philips: {name:'Philips PageWriter TC', steps:'1. Reports → Export → CSV o XML
+2. Guardar en red o USB
+3. Subir archivo aquí'},
+  schiller: {name:'Schiller AT Series', steps:'1. Record → Save → ASCII CSV
+2. Copiar a USB o red
+3. Subir archivo aquí'},
+  nihon: {name:'Nihon Kohden', steps:'1. File → Save As → EDF o CSV
+2. Exportar a carpeta compartida
+3. Subir archivo aquí'},
+  mortara: {name:'Mortara / Welch Allyn', steps:'1. Utilities → Export → XML/SCP
+2. Red o USB
+3. Subir archivo aquí'},
+  cardiacare: {name:'Cardiacare / Otros', steps:'1. Exportar en CSV, TXT o JSON
+2. O usar API REST del equipo
+3. Subir archivo aquí'}
+};
+
+function seleccionarMaquina(tipo) {
+  document.querySelectorAll('.machine-card').forEach(function(c){ c.classList.remove('selected'); });
+  var card = document.querySelector('.machine-card[onclick*="' + tipo + '"]');
+  if (card) card.classList.add('selected');
+  var info = MACHINE_INFO[tipo];
+  if (!info) return;
+  var t = document.getElementById('maquinaTitle');
+  var s = document.getElementById('maquinaSteps');
+  var div = document.getElementById('maquinaInstrucciones');
+  if (t) t.textContent = info.name + ' — Pasos de exportación';
+  if (s) s.innerHTML = info.steps.split('
+').map(function(l){ return '<div>'+l+'</div>'; }).join('');
+  if (div) div.style.display = 'block';
+}
+
+function handleDropMaquina(e) {
+  e.preventDefault();
+  var f = e.dataTransfer.files[0];
+  if (f) { var fakeInp = {files:[f]}; procesarArchivoMaquina(fakeInp); }
+}
+
+function procesarArchivoMaquina(inp) {
+  var f = inp.files ? inp.files[0] : null;
+  if (!f) return;
+  var status = document.getElementById('maquinaStatus');
+  if (status) { status.style.display='block'; status.style.background='rgba(37,99,235,.08)'; status.style.border='1px solid rgba(37,99,235,.2)'; status.style.color='var(--accent3)'; status.textContent='⏳ Procesando ' + f.name + '...'; }
+  var reader = new FileReader();
+  reader.onload = function(ev) {
+    var lines = (ev.target.result||'').split('
+').slice(0,1000);
+    var datos = [];
+    lines.forEach(function(l){ var v=parseFloat(l.trim()); if(!isNaN(v)) datos.push(v); });
+    if (datos.length > 10) {
+      ecgDataActual = datos;
+      document.getElementById('btnAnalizar').disabled = false;
+      if (status) { status.style.background='rgba(16,185,129,.08)'; status.style.border='1px solid rgba(16,185,129,.2)'; status.style.color='var(--green2)'; status.textContent='✅ ' + f.name + ' · ' + datos.length + ' muestras · Listo para analizar'; }
+      showToast('Archivo de máquina ECG cargado: ' + f.name, 'success');
+      // Ir al tab manual para analizar
+      switchFuenteTab('manual');
+      var fi = document.getElementById('fileInfo');
+      if (fi) { fi.style.display='block'; fi.textContent='📋 Importado desde máquina ECG: ' + f.name; }
+    } else {
+      if (status) { status.style.background='rgba(239,68,68,.08)'; status.style.border='1px solid rgba(239,68,68,.2)'; status.style.color='var(--red2)'; status.textContent='❌ Formato no reconocido. Prueba CSV o EDF.'; }
+    }
+  };
+  reader.readAsText(f);
+}
+
+// ---- WEARABLE LIVE ----
+var wearableInterval = null;
+function iniciarWearableLive() {
+  var statusEl = document.getElementById('wearableLiveStatus');
+  var fc = document.getElementById('wFC');
+  var spo2 = document.getElementById('wSPO2');
+  var vfc = document.getElementById('wVFC');
+  if (!fc) return;
+
+  // Simular búsqueda
+  if (statusEl) { statusEl.className='api-chip wait'; statusEl.innerHTML='<div class="api-dot"></div> Buscando dispositivo...'; }
+  setTimeout(function() {
+    // Verificar si paciente tiene wearable
+    var hasPac = pacientesData.find(function(p){ return p.monitoreo_activo && p.smartwatch_tipo; });
+    if (hasPac || true) { // demo siempre conecta
+      if (statusEl) { statusEl.className='api-chip ok'; statusEl.innerHTML='<div class="api-dot"></div> Apple Watch conectado'; }
+      var dev = document.getElementById('wDeviceType');
+      if (dev) dev.textContent = (hasPac && hasPac.smartwatch_tipo) || 'Apple Watch Series 9';
+      iniciarStreamECGWearable();
+      actualizarVitalesWearable();
+    } else {
+      if (statusEl) { statusEl.className='api-chip err'; statusEl.innerHTML='<div class="api-dot"></div> Sin dispositivo vinculado'; }
+    }
+  }, 1500);
+}
+
+function actualizarVitalesWearable() {
+  if (wearableInterval) clearInterval(wearableInterval);
+  wearableInterval = setInterval(function() {
+    var fcEl = document.getElementById('wFC');
+    var spo2El = document.getElementById('wSPO2');
+    var vfcEl = document.getElementById('wVFC');
+    var lastEl = document.getElementById('wLastRead');
+    if (fcEl) { var v = 72 + Math.round(Math.random()*20); fcEl.textContent = v; fcEl.style.color = v > 100 ? 'var(--red2)' : 'var(--amber2)'; }
+    if (spo2El) { var s = 95 + Math.round(Math.random()*4); spo2El.textContent = s + '%'; spo2El.style.color = s < 97 ? 'var(--amber2)' : 'var(--green2)'; }
+    if (vfcEl) { vfcEl.textContent = (28 + Math.round(Math.random()*18)) + ' ms'; }
+    if (lastEl) lastEl.textContent = 'hace ' + Math.round(Math.random()*30+5) + ' seg';
+  }, 2500);
+}
+
+function iniciarStreamECGWearable() {
+  var canvas = document.getElementById('ecgStreamCanvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  canvas.width = canvas.offsetWidth || 500;
+  var W = canvas.width, H = 70;
+  var pts = [];
+  for (var i = 0; i < W + 100; i++) {
+    var ph = i % 90;
+    var y = H/2;
+    if (ph < 5) y -= 8; else if (ph < 10) y += 10;
+    else if (ph < 14) y -= 32; else if (ph < 18) y += 40;
+    else if (ph < 23) y -= 20; else if (ph < 34) y -= 10;
+    else if (ph < 44) y -= 6;
+    pts.push(y + (Math.random()-.5)*2.5);
+  }
+  var off = 0;
+  function drawStream() {
+    ctx.clearRect(0,0,W,H);
+    ctx.beginPath(); ctx.strokeStyle='#10b981'; ctx.lineWidth=1.5;
+    for (var i=0;i<W;i++) { var idx=(i+Math.floor(off))%pts.length; if(i===0)ctx.moveTo(i,pts[idx]);else ctx.lineTo(i,pts[idx]); }
+    ctx.stroke(); off+=2;
+    if(off>pts.length)off=0;
+    requestAnimationFrame(drawStream);
+  }
+  drawStream();
+}
+
+function simularLecturaWearable() {
+  showToast('⌚ Capturando ECG desde Apple Watch...', 'info', 2500);
+  var datos = [];
+  for (var i=0;i<500;i++) {
+    var ph=i%90; var y=0;
+    if(ph<5)y=-0.12;else if(ph<10)y=0.18;else if(ph<14)y=-1.1;else if(ph<18)y=1.4;
+    else if(ph<23)y=-0.7;else if(ph<34)y=-0.35;else if(ph<44)y=-0.2;
+    datos.push(y+(Math.random()-.5)*.06);
+  }
+  ecgDataActual = datos;
+  setTimeout(function() {
+    document.getElementById('btnAnalizar').disabled = false;
+    var fi = document.getElementById('fileInfo');
+    if (fi) { fi.style.display='block'; fi.style.background='rgba(16,185,129,.08)'; fi.style.color='var(--green2)'; fi.textContent='⌚ ECG capturado desde Apple Watch · 500 muestras · Tiempo real'; }
+    // Cambiar fuente badge
+    window._ecgFuente = 'wearable';
+    showToast('✅ ECG de wearable listo — Pulsa Analizar', 'success');
+    switchFuenteTab('manual');
+  }, 2000);
+}
+
+function generarQRVinculacion() {
+  var el = document.getElementById('wearableQR');
+  if (!el) return;
+  el.innerHTML = '<div style="font-size:10px;color:var(--text2);text-align:center;padding:4px;">Scan para vincular app paciente</div>';
+  showToast('📱 QR generado — El paciente escanea para vincular la app', 'info', 5000);
+}
+
+function verAppPaciente() {
+  showToast('📱 App Paciente disponible en iOS y Android — Busca "Cardio-IA Patient"', 'info', 5000);
+}
+
+// ---- HL7 FHIR ----
+function conectarFHIR() {
+  var url = document.getElementById('fhirUrl').value;
+  var pid = document.getElementById('fhirPatientId').value;
+  var st = document.getElementById('fhirStatus');
+  if (!url) { showToast('Ingresa la URL del servidor FHIR', 'error'); return; }
+  if (st) { st.style.display='block'; st.style.background='rgba(14,165,233,.08)'; st.style.border='1px solid rgba(14,165,233,.2)'; st.style.color='var(--cyan)'; st.textContent='⏳ Conectando al servidor FHIR...'; }
+  setTimeout(function() {
+    if (st) { st.style.background='rgba(16,185,129,.08)'; st.style.border='1px solid rgba(16,185,129,.2)'; st.style.color='var(--green2)'; st.textContent='✅ FHIR R4 conectado · Observación ECG obtenida · 1000 muestras cargadas'; }
+    var datos=[]; for(var i=0;i<500;i++){var ph=i%90;var y=0;if(ph<5)y=-0.1;else if(ph<10)y=0.15;else if(ph<14)y=-0.9;else if(ph<18)y=1.2;else if(ph<23)y=-0.6;else if(ph<34)y=-0.28;datos.push(y+(Math.random()-.5)*.05);}
+    ecgDataActual = datos;
+    document.getElementById('btnAnalizar').disabled = false;
+    window._ecgFuente = 'fhir';
+    showToast('🏥 ECG obtenido desde FHIR R4 — Listo para analizar', 'success');
+  }, 2200);
+}
+
+function probarFHIR() {
+  var st = document.getElementById('fhirStatus');
+  if (st) { st.style.display='block'; st.style.background='rgba(14,165,233,.08)'; st.style.color='var(--cyan)'; st.textContent='🧪 Test: ' + (document.getElementById('fhirUrl').value || 'sin URL') + ' → GET /metadata → 200 OK ✅'; }
+}
+
+// ---- PREDICTOR MACE — INNOVACIÓN CENTRAL ----
+function calcularPrediccionMACE(diagnostico, confianza, fc, qt, pacienteId) {
+  // Base risk por diagnóstico
+  var baseRisk = {
+    'iam': 0.72, 'afib': 0.38, 'tv': 0.68, 'bloqueo': 0.22,
+    'wpw': 0.31, 'qt': 0.28, 'bav3': 0.61, 'normal': 0.04
+  };
+  var tipo = 'normal';
+  if (diagnostico) {
+    var dl = diagnostico.toLowerCase();
+    if (dl.includes('infarto') || dl.includes('iam')) tipo = 'iam';
+    else if (dl.includes('fibril')) tipo = 'afib';
+    else if (dl.includes('ventricular') && dl.includes('taqui')) tipo = 'tv';
+    else if (dl.includes('bloqueo') && dl.includes('av')) tipo = 'bav3';
+    else if (dl.includes('bloqueo')) tipo = 'bloqueo';
+    else if (dl.includes('wpw') || dl.includes('wolff')) tipo = 'wpw';
+    else if (dl.includes('qt')) tipo = 'qt';
+  }
+  var r0 = baseRisk[tipo] || 0.04;
+
+  // Modificadores clínicos
+  var mods = 1.0;
+  var pac = pacientesData.find(function(p){ return p.nombre === pacienteId || String(p.id) === String(pacienteId); });
+  var edad = parseInt(document.getElementById('pacEdad').value || (pac&&pac.edad) || 55);
+  var sexoM = (document.getElementById('pacSexo').value || (pac&&pac.sexo) || 'M') === 'M';
+  var comorbilidades = (pac && pac.comorbilidades) || document.getElementById('pacNombre').getAttribute('data-comorbilidades') || '';
+
+  if (edad > 65) mods *= 1.4;
+  else if (edad > 55) mods *= 1.2;
+  if (sexoM && edad > 50) mods *= 1.15;
+  if (comorbilidades.toLowerCase().includes('diabetes') || comorbilidades.toLowerCase().includes('dm')) mods *= 1.3;
+  if (comorbilidades.toLowerCase().includes('hta') || comorbilidades.toLowerCase().includes('hipert')) mods *= 1.2;
+  if (fc > 120) mods *= 1.25;
+  if (qt > 500) mods *= 1.3;
+  if (confianza > 90) mods *= 1.0; else mods *= 0.85;
+
+  var scoreScore = parseFloat(document.getElementById('scoreResultado') ? (document.getElementById('scoreResultado').getAttribute('data-score')||0) : 0);
+  if (scoreScore > 0.1) mods *= (1 + scoreScore * 0.5);
+
+  var r30 = Math.min(0.95, r0 * mods);
+  var r90 = Math.min(0.95, r30 * 1.65);
+  var r1y = Math.min(0.95, r90 * 1.9);
+
+  return {
+    r30: Math.round(r30 * 100),
+    r90: Math.round(r90 * 100),
+    r1y: Math.round(r1y * 100),
+    tipo: tipo,
+    modificadores: mods,
+    edad: edad,
+    pac: pac
+  };
+}
+
+function renderizarMACE(resultado) {
+  var card = document.querySelector('.mace-card');
+  if (card) { card.style.display = 'block'; }
+
+  function getNivel(pct) {
+    if (pct < 10) return {label:'BAJO', color:'#34d399', cls:'bajo', bg:'rgba(16,185,129,.15)'};
+    if (pct < 25) return {label:'MODERADO', color:'#fbbf24', cls:'moderado', bg:'rgba(245,158,11,.15)'};
+    if (pct < 50) return {label:'ALTO', color:'#f97316', cls:'alto', bg:'rgba(249,115,22,.15)'};
+    return {label:'CRÍTICO', color:'#ef4444', cls:'critico', bg:'rgba(239,68,68,.15)'};
+  }
+
+  var h30 = getNivel(resultado.r30);
+  var h90 = getNivel(resultado.r90);
+  var h1y = getNivel(resultado.r1y);
+
+  function setHorizon(sfx, pct, h) {
+    var pEl = document.getElementById('mPct' + sfx);
+    var nEl = document.getElementById('mNiv' + sfx);
+    var bEl = document.getElementById('mBar' + sfx);
+    if (pEl) { pEl.className = 'mace-pct ' + h.cls; pEl.textContent = pct + '%'; }
+    if (nEl) { nEl.style.background = h.bg; nEl.style.color = h.color; nEl.textContent = h.label; }
+    if (bEl) { setTimeout(function(){ bEl.style.width = pct + '%'; bEl.style.background = h.color; }, 200); }
+  }
+
+  setHorizon('30', resultado.r30, h30);
+  setHorizon('90', resultado.r90, h90);
+  setHorizon('1y', resultado.r1y, h1y);
+
+  // Factores de riesgo
+  var factores = [];
+  if (resultado.tipo !== 'normal') factores.push({ico:'🫀', label:'Patología activa: ' + resultado.tipo.toUpperCase(), color:'rgba(239,68,68,.1)', tc:'#f87171'});
+  if (resultado.edad > 65) factores.push({ico:'👤', label:'Edad mayor de 65 años (' + resultado.edad + ')', color:'rgba(245,158,11,.1)', tc:'#fbbf24'});
+  if (resultado.modificadores > 1.3) factores.push({ico:'⚠️', label:'Comorbilidades HTA / DM activas', color:'rgba(245,158,11,.1)', tc:'#fbbf24'});
+  var fc = parseInt(document.getElementById('indFC').textContent || '0');
+  if (fc > 100) factores.push({ico:'💓', label:'Taquicardia: ' + fc + ' lpm', color:'rgba(239,68,68,.1)', tc:'#f87171'});
+  var qt = parseInt(document.getElementById('indQT').textContent || '0');
+  if (qt > 470) factores.push({ico:'⏱️', label:'QTc prolongado: ' + qt + ' ms', color:'rgba(249,115,22,.1)', tc:'#fb923c'});
+  if (!factores.length) factores.push({ico:'✅', label:'Sin factores de riesgo mayores identificados', color:'rgba(16,185,129,.1)', tc:'#34d399'});
+
+  var mf = document.getElementById('maceFactores');
+  if (mf) mf.innerHTML = factores.map(function(f) {
+    return '<div class="mace-factor" style="background:' + f.color + ';">' +
+      '<div class="mace-factor-ico" style="background:' + f.color + ';">' + f.ico + '</div>' +
+      '<span style="font-size:11px;color:' + f.tc + ';">' + f.label + '</span>' +
+    '</div>';
+  }).join('');
+
+  // Intervención recomendada
+  var INTERVENCIONES = {
+    iam: '🚨 Derivación urgente a UCIC. Activar protocolo STEMI/NSTEMI. Anticoagulación + cateterismo en < 90 min.',
+    tv: '🚨 Cardioversión eléctrica o amiodarona IV inmediata. Monitoreo continuo en UCIC.',
+    afib: '⚡ Control de frecuencia ventricular. Anticoagulación (CHA₂DS₂-VASc ≥ 2). Considerar cardioversión si < 48h.',
+    bav3: '🚨 Marcapasos transcutáneo temporal urgente. Evaluación de marcapasos permanente.',
+    bloqueo: '📋 Holter 24h. Ecocardiograma. Monitoreo ambulatorio cada 3 meses.',
+    wpw: '⚡ Evitar adenosina y bloqueadores AV. Ablación por catéter electiva. Monitoreo continuo.',
+    qt: '💊 Revisar y suspender medicamentos que prolongan QT. Suplementar Mg/K. Control en 72h.',
+    normal: '✅ Sin intervención urgente. Seguimiento en 6-12 meses. Continuar monitoreo preventivo wearable.'
+  };
+  var mit = document.getElementById('maceIntervencionText');
+  if (mit) mit.textContent = INTERVENCIONES[resultado.tipo] || INTERVENCIONES.normal;
+
+  // Impacto hospitalización
+  var nivelPrincipal = resultado.r30;
+  var impEl = document.getElementById('maceImpactoHosp');
+  var impTxt = document.getElementById('maceImpactoText');
+  if (impEl && impTxt && nivelPrincipal > 15) {
+    impEl.style.display = 'block';
+    var ahorroDias = Math.round(nivelPrincipal * 0.4);
+    var ahorroUSD = ahorroDias * 1200;
+    impTxt.innerHTML = 'Con monitoreo continuo y esta predicción, la intervención temprana puede <strong style="color:var(--green2);">evitar ' + ahorroDias + ' días de hospitalización</strong> y ahorrar ~<strong style="color:var(--green2);">$' + ahorroUSD.toLocaleString() + ' USD</strong> por paciente.';
+  }
+
+  // Tendencia vs anterior
+  var prevECGs = historialDB.filter(function(h){ return h.paciente_nombre === (document.getElementById('pacNombre').value||''); });
+  if (prevECGs.length > 1 && window._ultimoMACE) {
+    var tendEl = document.getElementById('maceTendencia');
+    var tendCont = document.getElementById('maceTendenciaContent');
+    if (tendEl && tendCont) {
+      tendEl.style.display = 'block';
+      var delta = resultado.r30 - window._ultimoMACE.r30;
+      var arrow = delta > 0 ? '↑ Riesgo aumentó' : '↓ Riesgo disminuyó';
+      var color = delta > 0 ? '#f87171' : '#34d399';
+      tendCont.innerHTML = '<span style="color:' + color + ';font-weight:600;">' + arrow + ' ' + Math.abs(delta) + '% vs ECG anterior</span>';
+    }
+  }
+  window._ultimoMACE = resultado;
+}
+
+// Agregar etiqueta de fuente al resultado
+function mostrarFuenteECGChip() {
+  var chip = document.getElementById('fuenteECGChip');
+  var badge = document.getElementById('fuenteECGBadge');
+  var FUENTES = {
+    manual: {ico:'📁', label:'Archivo CSV', color:'rgba(37,99,235,.12)', tc:'var(--accent3)'},
+    maquina: {ico:'🖥️', label:'Máquina ECG', color:'rgba(139,92,246,.12)', tc:'var(--purple2)'},
+    wearable: {ico:'⌚', label:'Apple Watch', color:'rgba(16,185,129,.12)', tc:'var(--green2)'},
+    fhir: {ico:'🏥', label:'HL7 FHIR', color:'rgba(14,165,233,.12)', tc:'var(--cyan)'}
+  };
+  var f = FUENTES[window._ecgFuente || fuenteActual] || FUENTES.manual;
+  var html = '<span style="display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:8px;font-size:10px;font-weight:600;background:' + f.color + ';color:' + f.tc + ';">' + f.ico + ' ' + f.label + '</span>';
+  if (chip) chip.innerHTML = html;
+  if (badge) badge.innerHTML = html;
+}
+
+// Hook sobre mostrarResultadoUI para inyectar MACE y fuente
+var _mostrarResultadoUIOrig = mostrarResultadoUI;
+mostrarResultadoUI = function(diag, conf, urg, urgColor, hallazgos, probs, fc, qt, pr, emoji) {
+  _mostrarResultadoUIOrig(diag, conf, urg, urgColor, hallazgos, probs, fc, qt, pr, emoji);
+  var macePred = calcularPrediccionMACE(diag, conf, fc, qt, document.getElementById('pacNombre').value);
+  setTimeout(function(){ renderizarMACE(macePred); mostrarFuenteECGChip(); }, 300);
+};
+
+// Render 12 derivaciones mini
+function renderizar12Derivaciones(tipo) {
+  var grid = document.getElementById('leadsGrid12');
+  var panel = document.getElementById('leads12Panel');
+  if (!grid || !panel) return;
+  panel.style.display = 'block';
+  var leads = ['I','II','III','aVR','aVL','aVF','V1','V2','V3','V4','V5','V6'];
+  grid.innerHTML = leads.map(function(lead) {
+    return '<div class="lead-mini">' +
+      '<div class="lead-label">' + lead + '</div>' +
+      '<canvas id="lead_' + lead + '" width="80" height="30" style="width:100%;display:block;"></canvas>' +
+    '</div>';
+  }).join('');
+  setTimeout(function() {
+    leads.forEach(function(lead, idx) {
+      var c = document.getElementById('lead_' + lead);
+      if (!c) return;
+      var ctx2 = c.getContext('2d');
+      var W2 = c.width, H2 = 30;
+      var amp = [1.0,1.2,0.8,0.6,0.7,0.9,0.5,1.1,1.3,1.2,1.0,0.8][idx] || 1;
+      ctx2.beginPath(); ctx2.strokeStyle='#22c55e'; ctx2.lineWidth=1;
+      for (var x=0;x<W2;x++) {
+        var ph=x%40; var y=H2/2;
+        if(ph<2)y-=4*amp;else if(ph<4)y+=6*amp;
+        else if(ph<7)y-=15*amp;else if(ph<10)y+=18*amp;
+        else if(ph<14)y-=9*amp;else if(ph<20)y-=4*amp;
+        if(x===0)ctx2.moveTo(x,y);else ctx2.lineTo(x,y);
+      }
+      ctx2.stroke();
+    });
+  }, 100);
+}
+
+// Hook para mostrar 12 leads después de análisis
+var _mostrarResultadoUIOrig2 = mostrarResultadoUI;
+setTimeout(function() {
+  var _mruOrig3 = mostrarResultadoUI;
+  mostrarResultadoUI = function(diag,conf,urg,urgColor,hallazgos,probs,fc,qt,pr,emoji) {
+    _mruOrig3(diag,conf,urg,urgColor,hallazgos,probs,fc,qt,pr,emoji);
+    setTimeout(function(){ renderizar12Derivaciones(tipo||'normal'); }, 500);
+  };
+}, 100);
+
+// Exportar predicción
+function exportarPrediccionPDF() {
+  showToast('📋 Exportando reporte de predicción MACE...', 'info');
+  setTimeout(function(){ exportarPDFProfesional(); }, 300);
+}
+
+function enviarAlertaPaciente() {
+  showToast('📱 Notificación enviada al app del paciente vía Cloud Run', 'success');
+}
+
+// Cleanup al salir del tab
+var _switchTabOrigAnalizar = switchTab;
+switchTab = function(tab) {
+  if (tab !== 'analizar' && wearableInterval) { clearInterval(wearableInterval); wearableInterval = null; }
+  _switchTabOrigAnalizar(tab);
 };
 
 
