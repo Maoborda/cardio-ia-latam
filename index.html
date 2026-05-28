@@ -169,6 +169,18 @@
 ::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:3px;}
 ::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.2);}
 
+
+/* ===== LOGIN RESPONSIVE FIX ===== */
+.login-overlay{display:none;}
+.login-overlay.show{display:flex!important;flex-direction:column;align-items:center;justify-content:center;}
+.login-2panel{display:flex;width:100%;max-width:900px;border-radius:24px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.6);position:relative;z-index:1;}
+.login-left{flex:1;background:linear-gradient(145deg,#0d1424 0%,#0a1628 50%,#060912 100%);padding:48px 40px;display:flex;flex-direction:column;justify-content:space-between;border-right:1px solid rgba(255,255,255,.06);}
+.login-right{width:380px;background:#0a0f1e;padding:48px 36px;display:flex;flex-direction:column;}
+@media(max-width:768px){
+  .login-2panel{flex-direction:column;max-width:95vw;max-height:90vh;overflow-y:auto;}
+  .login-left{display:none;}
+  .login-right{width:100%;padding:28px 20px;}
+}
 /* ===== V11.4 SPLASH =====*/
 @keyframes splashPulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(37,99,235,.4);}50%{transform:scale(1.05);box-shadow:0 0 0 12px rgba(37,99,235,0);}}
 
@@ -974,9 +986,9 @@ body{
   <!-- ECG Animated Background -->
   <canvas id="ecgBgCanvas" style="position:absolute;inset:0;width:100%;height:100%;opacity:.08;pointer-events:none;"></canvas>
   
-  <div style="display:flex;width:100%;max-width:900px;gap:0;border-radius:24px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.6);position:relative;z-index:1;">
+  <div class="login-2panel">
     <!-- LEFT PANEL - Branding -->
-    <div style="flex:1;background:linear-gradient(145deg,#0d1424 0%,#0a1628 50%,#060912 100%);padding:48px 40px;display:flex;flex-direction:column;justify-content:space-between;border-right:1px solid rgba(255,255,255,.06);">
+    <div class="login-left">
       <!-- Logo + Badge -->
       <div>
         <div style="display:flex;align-items:center;gap:14px;margin-bottom:40px;">
@@ -1012,7 +1024,7 @@ body{
     </div>
     
     <!-- RIGHT PANEL - Form -->
-    <div style="width:380px;background:#0a0f1e;padding:48px 36px;display:flex;flex-direction:column;">
+    <div class="login-right">
       <div style="flex:1;">
         <div style="margin-bottom:28px;">
           <div style="font-size:22px;font-weight:700;color:#f8fafc;margin-bottom:6px;">Bienvenido</div>
@@ -3221,6 +3233,18 @@ body{
 <script>
 
 
+
+
+// ===== CLEAR: limpiar sesión rota si existe =====
+try {
+  var _chk = localStorage.getItem('cardio_ia_usuario');
+  if (_chk) {
+    var _parsed = JSON.parse(_chk);
+    if (!_parsed || !_parsed.nombre || _parsed.nombre === 'undefined') {
+      localStorage.removeItem('cardio_ia_usuario');
+    }
+  }
+} catch(e) { localStorage.removeItem('cardio_ia_usuario'); }
 
 // ===== PACIENTES V11.2 =====
 var filtroPac = "todos";
@@ -11027,6 +11051,22 @@ if (typeof calcularRiesgoPaciente === 'undefined') {
   };
 }
 
+
+
+// ===== FAILSAFE: forzar login si nada visible después de 3s =====
+setTimeout(function() {
+  var app = document.getElementById('mainApp');
+  var login = document.getElementById('loginOverlay');
+  var splash = document.getElementById('splashScreen');
+  // Si app está oculta Y login está oculto → forzar login
+  var appVisible = app && app.style.display !== 'none' && app.offsetParent !== null;
+  var loginVisible = login && login.classList.contains('show');
+  if (!appVisible && !loginVisible) {
+    console.warn('FAILSAFE: forzando login visible');
+    if (splash) splash.style.display = 'none';
+    if (login) { login.style.display = 'flex'; login.classList.add('show'); }
+  }
+}, 3000);
 
 console.log('Cardio-IA Latam v11.4 cargado ✅');
 
