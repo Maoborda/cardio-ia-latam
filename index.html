@@ -10122,9 +10122,9 @@ function renderSemaforoPacientes() {
   el.innerHTML = pacs.map(function(p) {
     var r = calcularRiesgoPaciente(p);
     var sem = getSemaforoInfo(r);
-    var ini = (p.nombre||'?').split(' ').map(function(x){return x[0]||'';}).join('').substring(0,2).toUpperCase();
     var ecgInfo = p.ultimo_diagnostico ? p.ultimo_diagnostico.substring(0,22) : 'Sin ECG';
-    return '<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer;" onclick="activarPacienteYAnalizar('' + p.nombre.replace(/'/g,'') + '')">' +
+    var safeNom = (p.nombre||'?').replace(/[^a-zA-Z0-9\s]/g, '');
+    return '<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer;" data-pac-semaforo="' + safeNom + '">' +
       '<div style="width:8px;height:8px;border-radius:50%;background:' + sem.color + ';flex-shrink:0;' + (r === 'alto' ? 'animation:riesgoPulse 2s infinite;' : '') + '"></div>' +
       '<div style="flex:1;min-width:0;">' +
         '<div style="font-size:11px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + p.nombre + '</div>' +
@@ -10133,6 +10133,11 @@ function renderSemaforoPacientes() {
       '<span style="font-size:9px;font-weight:700;padding:2px 6px;border-radius:5px;background:' + sem.bg + ';color:' + sem.color + ';flex-shrink:0;">' + r + '</span>' +
     '</div>';
   }).join('');
+  // Delegated click handler
+  el.onclick = function(e) {
+    var row = e.target.closest('[data-pac-semaforo]');
+    if (row) activarPacienteYAnalizar(row.getAttribute('data-pac-semaforo'));
+  };
 }
 
 // ===== V12 PROYECCIÓN 24H =====
@@ -10232,24 +10237,12 @@ function renderWearableChip(pacId) {
 
 // ---- MÁQUINAS ECG ----
 var MACHINE_INFO = {
-  ge: {name:'GE Healthcare MAC Series', steps:'1. Menú → Export → XML/HL7
-2. Guardar en USB
-3. Subir archivo aquí'},
-  philips: {name:'Philips PageWriter TC', steps:'1. Reports → Export → CSV o XML
-2. Guardar en red o USB
-3. Subir archivo aquí'},
-  schiller: {name:'Schiller AT Series', steps:'1. Record → Save → ASCII CSV
-2. Copiar a USB o red
-3. Subir archivo aquí'},
-  nihon: {name:'Nihon Kohden', steps:'1. File → Save As → EDF o CSV
-2. Exportar a carpeta compartida
-3. Subir archivo aquí'},
-  mortara: {name:'Mortara / Welch Allyn', steps:'1. Utilities → Export → XML/SCP
-2. Red o USB
-3. Subir archivo aquí'},
-  cardiacare: {name:'Cardiacare / Otros', steps:'1. Exportar en CSV, TXT o JSON
-2. O usar API REST del equipo
-3. Subir archivo aquí'}
+  ge: {name:'GE Healthcare MAC Series', steps:'1. Menu > Export > XML/HL7<br>2. Guardar en USB<br>3. Subir archivo aqui'},
+  philips: {name:'Philips PageWriter TC', steps:'1. Reports > Export > CSV o XML<br>2. Guardar en red o USB<br>3. Subir archivo aqui'},
+  schiller: {name:'Schiller AT Series', steps:'1. Record > Save > ASCII CSV<br>2. Copiar a USB o red<br>3. Subir archivo aqui'},
+  nihon: {name:'Nihon Kohden', steps:'1. File > Save As > EDF o CSV<br>2. Exportar a carpeta compartida<br>3. Subir archivo aqui'},
+  mortara: {name:'Mortara / Welch Allyn', steps:'1. Utilities > Export > XML/SCP<br>2. Red o USB<br>3. Subir archivo aqui'},
+  cardiacare: {name:'Cardiacare / Otros', steps:'1. Exportar en CSV, TXT o JSON<br>2. O usar API REST del equipo<br>3. Subir archivo aqui'}
 };
 
 function seleccionarMaquina(tipo) {
@@ -10262,8 +10255,7 @@ function seleccionarMaquina(tipo) {
   var s = document.getElementById('maquinaSteps');
   var div = document.getElementById('maquinaInstrucciones');
   if (t) t.textContent = info.name + ' — Pasos de exportación';
-  if (s) s.innerHTML = info.steps.split('
-').map(function(l){ return '<div>'+l+'</div>'; }).join('');
+  if (s) s.innerHTML = info.steps;
   if (div) div.style.display = 'block';
 }
 
@@ -10280,8 +10272,7 @@ function procesarArchivoMaquina(inp) {
   if (status) { status.style.display='block'; status.style.background='rgba(37,99,235,.08)'; status.style.border='1px solid rgba(37,99,235,.2)'; status.style.color='var(--accent3)'; status.textContent='⏳ Procesando ' + f.name + '...'; }
   var reader = new FileReader();
   reader.onload = function(ev) {
-    var lines = (ev.target.result||'').split('
-').slice(0,1000);
+    var lines = (ev.target.result||'').split('\n').slice(0,1000);
     var datos = [];
     lines.forEach(function(l){ var v=parseFloat(l.trim()); if(!isNaN(v)) datos.push(v); });
     if (datos.length > 10) {
@@ -10941,73 +10932,54 @@ guardarPerfilMedico = function() {
 // ── PERFIL: Auto-informe mensual ───────────────────────────────────────
 function generarInformeAutomatico() {
   var mes = parseInt(document.getElementById('informeMes').value) || new Date().getMonth();
-  var año = parseInt(document.getElementById('informeAnio').value) || new Date().getFullYear();
+  var anio = parseInt(document.getElementById('informeAnio').value) || new Date().getFullYear();
   var MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
   var dataMes = historialDB.filter(function(h) {
-    return h.fecha && new Date(h.fecha).getMonth() === mes && new Date(h.fecha).getFullYear() === año;
+    return h.fecha && new Date(h.fecha).getMonth() === mes && new Date(h.fecha).getFullYear() === anio;
   });
   var total = dataMes.length;
   var firmados = dataMes.filter(function(h){ return h.firmado; }).length;
   var urgentes = dataMes.filter(function(h){ return h.diagnostico && !h.diagnostico.includes('Normal'); }).length;
-  var confProm = total > 0 ? (dataMes.reduce(function(a,h){ return a+(h.confianza||91); },0)/total).toFixed(1) : '—';
+  var confProm = total > 0 ? (dataMes.reduce(function(a,h){ return a+(h.confianza||91); },0)/total).toFixed(1) : '--';
   var conteo = {};
   dataMes.forEach(function(h){ var k=h.diagnostico||'Otro'; conteo[k]=(conteo[k]||0)+1; });
-  var topPat = Object.keys(conteo).sort(function(a,b){ return conteo[b]-conteo[a]; }).slice(0,3).map(function(k){ return '- '+k+': '+conteo[k]+' casos'; }).join('
-');
+  var topPat = Object.keys(conteo).sort(function(a,b){ return conteo[b]-conteo[a]; }).slice(0,3).map(function(k){ return '- '+k+': '+conteo[k]+' casos'; }).join('\n');
   var medico = (window.usuarioActual && window.usuarioActual.nombre) || 'Dr. Demo';
-  var informe = 'INFORME CLÍNICO MENSUAL — ' + MESES[mes].toUpperCase() + ' ' + año + '
-' +
-    'Médico: ' + medico + '
-' +
-    '─────────────────────────────────────
-
-' +
-    'RESUMEN EJECUTIVO:
-' +
-    'Durante el mes de ' + MESES[mes] + ' ' + año + ' se realizaron ' + total + ' diagnósticos cardiovasculares mediante el sistema Cardio-IA Latam v11.4.
-
-' +
-    'ESTADÍSTICAS DEL MES:
-' +
-    '• Total de ECGs analizados: ' + total + '
-' +
-    '• Diagnósticos firmados: ' + firmados + ' (' + (total>0?Math.round(firmados/total*100):0) + '%)
-' +
-    '• Casos con patología activa: ' + urgentes + '
-' +
-    '• Confianza promedio IA: ' + confProm + '%
-
-' +
-    'PATOLOGÍAS MÁS FRECUENTES:
-' + (topPat || '- Sin datos disponibles') + '
-
-' +
-    'CASOS CRÍTICOS:
-' + (urgentes > 0 ? '- Se identificaron ' + urgentes + ' casos que requirieron seguimiento prioritario.' : '- Sin casos críticos registrados este mes.') + '
-
-' +
-    'PLAN DE ACCIÓN:
-' +
-    '- Continuar monitoreo remoto de pacientes con wearable activo.
-' +
-    '- Seguimiento de pacientes con patología moderada o alta en próximas 2 semanas.
-' +
-    '- Revisar y actualizar protocolos de intervención temprana.
-
-' +
-    'OBSERVACIONES ADICIONALES:
-' +
-    '[Escribe aquí tus observaciones personalizadas...]
-
-' +
-    '─────────────────────────────────────
-' +
-    'Generado por Cardio-IA Latam v11.4 | ' + new Date().toLocaleDateString('es-CO') + '
-' +
-    'Plataforma SaMD Clase II | HIPAA · GDPR · Ley 1581';
+  var lines = [
+    'INFORME CLINICO MENSUAL -- ' + MESES[mes].toUpperCase() + ' ' + anio,
+    'Medico: ' + medico,
+    '---------------------------------------',
+    '',
+    'RESUMEN EJECUTIVO:',
+    'Durante el mes de ' + MESES[mes] + ' ' + anio + ' se realizaron ' + total + ' diagnosticos cardiovasculares mediante Cardio-IA Latam v11.4.',
+    '',
+    'ESTADISTICAS DEL MES:',
+    '* Total de ECGs analizados: ' + total,
+    '* Diagnosticos firmados: ' + firmados + ' (' + (total>0?Math.round(firmados/total*100):0) + '%)',
+    '* Casos con patologia activa: ' + urgentes,
+    '* Confianza promedio IA: ' + confProm + '%',
+    '',
+    'PATOLOGIAS MAS FRECUENTES:',
+    topPat || '- Sin datos disponibles',
+    '',
+    'CASOS CRITICOS:',
+    urgentes > 0 ? '- Se identificaron ' + urgentes + ' casos que requirieron seguimiento prioritario.' : '- Sin casos criticos registrados este mes.',
+    '',
+    'PLAN DE ACCION:',
+    '- Continuar monitoreo remoto de pacientes con wearable activo.',
+    '- Seguimiento de pacientes con patologia moderada o alta en proximas 2 semanas.',
+    '- Revisar y actualizar protocolos de intervencion temprana.',
+    '',
+    'OBSERVACIONES ADICIONALES:',
+    '[Escribe aqui tus observaciones personalizadas...]',
+    '',
+    '---------------------------------------',
+    'Generado por Cardio-IA Latam v11.4 | ' + new Date().toLocaleDateString('es-CO'),
+    'Plataforma SaMD Clase II | HIPAA | GDPR | Ley 1581'
+  ];
   var textarea = document.getElementById('informeTexto');
-  if (textarea) textarea.value = informe;
-  showToast('✅ Informe generado automáticamente desde ' + total + ' diagnósticos', 'success');
+  if (textarea) textarea.value = lines.join('\n');
+  showToast('Informe generado desde ' + total + ' diagnosticos', 'success');
 }
 
 // Agregar botón "Auto-generar" al cargar el perfil si no existe
