@@ -970,7 +970,7 @@ body{
   </div>
 </div>
 
-<div class="login-overlay show" id="loginOverlay" style="display:none;">
+<div class="login-overlay" id="loginOverlay" style="display:none;">
   <!-- ECG Animated Background -->
   <canvas id="ecgBgCanvas" style="position:absolute;inset:0;width:100%;height:100%;opacity:.08;pointer-events:none;"></canvas>
   
@@ -1290,7 +1290,7 @@ body{
 </div>
 
 <!-- APP -->
-<div class="app" id="mainApp">
+<div class="app" id="mainApp" style="display:none;">
 
   <!-- SIDEBAR -->
   <div class="sidebar" id="sidebar">
@@ -5471,6 +5471,7 @@ function iniciarDemoTimer() {
 
 // ===== CERRAR SESION =====
 function cerrarSesion() {
+  try { localStorage.removeItem('cardio_ia_usuario'); } catch(e) {}
   if (!confirm('Cerrar sesion? Tus datos locales se conservan.')) return;
   usuarioActual = null;
   var mainApp = document.getElementById('mainApp');
@@ -6817,6 +6818,8 @@ function guardarPerfil() {
 
 function completarLogin(medico) {
   usuarioActual = medico;
+  // Guardar sesión para auto-login
+  try { localStorage.setItem('cardio_ia_usuario', JSON.stringify(medico)); } catch(e) {}
   // Mostrar modal onboarding PRIMERO si es primera vez
   var _done = localStorage.getItem('cardio_ia_onboarding');
   if (!_done) {
@@ -9764,7 +9767,14 @@ function initECGBackground() {
   var bar = document.getElementById('splashBar');
   var splash = document.getElementById('splashScreen');
   if (!splash) return;
-  var pct = 0;
+
+  // Verificar sesión previa
+  var sesionPrevia = false;
+  try {
+    var usr = localStorage.getItem('cardio_ia_usuario');
+    if (usr && JSON.parse(usr).nombre) sesionPrevia = true;
+  } catch(e) {}
+
   var steps = [
     {p: 30, delay: 100},
     {p: 60, delay: 400},
@@ -9784,12 +9794,24 @@ function initECGBackground() {
         if (splash) splash.style.display = 'none';
       }, 400);
     }
+    if (sesionPrevia) {
+      // Auto-login con sesión guardada
+      try {
+        var usr = JSON.parse(localStorage.getItem('cardio_ia_usuario'));
+        if (usr && typeof completarLogin === 'function') {
+          completarLogin(usr);
+          return;
+        }
+      } catch(e) {}
+    }
     // Mostrar login
     var login = document.getElementById('loginOverlay');
     if (login) {
       login.style.display = 'flex';
       login.classList.add('show');
-      setTimeout(initECGBackground, 100);
+      setTimeout(function() {
+        if (typeof initECGBackground === 'function') initECGBackground();
+      }, 100);
     }
   }, 1200);
 })();
