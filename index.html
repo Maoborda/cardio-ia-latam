@@ -12,12 +12,172 @@
 .timeline-item{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--border);}
 .timeline-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;margin-top:4px;}
 .timeline-line{width:2px;background:var(--border2);flex-shrink:0;margin:16px 0;}
+
+/* ===== V11.4 TOAST SYSTEM ===== */
+#toastContainer{position:fixed;top:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none;}
+.toast{display:flex;align-items:center;gap:12px;padding:12px 18px;border-radius:12px;font-size:13px;font-weight:500;min-width:280px;max-width:380px;box-shadow:0 8px 32px rgba(0,0,0,.4);pointer-events:all;animation:toastIn .3s cubic-bezier(.34,1.56,.64,1);backdrop-filter:blur(12px);}
+.toast.removing{animation:toastOut .25s ease forwards;}
+.toast-success{background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.3);color:#34d399;}
+.toast-error{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:#f87171;}
+.toast-info{background:rgba(37,99,235,.15);border:1px solid rgba(37,99,235,.3);color:#60a5fa;}
+.toast-warning{background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);color:#fbbf24;}
+.toast-icon{font-size:18px;flex-shrink:0;}
+.toast-close{margin-left:auto;background:transparent;border:none;color:inherit;cursor:pointer;opacity:.6;font-size:16px;padding:0 0 0 8px;flex-shrink:0;}
+.toast-close:hover{opacity:1;}
+@keyframes toastIn{from{transform:translateX(120%) scale(.9);opacity:0;}to{transform:translateX(0) scale(1);opacity:1;}}
+@keyframes toastOut{from{transform:translateX(0) scale(1);opacity:1;}to{transform:translateX(120%) scale(.9);opacity:0;}}
+
+/* ===== V11.4 SKELETON LOADERS ===== */
+.skeleton{background:linear-gradient(90deg,var(--bg3) 25%,var(--bg4) 50%,var(--bg3) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:8px;}
+.skeleton-text{height:14px;margin-bottom:8px;}
+.skeleton-text.wide{width:100%;}
+.skeleton-text.medium{width:70%;}
+.skeleton-text.short{width:40%;}
+.skeleton-card{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:12px;}
+@keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+
+/* ===== V11.4 TAB TRANSITIONS ===== */
+.panel{display:none;animation:none;}
+.panel.active{display:block;animation:panelFadeIn .25s ease;}
+@keyframes panelFadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+/* ===== V11.4 COMMAND PALETTE ===== */
+#cmdPalette{position:fixed;inset:0;z-index:8000;display:none;align-items:flex-start;justify-content:center;padding-top:80px;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);}
+#cmdPalette.show{display:flex;}
+.cmd-box{background:var(--bg2);border:1px solid var(--border2);border-radius:16px;width:93%;max-width:560px;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.5);}
+.cmd-input-wrap{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--border);}
+.cmd-icon{font-size:16px;color:var(--text3);}
+#cmdInput{flex:1;background:transparent;border:none;outline:none;font-size:15px;color:var(--text);font-family:inherit;}
+#cmdInput::placeholder{color:var(--text3);}
+.cmd-hint{font-size:11px;color:var(--text3);padding:2px 8px;border-radius:6px;background:var(--bg3);border:1px solid var(--border);}
+.cmd-results{max-height:360px;overflow-y:auto;}
+.cmd-section{padding:8px 14px 4px;font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;}
+.cmd-item{display:flex;align-items:center;gap:12px;padding:10px 18px;cursor:pointer;transition:background .1s;}
+.cmd-item:hover,.cmd-item.active{background:var(--surface2);}
+.cmd-item-icon{width:32px;height:32px;border-radius:8px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.cmd-item-label{font-size:13px;color:var(--text);}
+.cmd-item-sub{font-size:11px;color:var(--text3);}
+.cmd-item-kbd{margin-left:auto;font-size:10px;color:var(--text3);background:var(--bg3);padding:2px 7px;border-radius:5px;border:1px solid var(--border);}
+.cmd-footer{padding:10px 18px;border-top:1px solid var(--border);display:flex;gap:16px;font-size:11px;color:var(--text3);}
+.cmd-kbd{padding:2px 6px;background:var(--bg3);border:1px solid var(--border);border-radius:4px;font-size:10px;}
+
+/* ===== V11.4 ECG PAPER STYLE ===== */
+.ecg-paper-wrap{position:relative;background:#000814;border-radius:12px;overflow:hidden;padding:0;}
+.ecg-paper-wrap::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(34,197,94,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(34,197,94,.07) 1px,transparent 1px);background-size:20px 20px;pointer-events:none;}
+.ecg-paper-wrap::after{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(34,197,94,.14) 1px,transparent 1px),linear-gradient(90deg,rgba(34,197,94,.14) 1px,transparent 1px);background-size:100px 100px;pointer-events:none;}
+.ecg-paper-canvas{display:block;width:100%;height:180px;position:relative;z-index:1;}
+
+/* ===== V11.4 ANÁLISIS STEPS ===== */
+.analysis-steps{display:flex;flex-direction:column;gap:8px;padding:20px;}
+.analysis-step{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--text2);opacity:.4;transition:all .4s;}
+.analysis-step.active{opacity:1;color:var(--text);}
+.analysis-step.done{opacity:.7;color:var(--green2);}
+.step-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;background:var(--bg4);border:2px solid var(--border2);transition:all .4s;}
+.analysis-step.active .step-dot{background:rgba(37,99,235,.2);border-color:var(--accent);animation:stepPulse 1s infinite;}
+.analysis-step.done .step-dot{background:rgba(16,185,129,.15);border-color:var(--green);color:var(--green2);}
+@keyframes stepPulse{0%,100%{box-shadow:0 0 0 0 rgba(37,99,235,.4);}50%{box-shadow:0 0 0 6px rgba(37,99,235,0);}}
+
+/* ===== V11.4 ROI SLIDERS ===== */
+.roi-slider-group{margin-bottom:18px;}
+.roi-slider-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.roi-slider-label{font-size:12px;color:var(--text2);font-weight:500;}
+.roi-slider-val{font-size:16px;font-weight:700;color:var(--accent3);font-family:'DM Mono',monospace;}
+.roi-slider{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:3px;background:var(--bg5);outline:none;cursor:pointer;}
+.roi-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--cyan));cursor:pointer;box-shadow:0 2px 8px rgba(37,99,235,.4);transition:transform .15s;}
+.roi-slider::-webkit-slider-thumb:hover{transform:scale(1.2);}
+.roi-slider::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--cyan));cursor:pointer;border:none;}
+
+/* ===== V11.4 STAT CARDS ANIMADAS ===== */
+.stat-val.counting{transition:none;}
+.stat-card{position:relative;overflow:hidden;}
+.stat-card::after{content:'';position:absolute;top:0;right:0;width:60px;height:60px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.03) 0%,transparent 70%);pointer-events:none;}
+
+/* ===== V11.4 VITALES PULSANTES ===== */
+.vital-val.pulse-red{animation:vitalPulse 1.5s ease-in-out infinite;}
+.vital-val.pulse-green{animation:vitalPulseGreen 2s ease-in-out infinite;}
+@keyframes vitalPulse{0%,100%{color:var(--red2);}50%{color:#ff9999;}}
+@keyframes vitalPulseGreen{0%,100%{color:var(--green2);}50%{color:#86efac;}}
+
+/* ===== V11.4 RIESGO BADGE ANIMADO ===== */
+.badge-riesgo-alto{animation:riesgoPulse 2s ease-in-out infinite;}
+@keyframes riesgoPulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.3);}50%{box-shadow:0 0 0 4px rgba(239,68,68,0);}}
+
+/* ===== V11.4 DRAG & DROP ZONE ===== */
+.drop-zone{transition:all .25s;}
+.drop-zone.dragging{border-color:var(--accent)!important;background:rgba(37,99,235,.06)!important;transform:scale(1.01);}
+
+/* ===== V11.4 PLAN CARDS MEJORADAS ===== */
+.plan-card{transition:all .25s cubic-bezier(.34,1.56,.64,1);}
+.plan-card:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(0,0,0,.3);}
+
+/* ===== V11.4 SEARCH HIGHLIGHT ===== */
+.search-highlight{background:rgba(245,158,11,.2);color:var(--amber2);border-radius:3px;padding:0 2px;}
+
+/* ===== V11.4 ACTIVITY HEATMAP ===== */
+.heatmap-grid{display:flex;gap:3px;flex-wrap:nowrap;overflow-x:auto;}
+.heatmap-col{display:flex;flex-direction:column;gap:3px;}
+.heatmap-cell{width:11px;height:11px;border-radius:2px;flex-shrink:0;transition:transform .15s;}
+.heatmap-cell:hover{transform:scale(1.4);}
+.hm-0{background:var(--bg4);}
+.hm-1{background:rgba(37,99,235,.25);}
+.hm-2{background:rgba(37,99,235,.5);}
+.hm-3{background:rgba(37,99,235,.75);}
+.hm-4{background:var(--accent);}
+
+/* ===== V11.4 DEMO CASO CARDS ===== */
+.demo-caso-card{padding:14px 10px;border-radius:12px;cursor:pointer;text-align:center;transition:all .2s cubic-bezier(.34,1.56,.64,1);position:relative;overflow:hidden;}
+.demo-caso-card:hover{transform:translateY(-3px) scale(1.02);}
+.demo-caso-card:active{transform:scale(.97);}
+.demo-caso-card.loading::after{content:'';position:absolute;bottom:0;left:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--cyan));animation:loadBar .5s ease;}
+@keyframes loadBar{from{width:0;}to{width:100%;}}
+
+/* ===== V11.4 COUNTER ANIMATIONS ===== */
+@keyframes countUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.stat-val{animation:countUp .4s ease;}
+
+/* ===== V11.4 EMPTY STATES MEJORADOS ===== */
+.empty-state-v2{text-align:center;padding:50px 30px;}
+.empty-state-v2 .empty-icon-v2{font-size:56px;margin-bottom:16px;filter:grayscale(.3);animation:floatIcon 3s ease-in-out infinite;}
+.empty-state-v2 .empty-title{font-size:17px;font-weight:600;color:var(--text);margin-bottom:8px;}
+.empty-state-v2 .empty-sub{font-size:13px;color:var(--text2);line-height:1.7;max-width:300px;margin:0 auto 20px;}
+@keyframes floatIcon{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+
+/* ===== V11.4 API STATUS BADGE ===== */
+.api-chip{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:500;padding:5px 12px;border-radius:20px;}
+.api-chip.ok{background:rgba(16,185,129,.1);color:var(--green2);border:1px solid rgba(16,185,129,.2);}
+.api-chip.err{background:rgba(239,68,68,.1);color:var(--red2);border:1px solid rgba(239,68,68,.2);}
+.api-chip.wait{background:rgba(245,158,11,.1);color:var(--amber2);border:1px solid rgba(245,158,11,.2);}
+.api-dot{width:6px;height:6px;border-radius:50%;}
+.api-chip.ok .api-dot{background:var(--green2);box-shadow:0 0 6px var(--green2);}
+.api-chip.err .api-dot{background:var(--red2);}
+.api-chip.wait .api-dot{background:var(--amber2);animation:blink .8s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+/* ===== V11.4 MOBILE IMPROVEMENTS ===== */
+@media(max-width:768px){
+  .cmd-box{margin:0 16px;}
+  #cmdPalette{padding-top:50px;}
+  .toast{min-width:calc(100vw - 40px);max-width:calc(100vw - 40px);}
+  #toastContainer{left:20px;right:20px;}
+  .analysis-steps{padding:14px;}
+  .demo-caso-card{padding:10px 8px;}
+}
+
+/* ===== V11.4 SCROLLBAR MEJORADA ===== */
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:3px;}
+::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.2);}
+
+/* ===== V11.4 FOCUS STATES =====*/
+.btn:focus-visible,.form-input:focus-visible,.form-select:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+
 </style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#060912">
-<title>Cardio-IA Latam v6.0</title>
+<title>Cardio-IA Latam v11.4</title>
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -643,7 +803,25 @@ body{
 <!-- SIDEBAR OVERLAY (mobile) -->
 <div class="sidebar-overlay" id="sidebarOverlay" style="display:none;" onclick="closeSidebar()"></div>
 
-<!-- LOGIN OVERLAY -->
+<!-- V11.4 TOAST CONTAINER -->
+<div id="toastContainer"></div>
+
+<!-- V11.4 COMMAND PALETTE -->
+<div id="cmdPalette" onclick="closeCmdPalette(event)">
+  <div class="cmd-box">
+    <div class="cmd-input-wrap">
+      <span class="cmd-icon">🔍</span>
+      <input type="text" id="cmdInput" placeholder="Buscar módulos, pacientes, acciones..." oninput="filterCmd(this.value)" onkeydown="navCmd(event)" autocomplete="off"/>
+      <span class="cmd-hint">ESC</span>
+    </div>
+    <div class="cmd-results" id="cmdResults"></div>
+    <div class="cmd-footer">
+      <span><span class="cmd-kbd">↑↓</span> navegar</span>
+      <span><span class="cmd-kbd">↵</span> seleccionar</span>
+      <span><span class="cmd-kbd">ESC</span> cerrar</span>
+    </div>
+  </div>
+</div>
 
   <div style="font-size:13px;color:#475569;">Cargando...</div>
   <div style="width:160px;height:3px;background:#1e293b;border-radius:2px;overflow:hidden;margin-top:8px;">
@@ -927,7 +1105,7 @@ body{
       <div id="sidebarOrgLogo" style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--cyan));display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;font-size:18px;">&#x1FAC0;</div>
       <div style="flex:1;min-width:0;">
         <div class="logo-text" id="sidebarOrgName">Cardio-IA Latam</div>
-        <div class="logo-ver">v7.0 SaMD Clase II</div>
+        <div class="logo-ver">v11.4 SaMD Clase II</div>
       </div>
     </div>
 
@@ -1190,6 +1368,7 @@ body{
         <div class="card-title">Mis &#xFA;ltimos diagn&#xF3;sticos</div>
         <button class="btn btn-ghost btn-sm" onclick="cargarHistorial()">&#x1F504; Actualizar</button>
       </div>
+      <div id="dashHeatmap" style="margin-bottom:14px;padding:2px 0;"></div>
       <div id="dashHistorial">
         <div class="empty-state"><div class="empty-icon">&#x1FAC0;</div><div class="empty-text">Cargando...</div></div>
       </div>
@@ -1510,26 +1689,54 @@ body{
       <div style="font-size:11px;color:var(--text2);">Haz clic en un caso para ver el diagn&#xF3;stico IA</div>
       <div id="contadorAnalisis" style="font-size:11px;color:var(--text3);">&#x1F4CA; 0 an&#xE1;lisis realizados</div>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
-      <div onclick="cargarDemo('iam')" style="padding:12px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:10px;cursor:pointer;text-align:center;transition:all .15s;">
-        <div style="font-size:24px;margin-bottom:6px;">&#x1F6A8;</div>
-        <div style="font-size:12px;font-weight:600;color:var(--red2);">IAM Activo</div>
-        <div style="font-size:10px;color:var(--text3);">Infarto agudo</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;" id="demoCasosGrid">
+      <div class="demo-caso-card" onclick="cargarDemo('iam')" style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);" id="demo-iam">
+        <div style="font-size:24px;margin-bottom:4px;">&#x1F6A8;</div>
+        <div style="font-size:11px;font-weight:700;color:var(--red2);">IAM Activo</div>
+        <div style="font-size:9px;color:var(--text3);">Infarto agudo</div>
+        <div style="margin-top:5px;font-size:9px;padding:1px 6px;border-radius:8px;background:rgba(239,68,68,.15);color:var(--red2);display:inline-block;font-weight:700;">CR&#xCD;TICO</div>
       </div>
-      <div onclick="cargarDemo('afib')" style="padding:12px;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:10px;cursor:pointer;text-align:center;transition:all .15s;">
-        <div style="font-size:24px;margin-bottom:6px;">&#x1F49B;</div>
-        <div style="font-size:12px;font-weight:600;color:var(--amber2);">Fibrilaci&#xF3;n A.</div>
-        <div style="font-size:10px;color:var(--text3);">Arritmia</div>
+      <div class="demo-caso-card" onclick="cargarDemo('afib')" style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);" id="demo-afib">
+        <div style="font-size:24px;margin-bottom:4px;">&#x1F49B;</div>
+        <div style="font-size:11px;font-weight:700;color:var(--amber2);">Fibrilaci&#xF3;n A.</div>
+        <div style="font-size:9px;color:var(--text3);">Arritmia</div>
+        <div style="margin-top:5px;font-size:9px;padding:1px 6px;border-radius:8px;background:rgba(245,158,11,.15);color:var(--amber2);display:inline-block;font-weight:700;">URGENTE</div>
       </div>
-      <div onclick="cargarDemo('bloqueo')" style="padding:12px;background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.2);border-radius:10px;cursor:pointer;text-align:center;transition:all .15s;">
-        <div style="font-size:24px;margin-bottom:6px;">&#x26A0;&#xFE0F;</div>
-        <div style="font-size:12px;font-weight:600;color:var(--purple2);">Bloqueo BCRD</div>
-        <div style="font-size:10px;color:var(--text3);">Conducción</div>
+      <div class="demo-caso-card" onclick="cargarDemo('tv')" style="background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15);" id="demo-tv">
+        <div style="font-size:24px;margin-bottom:4px;">&#x26A1;</div>
+        <div style="font-size:11px;font-weight:700;color:var(--red2);">Taq. Ventricular</div>
+        <div style="font-size:9px;color:var(--text3);">TV sostenida</div>
+        <div style="margin-top:5px;font-size:9px;padding:1px 6px;border-radius:8px;background:rgba(239,68,68,.15);color:var(--red2);display:inline-block;font-weight:700;">CR&#xCD;TICO</div>
       </div>
-      <div onclick="cargarDemo('normal')" style="padding:12px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:10px;cursor:pointer;text-align:center;transition:all .15s;">
-        <div style="font-size:24px;margin-bottom:6px;">&#x2705;</div>
-        <div style="font-size:12px;font-weight:600;color:var(--green2);">Normal</div>
-        <div style="font-size:10px;color:var(--text3);">Ritmo sinusal</div>
+      <div class="demo-caso-card" onclick="cargarDemo('bloqueo')" style="background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.2);" id="demo-bloqueo">
+        <div style="font-size:24px;margin-bottom:4px;">&#x26A0;&#xFE0F;</div>
+        <div style="font-size:11px;font-weight:700;color:var(--purple2);">Bloqueo BCRD</div>
+        <div style="font-size:9px;color:var(--text3);">Conducci&#xF3;n</div>
+        <div style="margin-top:5px;font-size:9px;padding:1px 6px;border-radius:8px;background:rgba(139,92,246,.15);color:var(--purple2);display:inline-block;font-weight:700;">MODERADO</div>
+      </div>
+      <div class="demo-caso-card" onclick="cargarDemo('wpw')" style="background:rgba(14,165,233,.08);border:1px solid rgba(14,165,233,.2);" id="demo-wpw">
+        <div style="font-size:24px;margin-bottom:4px;">&#x26A1;&#xFE0F;</div>
+        <div style="font-size:11px;font-weight:700;color:var(--cyan);">S. WPW</div>
+        <div style="font-size:9px;color:var(--text3);">Pre-excitaci&#xF3;n</div>
+        <div style="margin-top:5px;font-size:9px;padding:1px 6px;border-radius:8px;background:rgba(14,165,233,.15);color:var(--cyan);display:inline-block;font-weight:700;">URGENTE</div>
+      </div>
+      <div class="demo-caso-card" onclick="cargarDemo('qt')" style="background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.2);" id="demo-qt">
+        <div style="font-size:24px;margin-bottom:4px;">&#x23F1;&#xFE0F;</div>
+        <div style="font-size:11px;font-weight:700;color:#fb923c;">QT Prolongado</div>
+        <div style="font-size:9px;color:var(--text3);">Riesgo TV/FV</div>
+        <div style="margin-top:5px;font-size:9px;padding:1px 6px;border-radius:8px;background:rgba(249,115,22,.15);color:#fb923c;display:inline-block;font-weight:700;">MODERADO</div>
+      </div>
+      <div class="demo-caso-card" onclick="cargarDemo('bav3')" style="background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.15);" id="demo-bav3">
+        <div style="font-size:24px;margin-bottom:4px;">&#x1F494;</div>
+        <div style="font-size:11px;font-weight:700;color:var(--purple2);">BAV III</div>
+        <div style="font-size:9px;color:var(--text3);">Bloqueo completo</div>
+        <div style="margin-top:5px;font-size:9px;padding:1px 6px;border-radius:8px;background:rgba(139,92,246,.15);color:var(--purple2);display:inline-block;font-weight:700;">CR&#xCD;TICO</div>
+      </div>
+      <div class="demo-caso-card" onclick="cargarDemo('normal')" style="background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);" id="demo-normal">
+        <div style="font-size:24px;margin-bottom:4px;">&#x2705;</div>
+        <div style="font-size:11px;font-weight:700;color:var(--green2);">Normal</div>
+        <div style="font-size:9px;color:var(--text3);">Ritmo sinusal</div>
+        <div style="margin-top:5px;font-size:9px;padding:1px 6px;border-radius:8px;background:rgba(16,185,129,.15);color:var(--green2);display:inline-block;font-weight:700;">NORMAL</div>
       </div>
     </div>
   </div>
@@ -1664,14 +1871,17 @@ body{
     <div class="card">
       <div class="card-hd">
         <div class="card-title">&#x1F4C8; Trazado ECG</div>
-        <div style="display:flex;gap:8px;">
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span id="ecgLiveDot" style="display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--green2);"><span class="live-dot"></span>En vivo</span>
           <button class="btn btn-ghost btn-sm" onclick="toggleZoomECG()">&#x1F50D; Zoom</button>
           <div id="derivLabel" style="font-size:11px;color:var(--text2);padding:5px 10px;background:var(--bg3);border-radius:6px;">Derivaci&#xF3;n II</div>
         </div>
       </div>
-      <div class="chart-wrap" style="height:160px;"><canvas id="ecgLineChart"></canvas></div>
+      <div class="ecg-paper-wrap" style="margin-bottom:12px;">
+        <canvas class="ecg-paper-canvas" id="ecgLineChart"></canvas>
+      </div>
       <!-- Hallazgos clinicos -->
-      <div id="hallazgosCard" style="display:none;margin-top:12px;">
+      <div id="hallazgosCard" style="display:none;margin-top:4px;">
         <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:8px;">&#x1F9EC; Hallazgos cl&#xED;nicos detectados</div>
         <div id="hallazgosList" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
       </div>
@@ -1938,10 +2148,10 @@ body{
                   <span class="badge b-warn">Riesgo Alto</span>
                 </div>
                 <div class="vital-grid">
-                  <div class="vital"><div class="vital-val" style="color:var(--red2);">94</div><div class="vital-lbl">FC (lpm)</div></div>
-                  <div class="vital"><div class="vital-val" style="color:var(--green2);">98%</div><div class="vital-lbl">SpO2</div></div>
-                  <div class="vital"><div class="vital-val" style="color:var(--amber2);">148/95</div><div class="vital-lbl">Presi&#xF3;n</div></div>
-                  <div class="vital"><div class="vital-val" style="color:var(--accent3);font-size:11px;">Apple Watch</div><div class="vital-lbl">Dispositivo</div></div>
+                  <div class="vital"><div class="vital-val pulse-red" data-vital="fc" style="color:var(--red2);">94</div><div class="vital-lbl">FC (lpm)</div></div>
+                  <div class="vital"><div class="vital-val pulse-green" data-vital="spo2" style="color:var(--green2);">98%</div><div class="vital-lbl">SpO2</div></div>
+                  <div class="vital"><div class="vital-val" data-vital="bp" style="color:var(--amber2);">148/95</div><div class="vital-lbl">Presi&#xF3;n</div></div>
+                  <div class="vital"><div class="vital-val" style="color:var(--accent3);font-size:11px;"><span class="live-dot" style="margin-right:3px;"></span>Apple Watch</div><div class="vital-lbl">Dispositivo</div></div>
                 </div>
                 <div class="alert-item ai-critico"><span style="color:var(--red2);font-size:12px;font-weight:600;">&#x1F534; FA detectada &#xB7; Confianza 87% &#xB7; Pendiente revisi&#xF3;n</span></div>
               </div>
@@ -2387,11 +2597,30 @@ body{
     <!-- ===== ROI ===== -->
       <div class="panel" id="panel-roi">
         <div class="card">
-          <div class="card-title" style="margin-bottom:14px;">Configura tu hospital</div>
-          <div class="form-row3">
-            <div class="form-group"><label class="form-label">Camas UCI card&#xED;acas</label><input class="form-input" id="roiCamas" type="number" value="20" oninput="calcROI()"></div>
-            <div class="form-group"><label class="form-label">Reingresos evitables/mes</label><input class="form-input" id="roiReingresos" type="number" value="8" oninput="calcROI()"></div>
-            <div class="form-group"><label class="form-label">Costo reingreso (USD)</label><input class="form-input" id="roiCosto" type="number" value="15000" oninput="calcROI()"></div>
+          <div class="card-title" style="margin-bottom:16px;">&#x2699;&#xFE0F; Configura tu hospital</div>
+          <div class="roi-slider-group">
+            <div class="roi-slider-header">
+              <span class="roi-slider-label">&#x1F6CF; Camas UCI card&#xED;acas</span>
+              <span class="roi-slider-val" id="roiCamasVal">20</span>
+            </div>
+            <input type="range" class="roi-slider" id="roiCamas" min="5" max="200" value="20" oninput="document.getElementById('roiCamasVal').textContent=this.value;calcROI()">
+            <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-top:4px;"><span>5</span><span>200</span></div>
+          </div>
+          <div class="roi-slider-group">
+            <div class="roi-slider-header">
+              <span class="roi-slider-label">&#x1F504; Reingresos evitables/mes</span>
+              <span class="roi-slider-val" id="roiReingresosVal">8</span>
+            </div>
+            <input type="range" class="roi-slider" id="roiReingresos" min="1" max="50" value="8" oninput="document.getElementById('roiReingresosVal').textContent=this.value;calcROI()">
+            <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-top:4px;"><span>1</span><span>50</span></div>
+          </div>
+          <div class="roi-slider-group">
+            <div class="roi-slider-header">
+              <span class="roi-slider-label">&#x1F4B5; Costo reingreso (USD)</span>
+              <span class="roi-slider-val" id="roiCostoVal">$15,000</span>
+            </div>
+            <input type="range" class="roi-slider" id="roiCosto" min="3000" max="50000" step="1000" value="15000" oninput="document.getElementById('roiCostoVal').textContent='$'+parseInt(this.value).toLocaleString();calcROI()">
+            <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-top:4px;"><span>$3K</span><span>$50K</span></div>
           </div>
         </div>
         <div class="g4" style="margin-bottom:16px;">
@@ -2450,7 +2679,7 @@ body{
           <div class="card">
             <div class="card-title" style="margin-bottom:14px;">Log de trazabilidad blockchain</div>
             <div id="logTrazabilidad">
-              <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);"><div style="width:8px;height:8px;border-radius:50%;background:var(--green2);flex-shrink:0;margin-top:4px;"></div><div style="flex:1;font-size:12px;color:var(--text2);line-height:1.5;">Sistema iniciado &#xB7; API activa &#xB7; Modelo v6.0 cargado</div></div>
+              <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);"><div style="width:8px;height:8px;border-radius:50%;background:var(--green2);flex-shrink:0;margin-top:4px;"></div><div style="flex:1;font-size:12px;color:var(--text2);line-height:1.5;">Sistema iniciado &#xB7; API activa &#xB7; Modelo v11.4 cargado</div></div>
             </div>
           </div>
         </div>
@@ -2493,7 +2722,7 @@ body{
             <button class="btn btn-red btn-sm" onclick="openModal('resetModal')">&#x26A0;&#xFE0F; Resetear software</button>
           </div>
           <div style="display:flex;flex-direction:column;gap:0;">
-            <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:12px;color:var(--text2);">Versi&#xF3;n</span><span style="font-size:13px;color:var(--green2);font-family:'DM Mono',monospace;">v6.0 SaMD</span></div>
+            <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:12px;color:var(--text2);">Versi&#xF3;n</span><span style="font-size:13px;color:var(--green2);font-family:'DM Mono',monospace;">v11.4 SaMD</span></div>
             <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:12px;color:var(--text2);">Modelo IA</span><span style="font-size:13px;">CNN 24 clases &#xB7; AUC-ROC 0.9408</span></div>
             <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:12px;color:var(--text2);">Dataset</span><span style="font-size:13px;">PTB-XL 21,799 ECGs reales</span></div>
             <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);"><span style="font-size:12px;color:var(--text2);">API</span><span style="font-size:11px;font-family:'DM Mono',monospace;color:var(--accent3);" id="ayudaApiUrl"></span></div>
@@ -4118,7 +4347,7 @@ function cargarDemo(tipo) {
         '</div>'
       ].join('');
     }
-    mostrarResultadoDemo(demo);
+    mostrarResultadoDemo(demo, tipo);
     if (fi) fi.innerHTML = '\u2705 Caso demo: <strong>' + demo.nombre + '</strong>';
   }, 1800);
 }
@@ -4144,7 +4373,7 @@ function generarECGDemo(tipo) {
   return datos;
 }
 
-function mostrarResultadoDemo(demo) {
+function mostrarResultadoDemo(demo, tipoDemo) {
   // Guardar resultado
   ultimoResultado = {
     diagnostico: demo.diagnostico,
@@ -4156,11 +4385,18 @@ function mostrarResultadoDemo(demo) {
   };
   mostrarResultadoUI(demo.diagnostico, demo.confianza, demo.urgencia, demo.urgenciaColor, demo.hallazgos, demo.probClases, demo.fc, demo.qt, demo.pr, demo.emoji);
   dibujarECGGrafica(ecgDataActual);
-  mostrarRecomendaciones(tipo);
+  var tipoRec = tipoDemo || 'normal';
+  mostrarRecomendaciones(tipoRec);
   guardarEnHistorialAuto(ultimoResultado);
   incrementarContador();
-  setTimeout(function() { mostrarComparacion(tipo); mostrarTendencia(); }, 300);
+  setTimeout(function() { mostrarComparacion(tipoRec); mostrarTendencia(); }, 300);
   agregarLog('Demo analizado: ' + demo.diagnostico);
+  showToast('✅ Diagnóstico completado: ' + demo.diagnostico, 'success');
+}
+
+// Alias para compatibilidad
+function actualizarUIUsuario() {
+  actualizarPerfil();
 }
 
 function mostrarResultadoUI(diag, conf, urgencia, urgColor, hallazgos, probs, fc, qt, pr, emoji) {
@@ -5461,7 +5697,7 @@ function imprimirInformeMensual() {
   w.document.write('</div>');
   w.document.write('<div class="content">' + (texto || 'Sin contenido') + '</div>');
   w.document.write('<div class="firma-area"><div class="firma-box">Firma del m&#xE9;dico<br><br>' + medico + '<br>' + (especialidad||'') + '</div><div class="firma-box">Fecha<br><br>' + new Date().toLocaleDateString('es-CO') + '</div></div>');
-  w.document.write('<div class="footer">Generado por Cardio-IA Latam v7.0 &middot; SaMD Clase II &middot; ' + new Date().toLocaleString('es-CO') + '</div>');
+  w.document.write('<div class="footer">Generado por Cardio-IA Latam v11.4 &middot; SaMD Clase II &middot; ' + new Date().toLocaleString('es-CO') + '</div>');
   w.document.write('<br><button onclick="window.print()" style="padding:10px 24px;background:#2563eb;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">Imprimir / Guardar PDF</button>');
   w.document.write('</body></html>');
   w.document.close();
@@ -6981,6 +7217,10 @@ function calcROI() {
   var camas = parseInt(document.getElementById('roiCamas').value) || 20;
   var reingresos = parseInt(document.getElementById('roiReingresos').value) || 8;
   var costo = parseInt(document.getElementById('roiCosto').value) || 15000;
+  // Sync slider labels
+  var cv = document.getElementById('roiCamasVal'); if(cv) cv.textContent = camas;
+  var rv = document.getElementById('roiReingresosVal'); if(rv) rv.textContent = reingresos;
+  var cosv = document.getElementById('roiCostoVal'); if(cosv) cosv.textContent = '$'+costo.toLocaleString();
   var ahorroMes = reingresos * costo * 0.75;
   var ahorroAnual = ahorroMes * 12;
   var inversion = Math.max(5000, camas * 250) * 12;
@@ -8449,6 +8689,529 @@ document.addEventListener('click', function(e) {
     if (pac) irAPaciente(e, pac);
   }
 });
+
+// ===== V11.4 TOAST NOTIFICATION SYSTEM =====
+function showToast(msg, type, duration) {
+  type = type || 'info';
+  duration = duration || 3500;
+  var icons = {success:'✅', error:'❌', warning:'⚠️', info:'ℹ️'};
+  var container = document.getElementById('toastContainer');
+  if (!container) return;
+  var toast = document.createElement('div');
+  toast.className = 'toast toast-' + type;
+  toast.innerHTML = '<span class="toast-icon">' + icons[type] + '</span>' +
+    '<span style="flex:1;line-height:1.4;">' + msg + '</span>' +
+    '<button class="toast-close" onclick="this.parentElement.remove()">×</button>';
+  container.appendChild(toast);
+  setTimeout(function() {
+    if (toast.parentNode) {
+      toast.classList.add('removing');
+      setTimeout(function() { if (toast.parentNode) toast.remove(); }, 250);
+    }
+  }, duration);
+  return toast;
+}
+
+// ===== V11.4 COMMAND PALETTE =====
+var CMD_ITEMS = [
+  {icon:'📊', label:'Dashboard', sub:'Panel de control', action:function(){switchTab('dashboard');}},
+  {icon:'🔬', label:'Analizar ECG', sub:'Diagnóstico con IA', action:function(){switchTab('analizar');}},
+  {icon:'📋', label:'Historial', sub:'Diagnósticos guardados', action:function(){switchTab('historial');}},
+  {icon:'🧑‍⚕️', label:'Pacientes', sub:'Gestión y seguimiento', action:function(){switchTab('pacientes');}},
+  {icon:'⌚', label:'Monitoreo Remoto', sub:'SmartWatch tiempo real', action:function(){switchTab('monitoreo');}},
+  {icon:'🔌', label:'Conectores ECG', sub:'Importar desde máquinas', action:function(){switchTab('conectores');}},
+  {icon:'🏢', label:'Organización', sub:'Configuración de cuenta', action:function(){switchTab('organizacion');}},
+  {icon:'✉️', label:'Invitaciones', sub:'Médicos vinculados', action:function(){switchTab('invitaciones');}},
+  {icon:'💳', label:'Planes y Pagos', sub:'Suscripción activa', action:function(){switchTab('pagos');}},
+  {icon:'💰', label:'ROI', sub:'Retorno de inversión', action:function(){switchTab('roi');}},
+  {icon:'🗺️', label:'Epidemiología', sub:'Datos Latam', action:function(){switchTab('epidemia');}},
+  {icon:'🧬', label:'Ciencia', sub:'Modelo IA y métricas', action:function(){switchTab('ciencia');}},
+  {icon:'❓', label:'Ayuda', sub:'Documentación y soporte', action:function(){switchTab('ayuda');}},
+  {icon:'👤', label:'Mi Perfil', sub:'Datos del médico', action:function(){switchTab('perfil');}},
+  {icon:'🚀', label:'Demo IAM', sub:'Cargar caso infarto', action:function(){switchTab('analizar');setTimeout(function(){cargarDemo('iam');},300);}},
+  {icon:'💛', label:'Demo Fibrilación', sub:'Cargar FA', action:function(){switchTab('analizar');setTimeout(function(){cargarDemo('afib');},300);}},
+  {icon:'⚡', label:'Demo TV', sub:'Taquicardia ventricular', action:function(){switchTab('analizar');setTimeout(function(){cargarDemo('tv');},300);}},
+  {icon:'✅', label:'Demo Normal', sub:'Ritmo sinusal', action:function(){switchTab('analizar');setTimeout(function(){cargarDemo('normal');},300);}},
+  {icon:'📥', label:'Exportar Historial CSV', sub:'Descargar datos', action:function(){switchTab('historial');setTimeout(exportarCSVHistorial,300);}},
+  {icon:'🔄', label:'Actualizar Datos', sub:'Sincronizar con API', action:function(){cargarHistorial();showToast('Datos actualizados','success');}},
+  {icon:'🚪', label:'Cerrar Sesión', sub:'Salir de la cuenta', action:cerrarSesion}
+];
+var cmdActive = -1;
+var cmdFiltered = [];
+
+function openCmdPalette() {
+  var pal = document.getElementById('cmdPalette');
+  if (pal) {
+    pal.classList.add('show');
+    setTimeout(function() {
+      var inp = document.getElementById('cmdInput');
+      if (inp) { inp.value = ''; inp.focus(); filterCmd(''); }
+    }, 50);
+  }
+}
+
+function closeCmdPalette(e) {
+  if (!e || e.target.id === 'cmdPalette') {
+    var pal = document.getElementById('cmdPalette');
+    if (pal) pal.classList.remove('show');
+    cmdActive = -1;
+  }
+}
+
+function filterCmd(q) {
+  q = (q || '').toLowerCase().trim();
+  cmdFiltered = q ? CMD_ITEMS.filter(function(it) {
+    return it.label.toLowerCase().includes(q) || (it.sub || '').toLowerCase().includes(q);
+  }) : CMD_ITEMS;
+  cmdActive = cmdFiltered.length > 0 ? 0 : -1;
+  renderCmdResults();
+}
+
+function renderCmdResults() {
+  var el = document.getElementById('cmdResults');
+  if (!el) return;
+  if (!cmdFiltered.length) {
+    el.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text3);font-size:13px;">Sin resultados</div>';
+    return;
+  }
+  el.innerHTML = '<div class="cmd-section">Acciones rápidas</div>' +
+    cmdFiltered.map(function(item, i) {
+      return '<div class="cmd-item' + (i === cmdActive ? ' active' : '') + '" onclick="execCmd(' + i + ')">' +
+        '<div class="cmd-item-icon">' + item.icon + '</div>' +
+        '<div><div class="cmd-item-label">' + item.label + '</div>' +
+        '<div class="cmd-item-sub">' + (item.sub || '') + '</div></div>' +
+        '</div>';
+    }).join('');
+}
+
+function navCmd(e) {
+  if (e.key === 'Escape') { closeCmdPalette(); return; }
+  if (e.key === 'ArrowDown') { e.preventDefault(); cmdActive = Math.min(cmdActive + 1, cmdFiltered.length - 1); renderCmdResults(); }
+  if (e.key === 'ArrowUp') { e.preventDefault(); cmdActive = Math.max(cmdActive - 1, 0); renderCmdResults(); }
+  if (e.key === 'Enter' && cmdActive >= 0) { execCmd(cmdActive); }
+}
+
+function execCmd(i) {
+  var item = cmdFiltered[i];
+  if (item && item.action) {
+    closeCmdPalette();
+    item.action();
+  }
+}
+
+// Keyboard shortcuts globales
+document.addEventListener('keydown', function(e) {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+    e.preventDefault();
+    openCmdPalette();
+  }
+  if (e.key === 'Escape') {
+    var pal = document.getElementById('cmdPalette');
+    if (pal && pal.classList.contains('show')) closeCmdPalette();
+  }
+});
+
+// ===== V11.4 BOTÓN COMMAND PALETTE EN TOPBAR =====
+document.addEventListener('DOMContentLoaded', function() {
+  var topbarRight = document.querySelector('.topbar-right');
+  if (topbarRight) {
+    var cmdBtn = document.createElement('button');
+    cmdBtn.onclick = openCmdPalette;
+    cmdBtn.title = 'Búsqueda rápida (Ctrl+K)';
+    cmdBtn.style.cssText = 'display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:8px;background:var(--surface);border:1px solid var(--border2);color:var(--text3);cursor:pointer;font-size:11px;font-family:inherit;transition:all .15s;';
+    cmdBtn.innerHTML = '&#x1F50D; <span style="display:none;" id="cmdBtnLabel">Buscar</span><span style="background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:1px 5px;font-size:9px;color:var(--text3);">Ctrl+K</span>';
+    topbarRight.insertBefore(cmdBtn, topbarRight.firstChild);
+  }
+});
+
+// ===== V11.4 DEMOS NUEVOS (TV, WPW, QT, BAV III) =====
+var DEMOS_EXTRA = {
+  tv: {
+    nombre: 'Taquicardia Ventricular', emoji: '⚡',
+    urgencia: 'CRÍTICO', urgenciaColor: '#ef4444',
+    diagnostico: 'Taquicardia Ventricular Sostenida',
+    confianza: 95.4,
+    fc: 185, qt: 520, pr: 0,
+    hallazgos: [
+      {texto: 'FC mayor 180 lpm', color: '#ef4444', urgencia: 'CRÍTICO'},
+      {texto: 'QRS ancho mayor 120ms', color: '#ef4444', urgencia: 'CRÍTICO'},
+      {texto: 'Disociación AV', color: '#f97316', urgencia: 'ALTO'}
+    ],
+    probClases: [
+      {nombre: 'Taquicardia Ventricular', prob: 95.4, color: '#ef4444'},
+      {nombre: 'Fibrilación Ventricular', prob: 2.1, color: '#dc2626'},
+      {nombre: 'TSV con aberrancia', prob: 1.3, color: '#f59e0b'},
+      {nombre: 'Fibrilación Auricular', prob: 0.7, color: '#f59e0b'},
+      {nombre: 'Normal', prob: 0.5, color: '#22c55e'}
+    ]
+  },
+  wpw: {
+    nombre: 'Síndrome WPW', emoji: '⚡️',
+    urgencia: 'URGENTE', urgenciaColor: '#0ea5e9',
+    diagnostico: 'Síndrome de Wolff-Parkinson-White',
+    confianza: 92.7,
+    fc: 98, qt: 310, pr: 80,
+    hallazgos: [
+      {texto: 'Onda Delta visible', color: '#0ea5e9', urgencia: 'ALTO'},
+      {texto: 'Intervalo PR corto menor 120ms', color: '#f59e0b', urgencia: 'MODERADO'},
+      {texto: 'QRS prolongado por pre-excitación', color: '#6366f1', urgencia: 'MODERADO'}
+    ],
+    probClases: [
+      {nombre: 'Sínd. WPW', prob: 92.7, color: '#0ea5e9'},
+      {nombre: 'LGL Syndrome', prob: 3.2, color: '#60a5fa'},
+      {nombre: 'Bloqueo Rama', prob: 2.1, color: '#8b5cf6'},
+      {nombre: 'Fibrilación Auricular', prob: 1.3, color: '#f59e0b'},
+      {nombre: 'Normal', prob: 0.7, color: '#22c55e'}
+    ]
+  },
+  qt: {
+    nombre: 'QT Prolongado', emoji: '⏱️',
+    urgencia: 'MODERADO', urgenciaColor: '#f97316',
+    diagnostico: 'Síndrome QT Largo — Riesgo de TV/FV',
+    confianza: 89.3,
+    fc: 62, qt: 560, pr: 180,
+    hallazgos: [
+      {texto: 'QTc mayor 500ms — Riesgo alto', color: '#f97316', urgencia: 'ALTO'},
+      {texto: 'Onda T bifásica en V2-V5', color: '#f59e0b', urgencia: 'MODERADO'},
+      {texto: 'Pausas post-extrasistólicas', color: '#94a3b8', urgencia: 'BAJO'}
+    ],
+    probClases: [
+      {nombre: 'QT Prolongado', prob: 89.3, color: '#f97316'},
+      {nombre: 'Isquemia Subendocárdica', prob: 5.2, color: '#ef4444'},
+      {nombre: 'Torsades de Pointes', prob: 3.1, color: '#dc2626'},
+      {nombre: 'Bradicardia Sinusal', prob: 1.6, color: '#3b82f6'},
+      {nombre: 'Normal', prob: 0.8, color: '#22c55e'}
+    ]
+  },
+  bav3: {
+    nombre: 'Bloqueo AV III', emoji: '💔',
+    urgencia: 'CRÍTICO', urgenciaColor: '#8b5cf6',
+    diagnostico: 'Bloqueo Auriculoventricular de Tercer Grado',
+    confianza: 97.1,
+    fc: 38, qt: 480, pr: 0,
+    hallazgos: [
+      {texto: 'FC menor 40 lpm — Bradicardia extrema', color: '#8b5cf6', urgencia: 'CRÍTICO'},
+      {texto: 'Disociación AV completa', color: '#ef4444', urgencia: 'CRÍTICO'},
+      {texto: 'Ritmo de escape ventricular', color: '#a78bfa', urgencia: 'ALTO'}
+    ],
+    probClases: [
+      {nombre: 'BAV III Completo', prob: 97.1, color: '#8b5cf6'},
+      {nombre: 'BAV II Mobitz II', prob: 1.4, color: '#6366f1'},
+      {nombre: 'Bloqueo Rama', prob: 0.8, color: '#818cf8'},
+      {nombre: 'Ritmo Nodal', prob: 0.4, color: '#94a3b8'},
+      {nombre: 'Normal', prob: 0.3, color: '#22c55e'}
+    ]
+  }
+};
+
+// Extender DEMOS con los nuevos
+(function() {
+  Object.keys(DEMOS_EXTRA).forEach(function(k) { DEMOS[k] = DEMOS_EXTRA[k]; });
+})();
+
+// Mejorar generarECGDemo para los nuevos tipos
+var _genECGOrig = generarECGDemo;
+generarECGDemo = function(tipo) {
+  var n = 500;
+  var d = [];
+  if (tipo === 'tv') {
+    for (var i = 0; i < n; i++) {
+      d.push(Math.sin(i / 500 * Math.PI * 60) * 1.4 + (Math.random() - .5) * .15);
+    }
+  } else if (tipo === 'wpw') {
+    for (var i = 0; i < n; i++) {
+      var wave = (i % 100 < 5) ? 0.3 : 0; // onda delta
+      d.push(Math.sin(i / 500 * Math.PI * 22) * .12 + (i % 100 < 8 ? 1.3 + wave : i % 100 < 14 ? -.25 : i % 100 < 30 ? .7 : 0) + (Math.random() - .5) * .04);
+    }
+  } else if (tipo === 'qt') {
+    for (var i = 0; i < n; i++) {
+      d.push(Math.sin(i / 500 * Math.PI * 18) * .1 + (i % 100 < 5 ? 1.1 : i % 100 < 10 ? -.25 : i % 100 < 50 ? .35 * Math.sin((i % 100 - 10) / 40 * Math.PI) : 0) + (Math.random() - .5) * .04);
+    }
+  } else if (tipo === 'bav3') {
+    for (var i = 0; i < n; i++) {
+      // Ritmo lento, ondas P independientes, QRS lento
+      var qrs = (i % 160 < 5) ? 1.0 : (i % 160 < 10 ? -.3 : i % 160 < 22 ? .5 : 0);
+      var pWave = ((i + 30) % 80 < 4) ? .25 : 0;
+      d.push(qrs + pWave + (Math.random() - .5) * .04);
+    }
+  } else {
+    return _genECGOrig(tipo);
+  }
+  return d;
+};
+
+// ===== V11.4 ANÁLISIS CON STEPS ANIMADOS =====
+var _cargarDemoOrig = cargarDemo;
+cargarDemo = function(tipo) {
+  var demo = DEMOS[tipo];
+  if (!demo) return;
+  var demoCasosGrid = document.getElementById('demoCasosGrid');
+  if (demoCasosGrid) {
+    demoCasosGrid.querySelectorAll('.demo-caso-card').forEach(function(c) { c.classList.remove('loading'); });
+    var card = document.getElementById('demo-' + tipo);
+    if (card) card.classList.add('loading');
+  }
+  var preview = document.getElementById('resultadoPreview');
+  if (preview) {
+    preview.style.display = 'block';
+    preview.innerHTML = '<div style="padding:30px 20px;">' +
+      '<div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:20px;text-align:center;">Analizando ' + demo.nombre + ' con IA...</div>' +
+      '<div class="analysis-steps" id="analysisSteps">' +
+        '<div class="analysis-step active" id="step1"><div class="step-dot">1</div><div>Cargando señal ECG</div></div>' +
+        '<div class="analysis-step" id="step2"><div class="step-dot">2</div><div>Preprocesando datos</div></div>' +
+        '<div class="analysis-step" id="step3"><div class="step-dot">3</div><div>Red neuronal CNN — 24 clases</div></div>' +
+        '<div class="analysis-step" id="step4"><div class="step-dot">4</div><div>Generando diagnóstico clínico</div></div>' +
+      '</div>' +
+    '</div>';
+  }
+  var timings = [200, 600, 1100, 1600];
+  [1,2,3,4].forEach(function(n, i) {
+    setTimeout(function() {
+      var s = document.getElementById('step' + n);
+      if (s) {
+        if (i > 0) { var prev = document.getElementById('step' + (n-1)); if (prev) { prev.classList.remove('active'); prev.classList.add('done'); prev.querySelector('.step-dot').textContent = '✓'; } }
+        s.classList.add('active');
+      }
+    }, timings[i]);
+  });
+  var fi = document.getElementById('fileInfo');
+  if (fi) { fi.style.display = 'block'; fi.innerHTML = '⏳ Analizando: <strong>' + demo.nombre + '</strong>'; }
+  setTimeout(function() {
+    var datos = generarECGDemo(tipo);
+    ecgDataActual = datos;
+    var btn = document.getElementById('btnAnalizar');
+    if (btn) btn.disabled = false;
+    if (preview) {
+      preview.innerHTML = [
+        '<div class="card" style="height:100%;">',
+        '<div class="card-hd" style="margin-bottom:12px;">',
+        '<div class="card-title">Resultado del diagnóstico</div>',
+        '<div id="urgenciaBadge" style="font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;"></div>',
+        '</div>',
+        '<div id="diagPrincipal" style="background:var(--bg3);border-radius:12px;padding:16px;margin-bottom:12px;text-align:center;">',
+        '<div style="font-size:32px;margin-bottom:8px;" id="diagEmoji">\u2764\uFE0F</div>',
+        '<div style="font-size:18px;font-weight:700;" id="diagTexto">-</div>',
+        '<div style="font-size:13px;color:var(--text2);margin-top:4px;" id="diagConfianza">-</div>',
+        '</div>',
+        '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;">',
+        '<div style="background:var(--bg4);border-radius:8px;padding:10px;text-align:center;"><div style="font-size:16px;font-weight:700;color:var(--accent3);" id="indFC">-</div><div style="font-size:10px;color:var(--text3);">FC (lpm)</div></div>',
+        '<div style="background:var(--bg4);border-radius:8px;padding:10px;text-align:center;"><div style="font-size:16px;font-weight:700;color:var(--cyan);" id="indQT">-</div><div style="font-size:10px;color:var(--text3);">QTc (ms)</div></div>',
+        '<div style="background:var(--bg4);border-radius:8px;padding:10px;text-align:center;"><div style="font-size:16px;font-weight:700;color:var(--purple2);" id="indPR">-</div><div style="font-size:10px;color:var(--text3);">PR (ms)</div></div>',
+        '</div>',
+        '<div id="probPatologias" style="margin-bottom:12px;"></div>',
+        '<div style="margin-bottom:12px;"><label style="font-size:11px;font-weight:600;color:var(--text2);display:block;margin-bottom:4px;">\uD83D\uDCDD Notas clínicas</label>',
+        '<textarea id="notasMedico" style="width:100%;min-height:60px;background:var(--bg4);border:1px solid var(--border2);border-radius:8px;padding:10px;color:var(--text);font-size:12px;font-family:inherit;resize:vertical;" placeholder="Observaciones..."></textarea>',
+        '</div>',
+        '<div style="display:flex;gap:8px;flex-wrap:wrap;">',
+        '<button class="btn btn-primary" style="flex:1;" onclick="abrirFirma()">\u270D\uFE0F Firmar</button>',
+        '<button class="btn btn-green" style="flex:1;" onclick="exportarPDFProfesional()">\uD83D\uDCCB PDF</button>',
+        '<button style="padding:10px 12px;background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.3);border-radius:10px;color:#25D366;cursor:pointer;font-size:13px;" onclick="compartirWhatsApp()" title="WhatsApp">\uD83D\uDCF2</button>',
+        '</div>',
+        '<div style="margin-top:8px;display:flex;gap:8px;">',
+        '<button class="btn btn-ghost" style="flex:1;" onclick="switchTab(\'historial\')">\uD83D\uDCCA Historial</button>',
+        '<button class="btn btn-secondary" style="flex:1;" onclick="exportarReporteCompleto()">\uD83D\uDCCB 4 Casos</button>',
+        '</div>',
+        '<div style="margin-top:8px;">',
+        '<button id="btnMarcarUrgente" class="btn btn-full" style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);color:var(--red2);font-weight:600;padding:11px;" onclick="marcarUltimoUrgente()">',
+        '\uD83D\uDD34 Marcar como caso urgente',
+        '</button>',
+        '</div>',
+        '</div>'
+      ].join('');
+    }
+    mostrarResultadoDemo(demo, tipo);
+    if (fi) fi.innerHTML = '\u2705 Demo: <strong>' + demo.nombre + '</strong>';
+    if (demoCasosGrid) {
+      var card2 = document.getElementById('demo-' + tipo);
+      if (card2) card2.classList.remove('loading');
+    }
+  }, 1900);
+};
+
+// ===== V11.4 ECG VISUALIZATION MEJORADA =====
+var _dibujarECGOrig = dibujarECGGrafica;
+dibujarECGGrafica = function(datos) {
+  if (!datos || !datos.length) return;
+  var ctx = document.getElementById('ecgLineChart');
+  if (!ctx) return;
+  var muestra = datos.slice(0, 350);
+  var labels = muestra.map(function(_, i) { return i; });
+  if (charts['ecgLine']) { charts['ecgLine'].destroy(); }
+  charts['ecgLine'] = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        data: muestra,
+        borderColor: '#22c55e',
+        borderWidth: 1.8,
+        pointRadius: 0,
+        tension: 0.15,
+        fill: false
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 600, easing: 'easeInOutQuart' },
+      plugins: { legend: { display: false }, tooltip: { enabled: false } },
+      scales: {
+        x: { display: false },
+        y: {
+          ticks: { color: 'rgba(34,197,94,.4)', font: { size: 8 }, maxTicksLimit: 5 },
+          grid: { color: 'rgba(34,197,94,.07)', lineWidth: 1 },
+          border: { color: 'rgba(34,197,94,.15)' }
+        }
+      }
+    }
+  });
+};
+
+// ===== V11.4 ANIMATED STAT COUNTERS =====
+function animateCounter(el, target, suffix, duration) {
+  if (!el) return;
+  suffix = suffix || '';
+  duration = duration || 800;
+  var start = 0;
+  var startTime = null;
+  var targetNum = parseFloat(target) || 0;
+  function step(ts) {
+    if (!startTime) startTime = ts;
+    var prog = Math.min((ts - startTime) / duration, 1);
+    var ease = 1 - Math.pow(1 - prog, 3);
+    var current = Math.round(ease * targetNum);
+    el.textContent = current + suffix;
+    if (prog < 1) requestAnimationFrame(step);
+    else el.textContent = target + suffix;
+  }
+  requestAnimationFrame(step);
+}
+
+// ===== V11.4 DASHBOARD ACTIVITY HEATMAP =====
+function renderActivityHeatmap() {
+  var el = document.getElementById('dashHeatmap');
+  if (!el) return;
+  var data = {};
+  historialDB.forEach(function(h) {
+    if (h.fecha) {
+      var d = h.fecha.split('T')[0];
+      data[d] = (data[d] || 0) + 1;
+    }
+  });
+  var cells = [];
+  for (var i = 83; i >= 0; i--) {
+    var d = new Date();
+    d.setDate(d.getDate() - i);
+    var key = d.toISOString().split('T')[0];
+    var v = data[key] || 0;
+    var level = v === 0 ? 0 : v <= 2 ? 1 : v <= 5 ? 2 : v <= 8 ? 3 : 4;
+    cells.push({date: key, count: v, level: level});
+  }
+  // Agrupar en semanas (columnas)
+  var cols = [];
+  for (var j = 0; j < cells.length; j += 7) {
+    cols.push(cells.slice(j, j + 7));
+  }
+  el.innerHTML = '<div style="font-size:11px;color:var(--text3);margin-bottom:8px;">Actividad últimos 84 días</div>' +
+    '<div class="heatmap-grid">' +
+    cols.map(function(col) {
+      return '<div class="heatmap-col">' +
+        col.map(function(cell) {
+          return '<div class="heatmap-cell hm-' + cell.level + '" title="' + cell.date + ': ' + cell.count + ' ECGs"></div>';
+        }).join('') +
+      '</div>';
+    }).join('') +
+    '</div>' +
+    '<div style="display:flex;align-items:center;gap:6px;margin-top:8px;font-size:10px;color:var(--text3);">' +
+    'Menos <div class="heatmap-cell hm-0" style="width:10px;height:10px;"></div><div class="heatmap-cell hm-1" style="width:10px;height:10px;"></div><div class="heatmap-cell hm-2" style="width:10px;height:10px;"></div><div class="heatmap-cell hm-3" style="width:10px;height:10px;"></div><div class="heatmap-cell hm-4" style="width:10px;height:10px;"></div> Más' +
+    '</div>';
+}
+
+// ===== V11.4 MONITOREO SIMULACIÓN LIVE =====
+var monitoreoInterval = null;
+function iniciarMonitoreoLive() {
+  if (monitoreoInterval) clearInterval(monitoreoInterval);
+  monitoreoInterval = setInterval(function() {
+    var fcEl = document.querySelector('.vital-val[data-vital="fc"]');
+    var spo2El = document.querySelector('.vital-val[data-vital="spo2"]');
+    if (fcEl) {
+      var fc = 88 + Math.round(Math.random() * 12);
+      fcEl.textContent = fc;
+      fcEl.className = 'vital-val pulse-red';
+    }
+    if (spo2El) {
+      var spo2 = 96 + Math.round(Math.random() * 3);
+      spo2El.textContent = spo2 + '%';
+    }
+  }, 2500);
+}
+
+// ===== V11.4 SKELETON LOADERS =====
+function showSkeleton(containerId, rows) {
+  var el = document.getElementById(containerId);
+  if (!el) return;
+  rows = rows || 3;
+  var html = '';
+  for (var i = 0; i < rows; i++) {
+    html += '<div class="skeleton-card">' +
+      '<div class="skeleton skeleton-text wide"></div>' +
+      '<div class="skeleton skeleton-text medium" style="margin-top:6px;"></div>' +
+      '<div class="skeleton skeleton-text short" style="margin-top:6px;"></div>' +
+      '</div>';
+  }
+  el.innerHTML = html;
+}
+
+// ===== V11.4 OVERRIDE ALERTS =====
+// Reemplazar alert nativo con toasts donde sea posible
+var _nativeAlert = window.alert;
+window.alert = function(msg) {
+  if (typeof showToast === 'function' && msg && msg.length < 200) {
+    var type = msg.toLowerCase().includes('error') || msg.toLowerCase().includes('completa') ? 'error' : 
+               msg.toLowerCase().includes('✅') || msg.toLowerCase().includes('guardado') ? 'success' : 'info';
+    showToast(msg, type, 4000);
+  } else {
+    _nativeAlert(msg);
+  }
+};
+
+// ===== V11.4 PATCH SWITCHAB para heatmap y counters =====
+var _switchTabOrig = switchTab;
+switchTab = function(tab) {
+  _switchTabOrig(tab);
+  if (tab === 'dashboard') {
+    setTimeout(renderActivityHeatmap, 400);
+    setTimeout(function() {
+      var statEls = document.querySelectorAll('.stat-val');
+      statEls.forEach(function(el) {
+        var txt = el.textContent.replace(/[^0-9.]/g, '');
+        if (txt && parseFloat(txt) > 0) {
+          var suffix = el.textContent.replace(/[0-9.]/g, '');
+          el.style.animation = 'none';
+          el.offsetHeight;
+          el.style.animation = '';
+        }
+      });
+    }, 200);
+  }
+  if (tab === 'monitoreo') {
+    setTimeout(iniciarMonitoreoLive, 500);
+  }
+};
+
+// ===== V11.4 ACTIVIDAD HEATMAP en Dashboard HTML (inject) =====
+document.addEventListener('DOMContentLoaded', function() {
+  var dashHist = document.getElementById('dashHistorial');
+  if (dashHist && dashHist.parentNode) {
+    var heatmapCard = document.createElement('div');
+    heatmapCard.className = 'card';
+    heatmapCard.style.marginBottom = '16px';
+    heatmapCard.innerHTML = '<div id="dashHeatmap"></div>';
+    // Insertar antes de dashHistorial's parent card
+  }
+});
+
+console.log('Cardio-IA Latam v11.4 cargado ✅');
 
 
 
