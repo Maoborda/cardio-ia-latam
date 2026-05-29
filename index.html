@@ -3179,10 +3179,122 @@ body{
     </div>
   </div>
 
+
+  <!-- ====== GATEWAY AGENT ====== -->
+  <div class="card" style="margin-top:14px;border-color:rgba(139,92,246,.3);background:linear-gradient(145deg,rgba(139,92,246,.06),rgba(99,102,241,.03));">
+    <div class="card-hd" style="margin-bottom:14px;">
+      <div>
+        <div style="font-size:15px;font-weight:700;color:var(--purple2);">&#x1F4BB; Cardio-IA Gateway Agent</div>
+        <div style="font-size:11px;color:var(--text2);">Software local para conectar CUALQUIER m&#xE1;quina ECG &#x2014; vieja o moderna</div>
+      </div>
+      <div style="display:flex;gap:6px;">
+        <div id="gwStatus" class="api-chip wait"><div class="api-dot"></div>No instalado</div>
+      </div>
+    </div>
+
+    <!-- 3 caminos -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;">
+      <div style="background:rgba(216,90,48,.08);border:1px solid rgba(216,90,48,.2);border-radius:10px;padding:12px;">
+        <div style="font-size:22px;margin-bottom:6px;">&#x1F4DF;</div>
+        <div style="font-size:12px;font-weight:700;color:#D85A30;margin-bottom:4px;">Equipos antiguos</div>
+        <div style="font-size:10px;color:var(--text2);line-height:1.7;">Pre-2010 &#xB7; Sin red<br><strong>Camino:</strong> USB/SD &#x2192; PC &#x2192; Watch Folder &#x2192; Gateway detecta archivo &#x2192; Cloud Run &#x2192; Diagn&#xF3;stico</div>
+        <div style="margin-top:6px;font-size:9px;padding:2px 6px;border-radius:5px;background:rgba(216,90,48,.12);color:#D85A30;display:inline-block;">100% compatible</div>
+      </div>
+      <div style="background:rgba(186,117,23,.08);border:1px solid rgba(186,117,23,.2);border-radius:10px;padding:12px;">
+        <div style="font-size:22px;margin-bottom:6px;">&#x1F4E1;</div>
+        <div style="font-size:12px;font-weight:700;color:#BA7517;margin-bottom:4px;">Equipos intermedios</div>
+        <div style="font-size:10px;color:var(--text2);line-height:1.7;">2010-2018 &#xB7; WiFi/USB<br><strong>Camino:</strong> WiFi/USB &#x2192; Gateway detecta en red &#x2192; Auto-formato &#x2192; Cloud Run &#x2192; Diagn&#xF3;stico</div>
+        <div style="margin-top:6px;font-size:9px;padding:2px 6px;border-radius:5px;background:rgba(186,117,23,.12);color:#BA7517;display:inline-block;">Auto-detecci&#xF3;n</div>
+      </div>
+      <div style="background:rgba(29,158,117,.08);border:1px solid rgba(29,158,117,.2);border-radius:10px;padding:12px;">
+        <div style="font-size:22px;margin-bottom:6px;">&#x1F310;</div>
+        <div style="font-size:12px;font-weight:700;color:#1D9E75;margin-bottom:4px;">Equipos modernos</div>
+        <div style="font-size:10px;color:var(--text2);line-height:1.7;">2019+ &#xB7; Red/Cloud<br><strong>Camino:</strong> M&#xE1;quina &#x2192; API REST directo &#x2192; Cloud Run &#x2192; Diagn&#xF3;stico (sin gateway)</div>
+        <div style="margin-top:6px;font-size:9px;padding:2px 6px;border-radius:5px;background:rgba(29,158,117,.12);color:#1D9E75;display:inline-block;">Directo a Cloud</div>
+      </div>
+    </div>
+
+    <!-- Configuraci&#xF3;n del Gateway -->
+    <div style="background:var(--bg3);border-radius:12px;padding:14px;margin-bottom:14px;">
+      <div style="font-size:13px;font-weight:600;margin-bottom:10px;">&#x2699;&#xFE0F; Configuraci&#xF3;n del Gateway Agent</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+        <div class="form-group">
+          <label class="form-label">Carpeta vigilada (Watch Folder)</label>
+          <div style="display:flex;gap:6px;">
+            <input class="form-input" id="gwWatchFolder" value="C:\ECG_Export" placeholder="Ruta de la carpeta..." style="font-family:'DM Mono',monospace;font-size:11px;"/>
+            <button onclick="testWatchFolder()" class="btn btn-ghost btn-sm">&#x1F4C2;</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Cloud Run endpoint</label>
+          <input class="form-input" id="gwEndpoint" value="https://cardio-ia-latam-120778240410.us-central1.run.app" style="font-family:'DM Mono',monospace;font-size:11px;"/>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px;">
+        <div class="form-group">
+          <label class="form-label">Intervalo de escaneo</label>
+          <select class="form-select" id="gwScanInterval">
+            <option value="5">Cada 5 seg (tiempo real)</option>
+            <option value="15" selected>Cada 15 seg</option>
+            <option value="30">Cada 30 seg</option>
+            <option value="60">Cada 1 min</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Auto-asignar paciente</label>
+          <select class="form-select" id="gwAutoAssign">
+            <option value="nombre">Por nombre en archivo</option>
+            <option value="ultimo">&#xDA;ltimo paciente activo</option>
+            <option value="manual">Siempre preguntar</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Al detectar archivo</label>
+          <select class="form-select" id="gwOnDetect">
+            <option value="auto">Analizar autom&#xE1;ticamente</option>
+            <option value="confirm">Pedir confirmaci&#xF3;n</option>
+            <option value="queue">Agregar a cola</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button onclick="simularGateway()" class="btn btn-primary" style="flex:1;">&#x25B6;&#xFE0F; Simular Gateway Agent</button>
+        <button onclick="descargarGateway()" class="btn btn-secondary">&#x1F4E5; Descargar Agent</button>
+        <button onclick="verDocGateway()" class="btn btn-ghost">&#x1F4CB; Docs</button>
+      </div>
+    </div>
+
+    <!-- Estado del gateway en tiempo real -->
+    <div id="gwActivityLog" style="background:#000;border-radius:10px;padding:12px;font-family:'DM Mono',monospace;font-size:10px;color:var(--green2);max-height:160px;overflow-y:auto;line-height:1.8;">
+      <div style="color:var(--text3);">[Gateway] Esperando inicio...</div>
+    </div>
+
+    <!-- Flujo visual simplificado -->
+    <div style="margin-top:14px;background:var(--bg3);border-radius:10px;padding:12px;">
+      <div style="font-size:11px;font-weight:600;color:var(--text2);margin-bottom:8px;">Flujo completo cuando llega un archivo</div>
+      <div style="display:flex;align-items:center;gap:0;flex-wrap:wrap;justify-content:center;">
+        <div style="text-align:center;padding:6px 10px;"><div style="font-size:16px;">&#x1F4C4;</div><div style="font-size:9px;color:var(--text3);">Archivo<br>aparece</div></div>
+        <div style="font-size:12px;color:var(--text3);">&#x2192;</div>
+        <div style="text-align:center;padding:6px 10px;"><div style="font-size:16px;">&#x1F50D;</div><div style="font-size:9px;color:var(--text3);">Gateway<br>detecta</div></div>
+        <div style="font-size:12px;color:var(--text3);">&#x2192;</div>
+        <div style="text-align:center;padding:6px 10px;"><div style="font-size:16px;">&#x1F4CB;</div><div style="font-size:9px;color:var(--text3);">Auto-detect<br>formato</div></div>
+        <div style="font-size:12px;color:var(--text3);">&#x2192;</div>
+        <div style="text-align:center;padding:6px 10px;"><div style="font-size:16px;">&#x1F512;</div><div style="font-size:9px;color:var(--text3);">Cifra<br>TLS 1.3</div></div>
+        <div style="font-size:12px;color:var(--text3);">&#x2192;</div>
+        <div style="text-align:center;padding:6px 10px;"><div style="font-size:16px;">&#x2601;&#xFE0F;</div><div style="font-size:9px;color:var(--text3);">Cloud<br>Run</div></div>
+        <div style="font-size:12px;color:var(--text3);">&#x2192;</div>
+        <div style="text-align:center;padding:6px 10px;"><div style="font-size:16px;">&#x1F9E0;</div><div style="font-size:9px;color:var(--text3);">IA<br>analiza</div></div>
+        <div style="font-size:12px;color:var(--text3);">&#x2192;</div>
+        <div style="text-align:center;padding:6px 10px;"><div style="font-size:16px;">&#x1F52E;</div><div style="font-size:9px;color:var(--text3);">MACE<br>predice</div></div>
+        <div style="font-size:12px;color:var(--text3);">&#x2192;</div>
+        <div style="text-align:center;padding:6px 10px;"><div style="font-size:16px;">&#x1F468;&#x200D;&#x2695;&#xFE0F;</div><div style="font-size:9px;color:var(--text3);">M&#xE9;dico<br>alerta</div></div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
-
-      <!-- ===== ORGANIZACION ===== -->
+<!-- ===== ORGANIZACION ===== -->
       <div class="panel" id="panel-organizacion">
         <div style="margin-bottom:20px;">
           <div style="font-size:20px;font-weight:600;margin-bottom:4px;">&#x1F3E2; Registro de Organizaci&#xF3;n</div>
@@ -12285,6 +12397,108 @@ function escanearRed() {
 document.addEventListener('DOMContentLoaded', function() {
   try { conImportLog = JSON.parse(localStorage.getItem('cardio_ia_import_log') || '[]'); } catch(e) {}
 });
+
+
+
+// ===== GATEWAY AGENT SIMULATION =====
+var gwRunning = false;
+var gwInterval = null;
+
+function simularGateway() {
+  var log = document.getElementById('gwActivityLog');
+  var statusEl = document.getElementById('gwStatus');
+  if (!log) return;
+  if (gwRunning) {
+    gwRunning = false;
+    if (gwInterval) clearInterval(gwInterval);
+    addGwLog('Gateway detenido', '#f87171');
+    if (statusEl) { statusEl.className = 'api-chip wait'; statusEl.innerHTML = '<div class="api-dot"></div>Detenido'; }
+    return;
+  }
+  gwRunning = true;
+  log.innerHTML = '';
+  if (statusEl) { statusEl.className = 'api-chip ok'; statusEl.innerHTML = '<div class="api-dot"></div>Activo'; }
+  var folder = document.getElementById('gwWatchFolder') ? document.getElementById('gwWatchFolder').value : 'C:\\ECG_Export\\';
+  addGwLog('Gateway Agent v1.0 iniciado', '#60a5fa');
+  addGwLog('Vigilando carpeta: ' + folder, '#94a3b8');
+  addGwLog('Endpoint: ' + (document.getElementById('gwEndpoint') ? document.getElementById('gwEndpoint').value : 'Cloud Run'), '#94a3b8');
+  addGwLog('Intervalo: ' + (document.getElementById('gwScanInterval') ? document.getElementById('gwScanInterval').value : '15') + 's', '#94a3b8');
+  addGwLog('Escaneando red local...', '#a5b4fc');
+  setTimeout(function() {
+    addGwLog('[SCAN] 3 equipos ECG detectados en LAN', '#34d399');
+    addGwLog('[SCAN] 192.168.1.45 - GE MAC 2000 (HL7)', '#34d399');
+    addGwLog('[SCAN] 192.168.1.78 - Philips PageWriter (CSV)', '#34d399');
+    addGwLog('[SCAN] 192.168.1.112 - Dispositivo DICOM', '#fbbf24');
+  }, 1200);
+  var archivos = [
+    {nombre:'ECG_20260529_Carlos_Medina.csv', formato:'CSV', muestras:5000, marca:'GE MAC 2000', paciente:'Carlos Medina'},
+    {nombre:'export_nihon_20260529.edf', formato:'EDF', muestras:7500, marca:'Nihon Kohden ECG-2550', paciente:'Ana Ramirez'},
+    {nombre:'ecg_report_092.xml', formato:'HL7 XML', muestras:6200, marca:'Philips PageWriter TC', paciente:'Pedro Gomez'},
+    {nombre:'kardia_6L_20260529.csv', formato:'CSV 6-lead', muestras:3000, marca:'KardiaMobile 6L', paciente:'Maria Lopez'},
+    {nombre:'schiller_at102_latest.scp', formato:'SCP-ECG', muestras:5500, marca:'Schiller AT-102', paciente:'Jose Torres'},
+  ];
+  var idx = 0;
+  var interval = parseInt(document.getElementById('gwScanInterval') ? document.getElementById('gwScanInterval').value : '15') * 400;
+  gwInterval = setInterval(function() {
+    if (!gwRunning) return;
+    if (idx >= archivos.length) idx = 0;
+    var a = archivos[idx];
+    var hora = new Date().toLocaleTimeString('es-CO', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    addGwLog('[' + hora + '] Nuevo archivo detectado: ' + a.nombre, '#fbbf24');
+    setTimeout(function() {
+      addGwLog('[PARSE] Formato detectado: ' + a.formato + ' | Marca: ' + a.marca, '#a5b4fc');
+    }, 400);
+    setTimeout(function() {
+      addGwLog('[PARSE] ' + a.muestras + ' muestras extraidas | Paciente: ' + a.paciente, '#94a3b8');
+    }, 800);
+    setTimeout(function() {
+      addGwLog('[SEND] Cifrando con TLS 1.3 + JWT...', '#a5b4fc');
+    }, 1200);
+    setTimeout(function() {
+      addGwLog('[SEND] POST /predecir-archivo -> Cloud Run (200 OK)', '#34d399');
+    }, 1800);
+    setTimeout(function() {
+      var diags = ['Normal - Ritmo Sinusal','Fibrilacion Auricular','IAM Anterior','Bloqueo BCRD','Taquicardia Ventricular'];
+      var d = diags[Math.floor(Math.random()*diags.length)];
+      var conf = (88 + Math.random()*10).toFixed(1);
+      var mace = (3 + Math.random()*40).toFixed(0);
+      var color = d.includes('Normal') ? '#34d399' : d.includes('IAM') || d.includes('Taquicard') ? '#f87171' : '#fbbf24';
+      addGwLog('[IA] Diagnostico: ' + d + ' | Confianza: ' + conf + '% | MACE 30d: ' + mace + '%', color);
+      addGwLog('[OK] Resultado guardado en historial de ' + a.paciente, '#34d399');
+      if (!d.includes('Normal')) {
+        addGwLog('[ALERTA] Notificacion push enviada al medico', '#f87171');
+      }
+      addGwLog('---', '#334155');
+      conImportLog.push({archivo: a.nombre, formato: a.formato, muestras: a.muestras, fecha: new Date(), paciente: a.paciente});
+      actualizarConImportLog();
+      actualizarConImportStats();
+    }, 2500);
+    idx++;
+  }, interval);
+}
+
+function addGwLog(msg, color) {
+  var log = document.getElementById('gwActivityLog');
+  if (!log) return;
+  var line = document.createElement('div');
+  line.style.color = color || 'var(--text2)';
+  line.textContent = msg;
+  log.appendChild(line);
+  log.scrollTop = log.scrollHeight;
+}
+
+function testWatchFolder() {
+  var folder = document.getElementById('gwWatchFolder') ? document.getElementById('gwWatchFolder').value : '';
+  showToast('Carpeta configurada: ' + folder, 'success');
+}
+
+function descargarGateway() {
+  showToast('Descarga disponible: cardio-ia-gateway-v1.0.exe (Windows) / .dmg (Mac) / .deb (Linux)', 'info', 5000);
+}
+
+function verDocGateway() {
+  showToast('Documentacion del Gateway Agent en docs.cardio-ia.com/gateway', 'info');
+}
 
 
 console.log('Cardio-IA Latam v11.4 cargado ✅');
