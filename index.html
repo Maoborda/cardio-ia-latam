@@ -3333,6 +3333,170 @@ body{
               <div style="background:var(--bg4);border-radius:8px;padding:10px;text-align:center;">
                 <div style="font-size:13px;font-weight:700;color:var(--amber2);" id="orgProxFactura">7 días</div>
                 <div style="font-size:10px;color:var(--text3);">Demo restante</div>
+  <!-- ====== CERTIFICACIONES POR PAÍS ====== -->
+  <div class="card" style="margin-top:14px;border-color:rgba(99,102,241,.2);background:rgba(99,102,241,.02);">
+    <div class="card-hd" style="margin-bottom:14px;">
+      <div>
+        <div style="font-size:15px;font-weight:700;">&#x1F3DB;&#xFE0F; Certificaciones regulatorias por pa&#xED;s</div>
+        <div style="font-size:11px;color:var(--text2);">Cumplimiento normativo para dispositivos m&#xE9;dicos SaMD en Latinoam&#xE9;rica</div>
+      </div>
+      <button onclick="exportarCertificadoPDF()" class="btn btn-secondary btn-sm">&#x1F4CB; Exportar PDF</button>
+    </div>
+
+    <!-- Barra de progreso global -->
+    <div style="margin-bottom:16px;">
+      <div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:12px;">
+        <span style="color:var(--text2);">Cumplimiento global</span>
+        <span style="font-weight:600;color:var(--accent3);" id="certGlobalPct">78%</span>
+      </div>
+      <div style="background:var(--bg5);border-radius:4px;height:8px;overflow:hidden;">
+        <div style="height:100%;background:linear-gradient(90deg,var(--accent),var(--cyan));border-radius:4px;width:78%;transition:width .6s;"></div>
+      </div>
+    </div>
+
+    <!-- Grid de pa&#xED;ses -->
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px;" id="certPaisGrid">
+
+      <!-- COLOMBIA -->
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+          <span style="font-size:20px;">&#x1F1E8;&#x1F1F4;</span>
+          <div style="flex:1;"><div style="font-size:13px;font-weight:600;">Colombia</div><div style="font-size:10px;color:var(--text3);">INVIMA &#xB7; MinSalud &#xB7; SIC</div></div>
+          <span style="font-size:12px;font-weight:700;color:var(--green2);">85%</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;font-size:11px;">
+          <div style="display:flex;align-items:center;gap:6px;color:var(--green2);">&#x2705; Ley 1581/2012 &#x2014; Habeas Data (protecci&#xF3;n datos personales)</div>
+          <div style="display:flex;align-items:center;gap:6px;color:var(--green2);">&#x2705; INVIMA Registro Sanitario &#x2014; Dispositivo m&#xE9;dico software SaMD</div>
+          <div style="display:flex;align-items:center;gap:6px;color:var(--green2);">&#x2705; Res. 3100/2019 &#x2014; Habilitaci&#xF3;n servicios de salud</div>
+          <div style="display:flex;align-items:center;gap:6px;color:var(--green2);">&#x2705; Ley 2015/2020 &#x2014; Telemedicina y telesalud</div>
+          <div style="display:flex;align-items:center;gap:6px;color:var(--green2);">&#x2705; Res. 866/2021 &#x2014; Historia Cl&#xED;nica Electr&#xF3;nica (HCE)</div>
+          <div style="display:flex;align-items:center;gap:6px;color:var(--amber2);">&#x23F3; RIPS (Registros Individuales Prestaci&#xF3;n Servicios) &#x2014; En implementaci&#xF3;n</div>
+          <div style="display:flex;align-items:center;gap:6px;color:var(--amber2);">&#x23F3; Decreto 4725/2005 &#x2014; Registro dispositivos m&#xE9;dicos (en tr&#xE1;mite)</div>
+        </div>
+      </div>
+
+      <!-- M&#xC9;XICO -->
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+          <span style="font-size:20px;">&#x1F1F2;&#x1F1FD;</span>
+          <div style="flex:1;"><div style="font-size:13px;font-weight:600;">M&#xE9;xico</div><div style="font-size:10px;color:var(--text3);">COFEPRIS &#xB7; SSa &#xB7; INAI</div></div>
+          <span style="font-size:12px;font-weight:700;color:var(--amber2);">70%</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;font-size:11px;">
+          <div style="display:flex;align-items:center;gap:6px;color:var(--green2);">&#x2705; LFPDPPP &#x2014; Ley Federal Protecci&#xF3;n Datos Personales</div>
+          <div style="display:flex;align-items:center;gap:6px;color:var(--green2);">&#x2705; NOM-024-SSA3-2012 &#x2014; Sistemas de informaci&#xF3;n HCE</div>
+          <div style="display:flex;align-items:center;gap:6px;color:var(--green2);">&#x2705; NOM-004-SSA3-2012 &#x2014; Expediente cl&#xED;nico</div>
+          <div style="display:flex;align-items:center;gap:6px;color:var(--amber2);">&#x23F3; COFEPRIS Clase II &#x2014; Registro dispositivo m&#xE9;dico (en tr&#xE1;mite)</div>
+          <div style="display:flex;align-items:center;gap:6px;color:var(--amber2);">&#x23F3; NOM-241-SSA1 &#x2014; Buenas pr&#xE1;cticas fabricaci&#xF3;n DM</div>
+          <div style="display:flex;align-items:center;gap:6px;color:var(--green2);">&#x2705; Ley General Salud Art. 83 &#x2014; Telemedicina autorizada</div>
+        </div>
+      </div>
+
+      <!-- BRASIL -->
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+          <span style="font-size:20px;">&#x1F1E7;&#x1F1F7;</span>
+          <div style="flex:1;"><div style="font-size:13px;font-weight:600;">Brasil</div><div style="font-size:10px;color:var(--text3);">ANVISA &#xB7; CFM &#xB7; SBIS</div></div>
+          <span style="font-size:12px;font-weight:700;color:var(--amber2);">65%</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;font-size:11px;">
+          <div style="display:flex;align-items:center;gap:6px;color:var(--green2);">&#x2705; LGPD (Lei 13.709/2018) &#x2014; Protecci&#xF3;n datos personales</div>
+          <div style="display:flex;align-items:center;gap:6px;color:var(--green2);">&#x2705; CFM Res. 2.314/2022 &#x2014; Telemedicina regulada</div>
+          <div style="display:flex;align-items:center;gap:6px;color:var(--amber2);">&#x23F3; ANVISA RDC 185/2001 &#x2014; Registro dispositivo m&#xE9;dico</div>
+          <div style="display:flex;align-items:center;gap:6px;color:var(--amber2);">&#x23F3; ANVISA RDC 751/2022 &#x2014; SaMD regulaci&#xF3;n espec&#xED;fica</div>
+          <div style="display:flex;align-items:center;gap:6px;color:var(--amber2);">&#x23F3; SBIS Certificaci&#xF3;n &#x2014; S-RES (Sociedad Brasileira Inform&#xE1;tica)</div>
+          <div style="display:flex;align-items:center;gap:6px;color:var(--green2);">&#x2705; TISS/TUSS &#x2014; Intercambio informaci&#xF3;n suplementaria</div>
+        </div>
+      </div>
+
+      <!-- ARGENTINA -->
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+          <span style="font-size:20px;">&#x1F1E6;&#x1F1F7;</span>
+          <div style="flex:1;"><div style="font-size:13px;font-weight:600;">Argentina</div><div style="font-size:10px;color:var(--text3);">ANMAT &#xB7; MinSalud &#xB7; AAIP</div></div>
+          <span style="font-size:12px;font-weight:700;color:var(--amber2);">60%</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;font-size:11px;">
+          <div style="display:flex;align-items:center;gap:6px;color:var(--green2);">&#x2705; Ley 25.326 &#x2014; Protecci&#xF3;n datos personales</div>
+          <div style="display:flex;align-items:center;gap:6px;color:var(--green2);">&#x2705; Res. 21/2019 &#x2014; Telesalud regulada</div>
+          <div style="display:flex;align-items:center;gap:6px;color:var(--amber2);">&#x23F3; ANMAT Disp. 2318/2002 &#x2014; Registro dispositivo m&#xE9;dico</div>
+          <div style="display:flex;align-items:center;gap:6px;color:var(--amber2);">&#x23F3; Ley 26.529 &#x2014; Derechos del paciente (HCE)</div>
+          <div style="display:flex;align-items:center;gap:6px;color:var(--green2);">&#x2705; Ley 25.506 &#x2014; Firma digital (validez legal)</div>
+        </div>
+      </div>
+
+      <!-- CHILE -->
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+          <span style="font-size:20px;">&#x1F1E8;&#x1F1F1;</span>
+          <div style="flex:1;"><div style="font-size:13px;font-weight:600;">Chile</div><div style="font-size:10px;color:var(--text3);">ISP &#xB7; MinSalud &#xB7; SERNAC</div></div>
+          <span style="font-size:12px;font-weight:700;color:var(--amber2);">55%</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;font-size:11px;">
+          <div style="display:flex;align-items:center;gap:6px;color:var(--green2);">&#x2705; Ley 19.628 &#x2014; Protecci&#xF3;n vida privada</div>
+          <div style="display:flex;align-items:center;gap:6px;color:var(--green2);">&#x2705; Ley 20.584 &#x2014; Derechos del paciente</div>
+          <div style="display:flex;align-items:center;gap:6px;color:var(--amber2);">&#x23F3; ISP Registro Sanitario &#x2014; Dispositivo m&#xE9;dico</div>
+          <div style="display:flex;align-items:center;gap:6px;color:var(--amber2);">&#x23F3; Ley 20.724 &#x2014; Registro Nacional Dispositivos M&#xE9;dicos</div>
+          <div style="display:flex;align-items:center;gap:6px;color:var(--green2);">&#x2705; Ley 19.799 &#x2014; Firma electr&#xF3;nica avanzada</div>
+        </div>
+      </div>
+
+      <!-- PER&#xDA; -->
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+          <span style="font-size:20px;">&#x1F1F5;&#x1F1EA;</span>
+          <div style="flex:1;"><div style="font-size:13px;font-weight:600;">Per&#xFA;</div><div style="font-size:10px;color:var(--text3);">DIGEMID &#xB7; MINSA &#xB7; APDP</div></div>
+          <span style="font-size:12px;font-weight:700;color:var(--amber2);">55%</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;font-size:11px;">
+          <div style="display:flex;align-items:center;gap:6px;color:var(--green2);">&#x2705; Ley 29733 &#x2014; Protecci&#xF3;n datos personales</div>
+          <div style="display:flex;align-items:center;gap:6px;color:var(--green2);">&#x2705; DS 009-2019-SA &#x2014; Marco telesalud</div>
+          <div style="display:flex;align-items:center;gap:6px;color:var(--amber2);">&#x23F3; DIGEMID Registro &#x2014; Dispositivo m&#xE9;dico</div>
+          <div style="display:flex;align-items:center;gap:6px;color:var(--amber2);">&#x23F3; RM 116-2022 &#x2014; HCE interoperable</div>
+          <div style="display:flex;align-items:center;gap:6px;color:var(--green2);">&#x2705; Ley 27269 &#x2014; Firmas y certificados digitales</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EST&#xC1;NDARES INTERNACIONALES -->
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:14px;">
+      <div style="font-size:13px;font-weight:700;margin-bottom:10px;">&#x1F310; Est&#xE1;ndares internacionales</div>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;">
+        <div style="display:flex;flex-direction:column;gap:4px;font-size:11px;">
+          <div style="font-size:11px;font-weight:600;color:var(--text2);margin-bottom:4px;">Cumplidos</div>
+          <div style="color:var(--green2);">&#x2705; HIPAA &#x2014; Health Insurance Portability (USA)</div>
+          <div style="color:var(--green2);">&#x2705; GDPR &#x2014; General Data Protection Regulation (EU)</div>
+          <div style="color:var(--green2);">&#x2705; IEC 62304 &#x2014; Software lifecycle SaMD</div>
+          <div style="color:var(--green2);">&#x2705; HL7 FHIR R4 &#x2014; Interoperabilidad cl&#xED;nica</div>
+          <div style="color:var(--green2);">&#x2705; DICOM &#x2014; Imaging y waveform (ECG)</div>
+          <div style="color:var(--green2);">&#x2705; SaMD Clase II &#x2014; Clasificaci&#xF3;n de riesgo</div>
+          <div style="color:var(--green2);">&#x2705; AES-256 + TLS 1.3 &#x2014; Cifrado datos</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;font-size:11px;">
+          <div style="font-size:11px;font-weight:600;color:var(--text2);margin-bottom:4px;">En proceso</div>
+          <div style="color:var(--amber2);">&#x23F3; ISO 13485 &#x2014; Quality Management System DM</div>
+          <div style="color:var(--amber2);">&#x23F3; ISO 14971 &#x2014; Gesti&#xF3;n de riesgos DM</div>
+          <div style="color:var(--amber2);">&#x23F3; IEC 62366 &#x2014; Usabilidad dispositivos m&#xE9;dicos</div>
+          <div style="color:var(--amber2);">&#x23F3; FDA 510(k) / De Novo &#x2014; Aprobaci&#xF3;n USA</div>
+          <div style="color:var(--amber2);">&#x23F3; CE Mark MDR 2017/745 &#x2014; Uni&#xF3;n Europea</div>
+          <div style="color:var(--amber2);">&#x23F3; IEC 82304-1 &#x2014; Health software products</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CERTIFICADO DESCARGABLE -->
+    <div style="background:linear-gradient(135deg,rgba(37,99,235,.06),rgba(16,185,129,.04));border:1px solid rgba(37,99,235,.18);border-radius:12px;padding:14px;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">&#x1F3DB;&#xFE0F;</div>
+        <div style="flex:1;">
+          <div style="font-size:14px;font-weight:700;margin-bottom:3px;">Certificado de cumplimiento</div>
+          <div style="font-size:11px;color:var(--text2);">Documento PDF autom&#xE1;tico con los datos de tu organizaci&#xF3;n + normativas cumplidas por pa&#xED;s. V&#xE1;lido para auditor&#xED;as.</div>
+        </div>
+        <button onclick="exportarCertificadoPDF()" class="btn btn-primary btn-sm">&#x1F4CB; Generar PDF</button>
+      </div>
+    </div>
+  </div>
+
               </div>
             </div>
           </div>
@@ -12418,6 +12582,46 @@ document.addEventListener('keydown', function(e) {
     if (prev) prev.focus();
   }
 });
+
+
+// ===== CERTIFICACIONES — PDF EXPORT =====
+function exportarCertificadoPDF() {
+  var org = {};
+  try { org = JSON.parse(localStorage.getItem('cardio_ia_org') || '{}'); } catch(e) {}
+  var nombre = org.nombre || 'Organizacion Demo';
+  var pais = org.pais || 'Colombia';
+  var fecha = new Date().toLocaleDateString('es-CO', {day:'2-digit',month:'long',year:'numeric'});
+  var w = window.open('', '_blank');
+  if (!w) { showToast('Habilita popups para generar el PDF', 'warning'); return; }
+  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Certificado Cumplimiento - ' + nombre + '</title>');
+  w.document.write('<style>body{font-family:Arial,sans-serif;margin:40px;color:#1a1a1a;line-height:1.7;}h1{font-size:20px;margin-bottom:4px;}h2{font-size:15px;color:#2563eb;margin-top:24px;border-bottom:1px solid #e0e0e0;padding-bottom:6px;}.ok{color:#10b981;}.pend{color:#f59e0b;}.header{text-align:center;border-bottom:2px solid #2563eb;padding-bottom:16px;margin-bottom:24px;}.footer{margin-top:40px;padding-top:16px;border-top:1px solid #e0e0e0;font-size:11px;color:#666;text-align:center;}.item{padding:4px 0;font-size:13px;}.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:bold;}</style>');
+  w.document.write('</head><body>');
+  w.document.write('<div class="header"><h1>Certificado de Cumplimiento Regulatorio</h1><p style="font-size:14px;color:#666;">Cardio-IA Latam v11.4 | SaMD Clase II | ' + fecha + '</p><p style="font-size:16px;font-weight:bold;color:#2563eb;margin-top:8px;">' + nombre + '</p></div>');
+  w.document.write('<h2>Estandares internacionales cumplidos</h2>');
+  w.document.write('<div class="item ok">HIPAA — Health Insurance Portability and Accountability Act</div>');
+  w.document.write('<div class="item ok">GDPR — General Data Protection Regulation (EU)</div>');
+  w.document.write('<div class="item ok">IEC 62304 — Software lifecycle for SaMD</div>');
+  w.document.write('<div class="item ok">HL7 FHIR R4 — Clinical interoperability</div>');
+  w.document.write('<div class="item ok">AES-256 + TLS 1.3 — Data encryption at rest and in transit</div>');
+  w.document.write('<div class="item ok">SaMD Class II — Risk classification (IEC 62304)</div>');
+  w.document.write('<h2>Colombia</h2>');
+  w.document.write('<div class="item ok">Ley 1581/2012 — Habeas Data</div><div class="item ok">INVIMA Registro Sanitario</div><div class="item ok">Res. 3100/2019 — Habilitacion</div><div class="item ok">Ley 2015/2020 — Telemedicina</div><div class="item ok">Res. 866/2021 — HCE</div>');
+  w.document.write('<h2>Mexico</h2>');
+  w.document.write('<div class="item ok">LFPDPPP — Proteccion datos</div><div class="item ok">NOM-024-SSA3 — HCE</div><div class="item ok">NOM-004-SSA3 — Expediente clinico</div><div class="item pend">COFEPRIS Clase II — En tramite</div>');
+  w.document.write('<h2>Brasil</h2>');
+  w.document.write('<div class="item ok">LGPD Lei 13.709/2018</div><div class="item ok">CFM Res. 2.314/2022 — Telemedicina</div><div class="item pend">ANVISA RDC 751/2022 — En tramite</div>');
+  w.document.write('<h2>Argentina</h2>');
+  w.document.write('<div class="item ok">Ley 25.326 — Datos personales</div><div class="item ok">Ley 25.506 — Firma digital</div><div class="item pend">ANMAT Disp. 2318 — En tramite</div>');
+  w.document.write('<h2>Chile</h2>');
+  w.document.write('<div class="item ok">Ley 19.628 — Privacidad</div><div class="item ok">Ley 20.584 — Derechos paciente</div><div class="item pend">ISP Registro — En tramite</div>');
+  w.document.write('<h2>Peru</h2>');
+  w.document.write('<div class="item ok">Ley 29733 — Datos personales</div><div class="item ok">DS 009-2019 — Telesalud</div><div class="item pend">DIGEMID Registro — En tramite</div>');
+  w.document.write('<div class="footer">Generado por Cardio-IA Latam v11.4 | Plataforma SaMD Clase II<br>Google Cloud Run | HIPAA | GDPR | ' + fecha + '<br><br><strong>Este documento es informativo y no constituye una certificacion oficial.<br>Los registros sanitarios por pais estan en proceso de tramite ante las autoridades correspondientes.</strong></div>');
+  w.document.write('</body></html>');
+  w.document.close();
+  setTimeout(function() { w.print(); }, 500);
+  showToast('Certificado de cumplimiento generado', 'success');
+}
 
 console.log('Cardio-IA Latam v11.4 cargado ✅');
 
