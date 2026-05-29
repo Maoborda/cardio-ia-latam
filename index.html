@@ -364,6 +364,25 @@
   .mon-patient-card.expanded{grid-column:span 1;}
 }
 
+
+/* ===== TABLET RESPONSIVE (1024px) ===== */
+@media(min-width:769px) and (max-width:1200px){
+  .sidebar{width:200px;}
+  .g4{grid-template-columns:repeat(2,1fr);}
+  .mace-horizons{grid-template-columns:repeat(3,1fr);}
+  .mon-patient-grid{grid-template-columns:1fr;}
+  .machine-grid{grid-template-columns:repeat(2,1fr);}
+  .login-left{padding:32px 24px;}
+  .login-right{width:320px;padding:32px 24px;}
+}
+@media(max-width:480px){
+  .g4{grid-template-columns:repeat(2,1fr);}
+  .fuente-tabs{flex-wrap:wrap;}
+  .fuente-tab{flex:1;min-width:120px;justify-content:center;}
+  .mace-horizons{grid-template-columns:1fr 1fr 1fr;}
+  .stat-card{padding:8px;}
+  .stat-val{font-size:18px;}
+}
 /* ===== V11.4 FOCUS STATES =====*/
 .btn:focus-visible,.form-input:focus-visible,.form-select:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
 
@@ -999,7 +1018,7 @@ body{
 <div class="sidebar-overlay" id="sidebarOverlay" style="display:none;" onclick="closeSidebar()"></div>
 
 <!-- V11.4 TOAST CONTAINER -->
-<div id="toastContainer"></div>
+<div id="toastContainer" role="status" aria-live="polite"></div>
 
 <!-- V11.4 COMMAND PALETTE -->
 <div id="cmdPalette" onclick="closeCmdPalette(event)">
@@ -1120,7 +1139,7 @@ body{
     <div class="modal-sub">Requerido para trazabilidad regulatoria SaMD Clase II</div>
     <div id="perfilGoogleInfo" style="display:flex;align-items:center;gap:12px;background:var(--bg3);border-radius:10px;padding:12px;margin-bottom:16px;min-height:60px;"></div>
     <div class="form-row">
-      <div class="form-group"><label class="form-label">Nombre completo *</label><input class="form-input" id="pNombre" placeholder="Dr. Juan Garcia"/></div>
+      <div class="form-group"><label class="form-label">Nombre completo *</label><input class="form-input" aria-label="Dr. Juan Garcia" id="pNombre" placeholder="Dr. Juan Garcia"/></div>
       <div class="form-group"><label class="form-label">Especialidad *</label>
         <select class="form-select" id="pEspecialidad">
           <option value="">Seleccionar...</option>
@@ -1134,9 +1153,9 @@ body{
         </select>
       </div>
     </div>
-    <div class="form-group"><label class="form-label">Hospital / Cl&#xED;nica *</label><input class="form-input" id="pClinica" placeholder="Hospital Universitario..."/></div>
+    <div class="form-group"><label class="form-label">Hospital / Cl&#xED;nica *</label><input class="form-input" aria-label="Hospital Universitario..." id="pClinica" placeholder="Hospital Universitario..."/></div>
     <div class="form-row">
-      <div class="form-group"><label class="form-label">Ciudad</label><input class="form-input" id="pCiudad" placeholder="Bogot&#xE1;"/></div>
+      <div class="form-group"><label class="form-label">Ciudad</label><input class="form-input" aria-label="Bogot&#xE1;" id="pCiudad" placeholder="Bogot&#xE1;"/></div>
       <div class="form-group"><label class="form-label">Pa&#xED;s</label>
         <select class="form-select" id="pPais">
           <option value="CO">Colombia</option><option value="MX">M&#xE9;xico</option>
@@ -1147,8 +1166,8 @@ body{
       </div>
     </div>
     <div class="form-row">
-      <div class="form-group"><label class="form-label">Tel&#xE9;fono</label><input class="form-input" id="pTelefono" placeholder="+57 300 000 0000"/></div>
-      <div class="form-group"><label class="form-label">Registro m&#xE9;dico</label><input class="form-input" id="pRegistro" placeholder="RM-123456"/></div>
+      <div class="form-group"><label class="form-label">Tel&#xE9;fono</label><input class="form-input" aria-label="+57 300 000 0000" id="pTelefono" placeholder="+57 300 000 0000"/></div>
+      <div class="form-group"><label class="form-label">Registro m&#xE9;dico</label><input class="form-input" aria-label="RM-123456" id="pRegistro" placeholder="RM-123456"/></div>
     </div>
     <button class="btn btn-primary btn-full" onclick="guardarPerfil()" style="margin-bottom:10px;">&#x2705; Guardar y comenzar</button>
     <button class="btn btn-secondary btn-full" onclick="loginDemo()">Continuar en modo demo</button>
@@ -1162,24 +1181,24 @@ body{
     <div class="modal-sub">Perfil cl&#xED;nico completo para seguimiento cardiovascular</div>
     <div style="font-size:11px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">Datos personales</div>
     <div class="form-row">
-      <div class="form-group"><label class="form-label">Nombre completo *</label><input class="form-input" id="npNombre" placeholder="Nombre del paciente"/></div>
-      <div class="form-group"><label class="form-label">Identificaci&#xF3;n *</label><input class="form-input" id="npId" placeholder="CC / Pasaporte"/></div>
+      <div class="form-group"><label class="form-label">Nombre completo *</label><input class="form-input" aria-label="Nombre del paciente" id="npNombre" placeholder="Nombre del paciente"/></div>
+      <div class="form-group"><label class="form-label">Identificaci&#xF3;n *</label><input class="form-input" aria-label="CC / Pasaporte" id="npId" placeholder="CC / Pasaporte"/></div>
     </div>
     <div class="form-row">
-      <div class="form-group"><label class="form-label">Edad</label><input class="form-input" id="npEdad" type="number" placeholder="65"/></div>
+      <div class="form-group"><label class="form-label">Edad</label><input class="form-input" aria-label="65" id="npEdad" type="number" placeholder="65"/></div>
       <div class="form-group"><label class="form-label">Sexo</label>
         <select class="form-select" id="npSexo"><option value="">Seleccionar...</option><option>Masculino</option><option>Femenino</option><option>Otro</option></select>
       </div>
     </div>
     <div class="form-row">
-      <div class="form-group"><label class="form-label">Tel&#xE9;fono</label><input class="form-input" id="npTel" placeholder="+57 300 000 0000"/></div>
-      <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="npEmail" placeholder="paciente@email.com"/></div>
+      <div class="form-group"><label class="form-label">Tel&#xE9;fono</label><input class="form-input" aria-label="+57 300 000 0000" id="npTel" placeholder="+57 300 000 0000"/></div>
+      <div class="form-group"><label class="form-label">Email</label><input class="form-input" aria-label="paciente@email.com" id="npEmail" placeholder="paciente@email.com"/></div>
     </div>
-    <div class="form-group"><label class="form-label">Direcci&#xF3;n</label><input class="form-input" id="npDir" placeholder="Calle 123 #45-67"/></div>
+    <div class="form-group"><label class="form-label">Direcci&#xF3;n</label><input class="form-input" aria-label="Calle 123 #45-67" id="npDir" placeholder="Calle 123 #45-67"/></div>
     <div style="font-size:11px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin:14px 0 10px;">Contacto de emergencia</div>
     <div class="form-row">
-      <div class="form-group"><label class="form-label">Nombre contacto *</label><input class="form-input" id="npContactoNombre" placeholder="Familiar o cuidador"/></div>
-      <div class="form-group"><label class="form-label">Tel&#xE9;fono contacto *</label><input class="form-input" id="npContactoTel" placeholder="+57 300 000 0000"/></div>
+      <div class="form-group"><label class="form-label">Nombre contacto *</label><input class="form-input" aria-label="Familiar o cuidador" id="npContactoNombre" placeholder="Familiar o cuidador"/></div>
+      <div class="form-group"><label class="form-label">Tel&#xE9;fono contacto *</label><input class="form-input" aria-label="+57 300 000 0000" id="npContactoTel" placeholder="+57 300 000 0000"/></div>
     </div>
     <div class="form-group"><label class="form-label">Relaci&#xF3;n</label>
       <select class="form-select" id="npContactoRel"><option value="">Seleccionar...</option><option>Esposo/a</option><option>Hijo/a</option><option>Padre/Madre</option><option>Hermano/a</option><option>Cuidador</option><option>Otro</option></select>
@@ -1193,10 +1212,10 @@ body{
         <select class="form-select" id="npWearable"><option value="">Sin dispositivo</option><option>Apple Watch</option><option>Samsung Galaxy Watch</option><option>Wear OS</option><option>KardiaMobile</option><option>Fitbit</option><option>Garmin</option></select>
       </div>
     </div>
-    <div class="form-group"><label class="form-label">Alergias</label><input class="form-input" id="npAlergias" placeholder="Aspirina, penicilina..."/></div>
-    <div class="form-group"><label class="form-label">Comorbilidades</label><input class="form-input" id="npComorbilidades" placeholder="HTA, DM2, EPOC..."/></div>
-    <div class="form-group"><label class="form-label">Medicamentos actuales</label><input class="form-input" id="npMeds" placeholder="Metoprolol 50mg, Aspirina 100mg..."/></div>
-    <div class="form-group"><label class="form-label">Historia cardiovascular previa</label><input class="form-input" id="npHistoria" placeholder="IAM 2019, stent coronario..."/></div>
+    <div class="form-group"><label class="form-label">Alergias</label><input class="form-input" aria-label="Aspirina, penicilina..." id="npAlergias" placeholder="Aspirina, penicilina..."/></div>
+    <div class="form-group"><label class="form-label">Comorbilidades</label><input class="form-input" aria-label="HTA, DM2, EPOC..." id="npComorbilidades" placeholder="HTA, DM2, EPOC..."/></div>
+    <div class="form-group"><label class="form-label">Medicamentos actuales</label><input class="form-input" aria-label="Metoprolol 50mg, Aspirina 100mg..." id="npMeds" placeholder="Metoprolol 50mg, Aspirina 100mg..."/></div>
+    <div class="form-group"><label class="form-label">Historia cardiovascular previa</label><input class="form-input" aria-label="IAM 2019, stent coronario..." id="npHistoria" placeholder="IAM 2019, stent coronario..."/></div>
     <div style="display:flex;gap:10px;margin-top:16px;">
       <button class="btn btn-primary" style="flex:1;" onclick="guardarPaciente()">&#x1F4BE; Guardar paciente</button>
       <button class="btn btn-secondary" onclick="closeModal('nuevoPacienteModal');switchTab('pacientes');">Cancelar</button>
@@ -1229,11 +1248,11 @@ body{
     </div>
     <div class="form-group">
       <label class="form-label">Nombre del responsable *</label>
-      <input class="form-input" id="resetNombre" placeholder="Tu nombre completo" oninput="validarReset()" onkeyup="validarReset()"/>
+      <input class="form-input" aria-label="Tu nombre completo" id="resetNombre" placeholder="Tu nombre completo" oninput="validarReset()" onkeyup="validarReset()"/>
     </div>
     <div class="form-group">
       <label class="form-label">Escribe <strong style="color:var(--red2);">CONFIRMAR</strong> para continuar *</label>
-      <input class="form-input" id="resetConfirmar" placeholder="Escribe CONFIRMAR" oninput="validarReset()" onkeyup="validarReset()" onchange="validarReset()"/>
+      <input class="form-input" aria-label="Escribe CONFIRMAR" id="resetConfirmar" placeholder="Escribe CONFIRMAR" oninput="validarReset()" onkeyup="validarReset()" onchange="validarReset()"/>
     </div>
     <div style="display:flex;gap:10px;margin-top:4px;">
       <button class="btn btn-secondary" style="flex:1;" onclick="closeModal('resetModal')">Cancelar</button>
@@ -1304,8 +1323,8 @@ body{
     <div class="modal-title">&#x270D;&#xFE0F; Validar y Firmar Reporte</div>
     <div class="modal-sub">El m&#xE9;dico revisa, valida y firma digitalmente para emisi&#xF3;n oficial</div>
     <div id="firmaResumen" style="background:var(--bg3);border-radius:10px;padding:14px;margin-bottom:14px;font-size:13px;line-height:1.8;"></div>
-    <div class="form-group"><label class="form-label">Correcci&#xF3;n del diagn&#xF3;stico (si aplica)</label><input class="form-input" id="firmaCorreccion" placeholder="Diagn&#xF3;stico correcto si difiere de la IA..."/></div>
-    <div class="form-group"><label class="form-label">Observaciones cl&#xED;nicas</label><input class="form-input" id="firmaObs" placeholder="Notas adicionales..."/></div>
+    <div class="form-group"><label class="form-label">Correcci&#xF3;n del diagn&#xF3;stico (si aplica)</label><input class="form-input" aria-label="Diagn&#xF3;stico correcto si difiere de la IA..." id="firmaCorreccion" placeholder="Diagn&#xF3;stico correcto si difiere de la IA..."/></div>
+    <div class="form-group"><label class="form-label">Observaciones cl&#xED;nicas</label><input class="form-input" aria-label="Notas adicionales..." id="firmaObs" placeholder="Notas adicionales..."/></div>
     <div class="form-group"><label class="form-label">Firma digital</label>
       <canvas class="firma-pad" id="firmaPad" width="500" height="100"></canvas>
       <button class="btn btn-ghost btn-sm" onclick="limpiarFirma()">&#x1F5D1;&#xFE0F; Limpiar firma</button>
@@ -1349,10 +1368,11 @@ body{
 </div>
 
 <!-- APP -->
+<a href="#mainContent" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;z-index:9999;" onfocus="this.style.cssText='position:fixed;top:0;left:0;width:auto;height:auto;padding:12px 24px;background:var(--accent);color:#fff;z-index:9999;font-size:14px;border-radius:0 0 8px 0;'">Saltar al contenido principal</a>
 <div class="app" id="mainApp" style="display:none;">
 
   <!-- SIDEBAR -->
-  <div class="sidebar" id="sidebar">
+  <div class="sidebar" role="navigation" aria-label="Menu principal" id="sidebar">
     <div class="logo-area">
       <div id="sidebarOrgLogo" style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--cyan));display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;font-size:18px;">&#x1FAC0;</div>
       <div style="flex:1;min-width:0;">
@@ -1367,62 +1387,62 @@ body{
         <span class="nav-icon">&#x1F4CA;</span>
         <span class="nav-label">Dashboard</span>
       </div>
-      <div class="nav-item" id="nav-perfil" onclick="switchTab('perfil')">
+      <div class="nav-item" tabindex="0" role="menuitem" id="nav-perfil" onclick="switchTab('perfil')">
         <span class="nav-icon">&#x1F464;</span>
         <span class="nav-label">Perfil</span>
       </div>
-      <div class="nav-item" id="nav-organizacion" onclick="switchTab('organizacion')">
+      <div class="nav-item" tabindex="0" role="menuitem" id="nav-organizacion" onclick="switchTab('organizacion')">
         <span class="nav-icon">&#x1F3E2;</span>
         <span class="nav-label">Organizaci&#xF3;n</span>
       </div>
 
       <div class="nav-section-label">Cl&#xED;nica</div>
-      <div class="nav-item" id="nav-analizar" onclick="switchTab('analizar')">
+      <div class="nav-item" tabindex="0" role="menuitem" id="nav-analizar" onclick="switchTab('analizar')">
         <span class="nav-icon">&#x1F4C8;</span>
         <span class="nav-label">Analizar ECG</span>
       </div>
-      <div class="nav-item" id="nav-historial" onclick="switchTab('historial')">
+      <div class="nav-item" tabindex="0" role="menuitem" id="nav-historial" onclick="switchTab('historial')">
         <span class="nav-icon">&#x1F4CB;</span>
         <span class="nav-label">Historial</span>
       </div>
-      <div class="nav-item" id="nav-pacientes" onclick="switchTab('pacientes')">
+      <div class="nav-item" tabindex="0" role="menuitem" id="nav-pacientes" onclick="switchTab('pacientes')">
         <span class="nav-icon">&#x1F9D1;&#x200D;&#x2695;&#xFE0F;</span>
         <span class="nav-label">Pacientes</span>
       </div>
-      <div class="nav-item" id="nav-monitoreo" onclick="switchTab('monitoreo')">
+      <div class="nav-item" tabindex="0" role="menuitem" id="nav-monitoreo" onclick="switchTab('monitoreo')">
         <span class="nav-icon">&#x231A;</span>
         <span class="nav-label">Monitoreo</span>
         <span class="nav-badge" id="alertasBadge" style="display:none;">0</span>
       </div>
-      <div class="nav-item" id="nav-conectores" onclick="switchTab('conectores')">
+      <div class="nav-item" tabindex="0" role="menuitem" id="nav-conectores" onclick="switchTab('conectores')">
         <span class="nav-icon">&#x1F50C;</span>
         <span class="nav-label">Conectores</span>
       </div>
 
       <div class="nav-section-label">Admin</div>
-      <div class="nav-item" id="nav-invitaciones" onclick="switchTab('invitaciones')">
+      <div class="nav-item" tabindex="0" role="menuitem" id="nav-invitaciones" onclick="switchTab('invitaciones')">
         <span class="nav-icon">&#x2709;&#xFE0F;</span>
         <span class="nav-label">Invitaciones</span>
       </div>
-      <div class="nav-item" id="nav-pagos" onclick="switchTab('pagos')">
+      <div class="nav-item" tabindex="0" role="menuitem" id="nav-pagos" onclick="switchTab('pagos')">
         <span class="nav-icon">&#x1F4B3;</span>
         <span class="nav-label">Planes y Pagos</span>
       </div>
-      <div class="nav-item" id="nav-roi" onclick="switchTab('roi')">
+      <div class="nav-item" tabindex="0" role="menuitem" id="nav-roi" onclick="switchTab('roi')">
         <span class="nav-icon">&#x1F4B0;</span>
         <span class="nav-label">ROI</span>
       </div>
-      <div class="nav-item" id="nav-epidemia" onclick="switchTab('epidemia')">
+      <div class="nav-item" tabindex="0" role="menuitem" id="nav-epidemia" onclick="switchTab('epidemia')">
         <span class="nav-icon">&#x1F5FA;&#xFE0F;</span>
         <span class="nav-label">Epidemiolog&#xED;a</span>
       </div>
-      <div class="nav-item" id="nav-ciencia" onclick="switchTab('ciencia')">
+      <div class="nav-item" tabindex="0" role="menuitem" id="nav-ciencia" onclick="switchTab('ciencia')">
         <span class="nav-icon">&#x1F9EC;</span>
         <span class="nav-label">Ciencia</span>
       </div>
 
       <div class="nav-section-label">Soporte</div>
-      <div class="nav-item" id="nav-ayuda" onclick="switchTab('ayuda')">
+      <div class="nav-item" tabindex="0" role="menuitem" id="nav-ayuda" onclick="switchTab('ayuda')">
         <span class="nav-icon">&#x2753;</span>
         <span class="nav-label">Ayuda</span>
       </div>
@@ -1445,7 +1465,7 @@ body{
 
   <!-- MAIN -->
   <div class="main">
-    <div class="topbar">
+    <div class="topbar" role="banner">
       <button class="hamburger" onclick="toggleSidebar()" aria-label="Menu">&#x2630;</button>
       <div>
         <div class="topbar-title" id="topbarTitle">Dashboard</div>
@@ -1473,7 +1493,7 @@ body{
       </div>
     </div>
 
-    <div class="content" id="mainContent">
+    <div class="content" id="mainContent" role="main">
 
       <!-- ===== DASHBOARD ===== -->
       <div class="panel active" id="panel-dashboard">
@@ -1786,7 +1806,7 @@ body{
       <!-- FORMULARIO EDITAR -->
       <div id="perfilDatosEdit" style="display:none;">
         <div class="form-row">
-          <div class="form-group"><label class="form-label">Nombre completo</label><input class="form-input" id="editNombre" placeholder="Dr. Juan Garcia"/></div>
+          <div class="form-group"><label class="form-label">Nombre completo</label><input class="form-input" aria-label="Dr. Juan Garcia" id="editNombre" placeholder="Dr. Juan Garcia"/></div>
           <div class="form-group"><label class="form-label">Especialidad</label>
             <select class="form-select" id="editEspecialidad">
               <option>Cardiolog&#xF3;/a</option>
@@ -1798,12 +1818,12 @@ body{
             </select>
           </div>
         </div>
-        <div class="form-group"><label class="form-label">Cl&#xED;nica / Hospital</label><input class="form-input" id="editClinica" placeholder="Hospital Universitario..."/></div>
+        <div class="form-group"><label class="form-label">Cl&#xED;nica / Hospital</label><input class="form-input" aria-label="Hospital Universitario..." id="editClinica" placeholder="Hospital Universitario..."/></div>
         <div class="form-row">
-          <div class="form-group"><label class="form-label">Ciudad</label><input class="form-input" id="editCiudad" placeholder="Bogot&#xE1;"/></div>
-          <div class="form-group"><label class="form-label">Tel&#xE9;fono</label><input class="form-input" id="editTelefono" placeholder="+57 300 000 0000"/></div>
+          <div class="form-group"><label class="form-label">Ciudad</label><input class="form-input" aria-label="Bogot&#xE1;" id="editCiudad" placeholder="Bogot&#xE1;"/></div>
+          <div class="form-group"><label class="form-label">Tel&#xE9;fono</label><input class="form-input" aria-label="+57 300 000 0000" id="editTelefono" placeholder="+57 300 000 0000"/></div>
         </div>
-        <div class="form-group"><label class="form-label">Registro m&#xE9;dico / RETHUS</label><input class="form-input" id="editRegistro" placeholder="RM-123456"/></div>
+        <div class="form-group"><label class="form-label">Registro m&#xE9;dico / RETHUS</label><input class="form-input" aria-label="RM-123456" id="editRegistro" placeholder="RM-123456"/></div>
         <div style="display:flex;gap:10px;margin-top:8px;">
           <button class="btn btn-primary" style="flex:1;" onclick="guardarPerfilMedico()">&#x1F4BE; Guardar cambios</button>
           <button class="btn btn-secondary" onclick="toggleEditarPerfil()">Cancelar</button>
@@ -1973,7 +1993,7 @@ body{
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start;">
           <div>
             <div class="card-title" style="margin-bottom:10px;">&#x1F4C2; Subir archivo ECG</div>
-            <div id="dropZone" class="drop-zone" ondrop="handleDrop(event)" ondragover="event.preventDefault()" ondragenter="this.classList.add('dragging')" ondragleave="this.classList.remove('dragging')" onclick="document.getElementById('ecgFile').click()" style="border:2px dashed var(--border2);border-radius:12px;padding:20px;text-align:center;cursor:pointer;transition:all .2s;">
+            <div id="dropZoneAnalizar" class="drop-zone" ondrop="handleDrop(event)" ondragover="event.preventDefault()" ondragenter="this.classList.add('dragging')" ondragleave="this.classList.remove('dragging')" onclick="document.getElementById('ecgFile').click()" style="border:2px dashed var(--border2);border-radius:12px;padding:20px;text-align:center;cursor:pointer;transition:all .2s;">
               <div style="font-size:32px;margin-bottom:8px;">&#x1F4C4;</div>
               <div style="font-size:13px;font-weight:600;margin-bottom:4px;">Arrastra tu archivo ECG</div>
               <div style="font-size:11px;color:var(--text2);">CSV · TXT · EDF · HL7 · XML · M&#xE1;x 10MB</div>
@@ -1984,16 +2004,16 @@ body{
           <div>
             <div class="card-title" style="margin-bottom:10px;">&#x1F9D1;&#x200D;&#x2695;&#xFE0F; Datos del paciente</div>
             <div class="form-row">
-              <div class="form-group"><label class="form-label">Nombre</label><input class="form-input" id="pacNombre" placeholder="Auto desde selector"/></div>
-              <div class="form-group"><label class="form-label">ID / Cédula</label><input class="form-input" id="pacId" placeholder="Número"/></div>
+              <div class="form-group"><label class="form-label">Nombre</label><input class="form-input" aria-label="Auto desde selector" id="pacNombre" placeholder="Auto desde selector"/></div>
+              <div class="form-group"><label class="form-label">ID / Cédula</label><input class="form-input" aria-label="Número" id="pacId" placeholder="Número"/></div>
             </div>
             <div class="form-row">
-              <div class="form-group"><label class="form-label">Edad</label><input class="form-input" id="pacEdad" type="number" placeholder="Años"/></div>
+              <div class="form-group"><label class="form-label">Edad</label><input class="form-input" aria-label="Años" id="pacEdad" type="number" placeholder="Años"/></div>
               <div class="form-group"><label class="form-label">Sexo</label>
                 <select class="form-select" id="pacSexo"><option value="M">Masculino</option><option value="F">Femenino</option></select>
               </div>
             </div>
-            <div class="form-group"><label class="form-label">Médico responsable</label><input class="form-input" id="pacMedico" placeholder="Dr. ..."/></div>
+            <div class="form-group"><label class="form-label">Médico responsable</label><input class="form-input" aria-label="Dr. ..." id="pacMedico" placeholder="Dr. ..."/></div>
           </div>
         </div>
         <button class="btn btn-primary btn-full" id="btnAnalizar" onclick="analizarECG()" style="margin-top:14px;font-size:14px;padding:13px;" disabled>&#x1F52C; Analizar ECG con IA</button>
@@ -2102,11 +2122,11 @@ body{
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
           <div class="form-group">
             <label class="form-label">URL del servidor FHIR</label>
-            <input class="form-input" id="fhirUrl" placeholder="https://hospital.fhir.com/r4/" value="https://cardio-ia-latam-120778240410.us-central1.run.app/fhir"/>
+            <input class="form-input" aria-label="https://hospital.fhir.com/r4/" id="fhirUrl" placeholder="https://hospital.fhir.com/r4/" value="https://cardio-ia-latam-120778240410.us-central1.run.app/fhir"/>
           </div>
           <div class="form-group">
             <label class="form-label">ID del paciente (FHIR)</label>
-            <input class="form-input" id="fhirPatientId" placeholder="urn:uuid:patient-id"/>
+            <input class="form-input" aria-label="urn:uuid:patient-id" id="fhirPatientId" placeholder="urn:uuid:patient-id"/>
           </div>
         </div>
         <div style="display:flex;gap:8px;margin-bottom:12px;">
@@ -2140,10 +2160,10 @@ body{
     </div>
     <div id="scoreFormArea" style="display:none;">
       <div class="g2" style="gap:10px;margin-bottom:10px;">
-        <div class="form-group"><label class="form-label">Edad</label><input class="form-input" id="scoreEdad" type="number" placeholder="Años" oninput="calcularScore()"/></div>
+        <div class="form-group"><label class="form-label">Edad</label><input class="form-input" aria-label="Años" id="scoreEdad" type="number" placeholder="Años" oninput="calcularScore()"/></div>
         <div class="form-group"><label class="form-label">Sexo</label><select class="form-select" id="scoreSexo" onchange="calcularScore()"><option value="M">Masculino</option><option value="F">Femenino</option></select></div>
-        <div class="form-group"><label class="form-label">Presión sistólica (mmHg)</label><input class="form-input" id="scorePA" type="number" placeholder="120" oninput="calcularScore()"/></div>
-        <div class="form-group"><label class="form-label">Colesterol total (mg/dL)</label><input class="form-input" id="scoreCol" type="number" placeholder="200" oninput="calcularScore()"/></div>
+        <div class="form-group"><label class="form-label">Presión sistólica (mmHg)</label><input class="form-input" aria-label="120" id="scorePA" type="number" placeholder="120" oninput="calcularScore()"/></div>
+        <div class="form-group"><label class="form-label">Colesterol total (mg/dL)</label><input class="form-input" aria-label="200" id="scoreCol" type="number" placeholder="200" oninput="calcularScore()"/></div>
         <div class="form-group"><label class="form-label">Fumador</label><select class="form-select" id="scoreFuma" onchange="calcularScore()"><option value="0">No</option><option value="1">Sí</option></select></div>
         <div class="form-group"><label class="form-label">Diabético</label><select class="form-select" id="scoreDiab" onchange="calcularScore()"><option value="0">No</option><option value="1">Sí</option></select></div>
       </div>
@@ -2335,21 +2355,7 @@ body{
   </div>
 
   <!-- MODAL FIRMA -->
-  <div class="modal-bg" id="firmaModal">
-    <div class="modal" style="max-width:500px;">
-      <div class="modal-title">&#x270D;&#xFE0F; Firma digital del médico</div>
-      <div class="modal-sub">Firma con validez legal PKI · Hash Blockchain · Google Cloud Run</div>
-      <canvas id="firmaPad" style="display:block;width:100%;height:100px;background:#000;border-radius:10px;border:1px solid var(--border2);cursor:crosshair;margin:14px 0;"></canvas>
-      <div style="display:flex;gap:8px;margin-bottom:14px;">
-        <button class="btn btn-ghost btn-sm" onclick="limpiarFirma()">&#x1F5D1; Limpiar</button>
-        <button class="btn btn-ghost btn-sm" onclick="cargarFirmaGuardada()">&#x1F4BE; Usar firma guardada</button>
-      </div>
-      <div class="form-group"><label class="form-label">Nota clínica (opcional)</label><textarea class="form-input" id="firmaNota" rows="2" placeholder="Observaciones del médico..."></textarea></div>
-      <div style="display:flex;gap:10px;margin-top:4px;">
-        <button class="btn btn-secondary" style="flex:1;" onclick="closeModal('firmaModal')">Cancelar</button>
-        <button class="btn btn-primary" style="flex:1;" onclick="firmarReporte()">&#x1F510; Firmar y guardar</button>
-      </div>
-    </div>
+  </div>
   </div>
 
 </div><!-- /panel-analizar -->
@@ -2383,7 +2389,7 @@ body{
     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
       <!-- Busqueda -->
       <div style="flex:1;min-width:180px;position:relative;">
-        <input class="form-input" id="histBuscar" placeholder="&#x1F50D; Buscar paciente o diagn&#xF3;stico..." oninput="filtrarHistorial()" style="padding-left:14px;font-size:13px;"/>
+        <input class="form-input" aria-label="&#x1F50D; Buscar paciente o diagn&#xF3;stico..." id="histBuscar" placeholder="&#x1F50D; Buscar paciente o diagn&#xF3;stico..." oninput="filtrarHistorial()" style="padding-left:14px;font-size:13px;"/>
       </div>
       <!-- Vista -->
       <div style="display:flex;gap:4px;background:var(--bg4);border-radius:8px;padding:3px;">
@@ -2504,7 +2510,7 @@ body{
   </div>
   <div style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:16px;">
     <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
-      <input class="form-input" id="pacBuscar" placeholder="Buscar paciente..." oninput="renderPacientes()" style="flex:1;min-width:160px;font-size:13px;"/>
+      <input class="form-input" aria-label="Buscar paciente..." id="pacBuscar" placeholder="Buscar paciente..." oninput="renderPacientes()" style="flex:1;min-width:160px;font-size:13px;"/>
       <select class="form-select" id="pacOrden" onchange="renderPacientes()" style="width:140px;font-size:12px;">
         <option value="az">A a Z</option>
         <option value="za">Z a A</option>
@@ -2521,48 +2527,7 @@ body{
     </div>
   </div>
   <div id="pacListContainer"></div>
-  <div class="modal-bg" id="nuevoPacienteModal">
-    <div class="modal" style="max-width:560px;">
-      <div class="modal-title">Registrar paciente</div>
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;padding:10px;background:var(--bg3);border-radius:10px;">
-        <div id="npAvatarPreview" style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;flex-shrink:0;overflow:hidden;">?</div>
-        <div><input type="file" id="npFotoInput" accept=".jpg,.jpeg,.png" style="display:none;" onchange="procesarFotoPaciente(this)"><button class="btn btn-ghost btn-sm" onclick="document.getElementById('npFotoInput').click()">Subir foto</button></div>
-      </div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Nombre *</label><input class="form-input" id="npNombre" placeholder="Juan Perez" oninput="actualizarAvatarNP()"/></div>
-        <div class="form-group"><label class="form-label">ID / Cedula *</label><input class="form-input" id="npId" placeholder="12345678"/></div>
-      </div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Edad</label><input class="form-input" id="npEdad" type="number" placeholder="45"/></div>
-        <div class="form-group"><label class="form-label">Sexo</label><select class="form-select" id="npSexo"><option value="Masculino">Masculino</option><option value="Femenino">Femenino</option></select></div>
-      </div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Telefono</label><input class="form-input" id="npTel" placeholder="+57 300..."/></div>
-        <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="npEmail" placeholder="email@..."/></div>
-      </div>
-      <div style="font-size:11px;font-weight:600;color:var(--text2);margin:8px 0 6px;text-transform:uppercase;">Datos clinicos</div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Diagnostico previo</label><input class="form-input" id="npDiag" placeholder="Hipertension..."/></div>
-        <div class="form-group"><label class="form-label">Medicamentos</label><input class="form-input" id="npMeds" placeholder="Metformina..."/></div>
-      </div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Alergias</label><input class="form-input" id="npAlergias" placeholder="Penicilina..."/></div>
-        <div class="form-group"><label class="form-label">Presion sistolica</label><input class="form-input" id="npPA" type="number" placeholder="120"/></div>
-      </div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Colesterol mg/dL</label><input class="form-input" id="npCol" type="number" placeholder="200"/></div>
-        <div class="form-group"><label class="form-label">Fumador</label><select class="form-select" id="npFuma"><option value="0">No</option><option value="1">Si</option></select></div>
-      </div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Contacto emergencia</label><input class="form-input" id="npContactoNombre" placeholder="Nombre familiar"/></div>
-        <div class="form-group"><label class="form-label">Tel. contacto</label><input class="form-input" id="npContactoTel" placeholder="Telefono"/></div>
-      </div>
-      <div style="display:flex;gap:10px;margin-top:12px;">
-        <button class="btn btn-secondary" id="btnCancelarPac">Cancelar</button>
-        <button class="btn btn-primary" style="flex:1;" id="btnGuardarPaciente" onclick="guardarPaciente()">Guardar paciente</button>
-      </div>
-    </div>
-  </div>
+  
   <div class="modal-bg" id="perfilPacienteModal">
     <div class="modal" style="max-width:540px;max-height:85vh;overflow-y:auto;">
       <div id="perfilPacienteContent"></div>
@@ -3221,7 +3186,7 @@ body{
         <div class="form-group">
           <label class="form-label">Carpeta vigilada (Watch Folder)</label>
           <div style="display:flex;gap:6px;">
-            <input class="form-input" id="gwWatchFolder" value="C:\ECG_Export" placeholder="Ruta de la carpeta..." style="font-family:'DM Mono',monospace;font-size:11px;"/>
+            <input class="form-input" aria-label="Ruta de la carpeta..." id="gwWatchFolder" value="C:\ECG_Export" placeholder="Ruta de la carpeta..." style="font-family:'DM Mono',monospace;font-size:11px;"/>
             <button onclick="testWatchFolder()" class="btn btn-ghost btn-sm">&#x1F4C2;</button>
           </div>
         </div>
@@ -3339,7 +3304,7 @@ body{
               <div id="cloudRunStatus" class="api-chip wait"><div class="api-dot"></div>Verificando...</div>
             </div>
             <div style="display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;margin-bottom:8px;">
-              <input class="form-input" id="cloudRunUrl" value="https://cardio-ia-latam-120778240410.us-central1.run.app" placeholder="URL Google Cloud Run" style="font-size:11px;font-family:'DM Mono',monospace;"/>
+              <input class="form-input" aria-label="URL Google Cloud Run" id="cloudRunUrl" value="https://cardio-ia-latam-120778240410.us-central1.run.app" placeholder="URL Google Cloud Run" style="font-size:11px;font-family:'DM Mono',monospace;"/>
               <button onclick="verificarCloudRun()" class="btn btn-ghost btn-sm">&#x1F9EA; Test</button>
             </div>
             <div style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -3398,29 +3363,29 @@ body{
             <div class="card">
               <div id="form-empresa" style="display:none;">
                 <div style="background:rgba(59,130,246,.07);border:1px solid rgba(59,130,246,.15);border-radius:10px;padding:12px;margin-bottom:16px;"><div style="font-size:13px;font-weight:600;color:var(--accent3);margin-bottom:4px;">&#x1F3E2; Empresa Multicl&#xED;nica</div><div style="font-size:12px;color:var(--text2);">Para grupos hospitalarios. Incluye dashboard centralizado y gesti&#xF3;n de todas sus cl&#xED;nicas.</div></div>
-                <div class="form-row"><div class="form-group"><label class="form-label">Raz&#xF3;n social *</label><input class="form-input" id="orgNombre" placeholder="Grupo Hospitalario XYZ S.A.S."/></div><div class="form-group"><label class="form-label">NIT empresa *</label><input class="form-input" id="orgNit" placeholder="900.123.456-7"/></div></div>
-                <div class="form-row"><div class="form-group"><label class="form-label">Representante legal *</label><input class="form-input" id="orgRepLegal" placeholder="Dr. Juan Garcia"/></div><div class="form-group"><label class="form-label">Email corporativo *</label><input class="form-input" id="orgEmail" placeholder="admin@grupohospitalario.com"/></div></div>
-                <div class="form-row"><div class="form-group"><label class="form-label">Tel&#xE9;fono</label><input class="form-input" id="orgTel" placeholder="+57 1 234 5678"/></div><div class="form-group"><label class="form-label">Registro sanitario INVIMA</label><input class="form-input" id="orgRegSan" placeholder="INVIMA 2023-000000"/></div></div>
-                <div class="form-row"><div class="form-group"><label class="form-label">No. de sedes</label><input class="form-input" id="orgSedes" type="number" placeholder="5"/></div><div class="form-group"><label class="form-label">No. m&#xE9;dicos estimado</label><input class="form-input" id="orgMedicos" type="number" placeholder="50"/></div></div>
-                <div class="form-group"><label class="form-label">Direcci&#xF3;n sede principal</label><input class="form-input" id="orgDir" placeholder="Calle 123 #45-67"/></div>
-                <div class="form-row"><div class="form-group"><label class="form-label">Ciudad</label><input class="form-input" id="orgCiudad" placeholder="Bogot&#xE1;"/></div><div class="form-group"><label class="form-label">Pa&#xED;s</label><select class="form-select" id="orgPais"><option value="CO">Colombia</option><option value="MX">M&#xE9;xico</option><option value="BR">Brasil</option><option value="AR">Argentina</option><option value="PE">Per&#xFA;</option><option value="CL">Chile</option></select></div></div>
+                <div class="form-row"><div class="form-group"><label class="form-label">Raz&#xF3;n social *</label><input class="form-input" aria-label="Grupo Hospitalario XYZ S.A.S." id="orgNombre" placeholder="Grupo Hospitalario XYZ S.A.S."/></div><div class="form-group"><label class="form-label">NIT empresa *</label><input class="form-input" aria-label="900.123.456-7" id="orgNit" placeholder="900.123.456-7"/></div></div>
+                <div class="form-row"><div class="form-group"><label class="form-label">Representante legal *</label><input class="form-input" aria-label="Dr. Juan Garcia" id="orgRepLegal" placeholder="Dr. Juan Garcia"/></div><div class="form-group"><label class="form-label">Email corporativo *</label><input class="form-input" aria-label="admin@grupohospitalario.com" id="orgEmail" placeholder="admin@grupohospitalario.com"/></div></div>
+                <div class="form-row"><div class="form-group"><label class="form-label">Tel&#xE9;fono</label><input class="form-input" aria-label="+57 1 234 5678" id="orgTel" placeholder="+57 1 234 5678"/></div><div class="form-group"><label class="form-label">Registro sanitario INVIMA</label><input class="form-input" aria-label="INVIMA 2023-000000" id="orgRegSan" placeholder="INVIMA 2023-000000"/></div></div>
+                <div class="form-row"><div class="form-group"><label class="form-label">No. de sedes</label><input class="form-input" aria-label="5" id="orgSedes" type="number" placeholder="5"/></div><div class="form-group"><label class="form-label">No. m&#xE9;dicos estimado</label><input class="form-input" aria-label="50" id="orgMedicos" type="number" placeholder="50"/></div></div>
+                <div class="form-group"><label class="form-label">Direcci&#xF3;n sede principal</label><input class="form-input" aria-label="Calle 123 #45-67" id="orgDir" placeholder="Calle 123 #45-67"/></div>
+                <div class="form-row"><div class="form-group"><label class="form-label">Ciudad</label><input class="form-input" aria-label="Bogot&#xE1;" id="orgCiudad" placeholder="Bogot&#xE1;"/></div><div class="form-group"><label class="form-label">Pa&#xED;s</label><select class="form-select" id="orgPais"><option value="CO">Colombia</option><option value="MX">M&#xE9;xico</option><option value="BR">Brasil</option><option value="AR">Argentina</option><option value="PE">Per&#xFA;</option><option value="CL">Chile</option></select></div></div>
               </div>
               <div id="form-clinica" style="display:none;">
                 <div style="background:rgba(16,185,129,.07);border:1px solid rgba(16,185,129,.15);border-radius:10px;padding:12px;margin-bottom:16px;"><div style="font-size:13px;font-weight:600;color:var(--green2);margin-bottom:4px;">&#x1F3E5; Cl&#xED;nica Cardiovascular Independiente</div><div style="font-size:12px;color:var(--text2);">Para cl&#xED;nicas privadas especializadas.</div></div>
-                <div class="form-row"><div class="form-group"><label class="form-label">Nombre de la cl&#xED;nica *</label><input class="form-input" id="orgNombre_c" placeholder="Cl&#xED;nica Cardiovascular del Norte"/></div><div class="form-group"><label class="form-label">NIT / RUC *</label><input class="form-input" id="orgNit_c" placeholder="900.123.456-7"/></div></div>
-                <div class="form-row"><div class="form-group"><label class="form-label">Director m&#xE9;dico *</label><input class="form-input" id="orgRepLegal_c" placeholder="Dr. Maria Lopez"/></div><div class="form-group"><label class="form-label">Email administrativo *</label><input class="form-input" id="orgEmail_c" placeholder="admin@clinica.com"/></div></div>
-                <div class="form-row"><div class="form-group"><label class="form-label">Tel&#xE9;fono</label><input class="form-input" id="orgTel_c" placeholder="+57 1 234 5678"/></div><div class="form-group"><label class="form-label">Registro REPS</label><input class="form-input" id="orgRegSan_c" placeholder="REPS-2023-000000"/></div></div>
-                <div class="form-row"><div class="form-group"><label class="form-label">Especialidades</label><input class="form-input" id="orgSedes_c" placeholder="Cardiolog&#xED;a, UCI, Urgencias"/></div><div class="form-group"><label class="form-label">Camas UCI card&#xED;aca</label><input class="form-input" id="orgMedicos_c" type="number" placeholder="10"/></div></div>
-                <div class="form-group"><label class="form-label">Direcci&#xF3;n</label><input class="form-input" id="orgDir_c" placeholder="Carrera 15 #93-47"/></div>
-                <div class="form-row"><div class="form-group"><label class="form-label">Ciudad</label><input class="form-input" id="orgCiudad_c" placeholder="Bogot&#xE1;"/></div><div class="form-group"><label class="form-label">Pa&#xED;s</label><select class="form-select" id="orgPais_c"><option value="CO">Colombia</option><option value="MX">M&#xE9;xico</option><option value="BR">Brasil</option><option value="AR">Argentina</option><option value="PE">Per&#xFA;</option><option value="CL">Chile</option></select></div></div>
+                <div class="form-row"><div class="form-group"><label class="form-label">Nombre de la cl&#xED;nica *</label><input class="form-input" aria-label="Cl&#xED;nica Cardiovascular del Norte" id="orgNombre_c" placeholder="Cl&#xED;nica Cardiovascular del Norte"/></div><div class="form-group"><label class="form-label">NIT / RUC *</label><input class="form-input" aria-label="900.123.456-7" id="orgNit_c" placeholder="900.123.456-7"/></div></div>
+                <div class="form-row"><div class="form-group"><label class="form-label">Director m&#xE9;dico *</label><input class="form-input" aria-label="Dr. Maria Lopez" id="orgRepLegal_c" placeholder="Dr. Maria Lopez"/></div><div class="form-group"><label class="form-label">Email administrativo *</label><input class="form-input" aria-label="admin@clinica.com" id="orgEmail_c" placeholder="admin@clinica.com"/></div></div>
+                <div class="form-row"><div class="form-group"><label class="form-label">Tel&#xE9;fono</label><input class="form-input" aria-label="+57 1 234 5678" id="orgTel_c" placeholder="+57 1 234 5678"/></div><div class="form-group"><label class="form-label">Registro REPS</label><input class="form-input" aria-label="REPS-2023-000000" id="orgRegSan_c" placeholder="REPS-2023-000000"/></div></div>
+                <div class="form-row"><div class="form-group"><label class="form-label">Especialidades</label><input class="form-input" aria-label="Cardiolog&#xED;a, UCI, Urgencias" id="orgSedes_c" placeholder="Cardiolog&#xED;a, UCI, Urgencias"/></div><div class="form-group"><label class="form-label">Camas UCI card&#xED;aca</label><input class="form-input" aria-label="10" id="orgMedicos_c" type="number" placeholder="10"/></div></div>
+                <div class="form-group"><label class="form-label">Direcci&#xF3;n</label><input class="form-input" aria-label="Carrera 15 #93-47" id="orgDir_c" placeholder="Carrera 15 #93-47"/></div>
+                <div class="form-row"><div class="form-group"><label class="form-label">Ciudad</label><input class="form-input" aria-label="Bogot&#xE1;" id="orgCiudad_c" placeholder="Bogot&#xE1;"/></div><div class="form-group"><label class="form-label">Pa&#xED;s</label><select class="form-select" id="orgPais_c"><option value="CO">Colombia</option><option value="MX">M&#xE9;xico</option><option value="BR">Brasil</option><option value="AR">Argentina</option><option value="PE">Per&#xFA;</option><option value="CL">Chile</option></select></div></div>
               </div>
               <div id="form-consultorio" style="display:none;">
                 <div style="background:rgba(139,92,246,.07);border:1px solid rgba(139,92,246,.15);border-radius:10px;padding:12px;margin-bottom:16px;"><div style="font-size:13px;font-weight:600;color:var(--purple2);margin-bottom:4px;">&#x1F468;&#x200D;&#x2695;&#xFE0F; Consultorio M&#xE9;dico Individual</div><div style="font-size:12px;color:var(--text2);">Para cardi&#xF3;logo independiente.</div></div>
-                <div class="form-row"><div class="form-group"><label class="form-label">Nombre del m&#xE9;dico *</label><input class="form-input" id="orgNombre_d" placeholder="Dr. Carlos Martinez"/></div><div class="form-group"><label class="form-label">N&#xFA;mero RETHUS *</label><input class="form-input" id="orgNit_d" placeholder="RETHUS-123456"/></div></div>
-                <div class="form-row"><div class="form-group"><label class="form-label">Especialidad *</label><input class="form-input" id="orgRepLegal_d" placeholder="Cardiolog&#xED;a Cl&#xED;nica"/></div><div class="form-group"><label class="form-label">Email profesional *</label><input class="form-input" id="orgEmail_d" placeholder="dr.martinez@gmail.com"/></div></div>
-                <div class="form-row"><div class="form-group"><label class="form-label">Tel&#xE9;fono / WhatsApp</label><input class="form-input" id="orgTel_d" placeholder="+57 300 000 0000"/></div><div class="form-group"><label class="form-label">Tarjeta profesional</label><input class="form-input" id="orgRegSan_d" placeholder="TP-12345-6789"/></div></div>
-                <div class="form-group"><label class="form-label">Direcci&#xF3;n del consultorio</label><input class="form-input" id="orgDir_d" placeholder="Centro M&#xE9;dico XYZ, Consultorio 304"/></div>
-                <div class="form-row"><div class="form-group"><label class="form-label">Ciudad</label><input class="form-input" id="orgCiudad_d" placeholder="Bogot&#xE1;"/></div><div class="form-group"><label class="form-label">Pa&#xED;s</label><select class="form-select" id="orgPais_d"><option value="CO">Colombia</option><option value="MX">M&#xE9;xico</option><option value="BR">Brasil</option><option value="AR">Argentina</option><option value="PE">Per&#xFA;</option><option value="CL">Chile</option></select></div></div>
+                <div class="form-row"><div class="form-group"><label class="form-label">Nombre del m&#xE9;dico *</label><input class="form-input" aria-label="Dr. Carlos Martinez" id="orgNombre_d" placeholder="Dr. Carlos Martinez"/></div><div class="form-group"><label class="form-label">N&#xFA;mero RETHUS *</label><input class="form-input" aria-label="RETHUS-123456" id="orgNit_d" placeholder="RETHUS-123456"/></div></div>
+                <div class="form-row"><div class="form-group"><label class="form-label">Especialidad *</label><input class="form-input" aria-label="Cardiolog&#xED;a Cl&#xED;nica" id="orgRepLegal_d" placeholder="Cardiolog&#xED;a Cl&#xED;nica"/></div><div class="form-group"><label class="form-label">Email profesional *</label><input class="form-input" aria-label="dr.martinez@gmail.com" id="orgEmail_d" placeholder="dr.martinez@gmail.com"/></div></div>
+                <div class="form-row"><div class="form-group"><label class="form-label">Tel&#xE9;fono / WhatsApp</label><input class="form-input" aria-label="+57 300 000 0000" id="orgTel_d" placeholder="+57 300 000 0000"/></div><div class="form-group"><label class="form-label">Tarjeta profesional</label><input class="form-input" aria-label="TP-12345-6789" id="orgRegSan_d" placeholder="TP-12345-6789"/></div></div>
+                <div class="form-group"><label class="form-label">Direcci&#xF3;n del consultorio</label><input class="form-input" aria-label="Centro M&#xE9;dico XYZ, Consultorio 304" id="orgDir_d" placeholder="Centro M&#xE9;dico XYZ, Consultorio 304"/></div>
+                <div class="form-row"><div class="form-group"><label class="form-label">Ciudad</label><input class="form-input" aria-label="Bogot&#xE1;" id="orgCiudad_d" placeholder="Bogot&#xE1;"/></div><div class="form-group"><label class="form-label">Pa&#xED;s</label><select class="form-select" id="orgPais_d"><option value="CO">Colombia</option><option value="MX">M&#xE9;xico</option><option value="BR">Brasil</option><option value="AR">Argentina</option><option value="PE">Per&#xFA;</option><option value="CL">Chile</option></select></div></div>
               </div>
             </div>
             <div class="card">
@@ -3456,10 +3421,10 @@ body{
           <div class="card">
             <div class="card-title" style="margin-bottom:14px;">&#x2795; Invitar nuevo m&#xE9;dico</div>
             <div class="form-row">
-              <div class="form-group"><label class="form-label">Nombre del m&#xE9;dico *</label><input class="form-input" id="invNombre" placeholder="Dr. Juan Garcia"/></div>
-              <div class="form-group"><label class="form-label">Especialidad</label><input class="form-input" id="invEspecialidad" placeholder="Cardiolog&#xED;a..."/></div>
+              <div class="form-group"><label class="form-label">Nombre del m&#xE9;dico *</label><input class="form-input" aria-label="Dr. Juan Garcia" id="invNombre" placeholder="Dr. Juan Garcia"/></div>
+              <div class="form-group"><label class="form-label">Especialidad</label><input class="form-input" aria-label="Cardiolog&#xED;a..." id="invEspecialidad" placeholder="Cardiolog&#xED;a..."/></div>
             </div>
-            <div class="form-group"><label class="form-label">Email *</label><input class="form-input" id="invEmail" placeholder="dr.garcia@hospital.com"/></div>
+            <div class="form-group"><label class="form-label">Email *</label><input class="form-input" aria-label="dr.garcia@hospital.com" id="invEmail" placeholder="dr.garcia@hospital.com"/></div>
             <div class="form-group"><label class="form-label">Rol</label>
               <select class="form-select" id="invRol">
                 <option value="medico">M&#xE9;dico especialista</option>
@@ -3632,10 +3597,10 @@ body{
           <!-- DATOS FACTURACION -->
           <div id="datosFact" style="display:none;">
             <div class="form-row">
-              <div class="form-group"><label class="form-label">Nombre / Raz&#xF3;n social</label><input class="form-input" id="factNombre" placeholder="Como aparece en la factura"/></div>
-              <div class="form-group"><label class="form-label">NIT / RFC / CNPJ</label><input class="form-input" id="factNit" placeholder="ID tributario"/></div>
+              <div class="form-group"><label class="form-label">Nombre / Raz&#xF3;n social</label><input class="form-input" aria-label="Como aparece en la factura" id="factNombre" placeholder="Como aparece en la factura"/></div>
+              <div class="form-group"><label class="form-label">NIT / RFC / CNPJ</label><input class="form-input" aria-label="ID tributario" id="factNit" placeholder="ID tributario"/></div>
             </div>
-            <div class="form-group"><label class="form-label">Email de facturaci&#xF3;n</label><input class="form-input" id="factEmail" placeholder="facturacion@empresa.com"/></div>
+            <div class="form-group"><label class="form-label">Email de facturaci&#xF3;n</label><input class="form-input" aria-label="facturacion@empresa.com" id="factEmail" placeholder="facturacion@empresa.com"/></div>
             <div style="background:rgba(37,99,235,.06);border:1px solid rgba(37,99,235,.15);border-radius:8px;padding:10px;font-size:11px;color:var(--text2);margin-bottom:12px;">
               &#x1F512; Pago 100% seguro. Tus datos est&#xE1;n encriptados. No almacenamos informaci&#xF3;n de tarjetas.
             </div>
@@ -3873,7 +3838,7 @@ body{
             <a href="https://github.com/Maoborda/cardio-ia-latam" target="_blank" class="btn btn-secondary btn-sm">&#x1F4E6; GitHub</a>
             <button onclick="probarEndpoint()" class="btn btn-ghost btn-sm">&#x1F9EA; Test API</button>
           </div>
-          <div id="endpointResult" style="margin-top:8px;font-size:11px;font-family:'DM Mono',monospace;"></div>
+          <div id="endpointResult2" style="margin-top:8px;font-size:11px;font-family:'DM Mono',monospace;"></div>
         </div>
 
 
@@ -4196,7 +4161,7 @@ function generarQRPaciente(nombre) {
   var orgNombre = "Cardio-IA Latam", orgLogo = "";
   try { var org=JSON.parse(localStorage.getItem("cardio_ia_org")||"{}"); if(org.nombre) orgNombre=org.nombre; if(org.logo) orgLogo=org.logo; } catch(e) {}
   var w = window.open("", "_blank");
-  w.document.write("<!DOCTYPE html><html><head><meta charset='UTF-8'><title>QR Emergencia</title>");
+  w.document.write("<!DOCTYPE html><html lang="es"><head><meta charset='UTF-8'><title>QR Emergencia</title>");
   w.document.write("<scr"+"ipt src='https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js'></scr"+"ipt>");
   w.document.write("<style>body{font-family:Arial;max-width:360px;margin:20px auto;}.card{border:2px solid "+sem.color+";border-radius:14px;padding:18px;text-align:center;}.name{font-size:18px;font-weight:700;margin:8px 0;}.alerta{background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:8px;font-size:11px;color:#dc2626;margin:8px 0;}.info{text-align:left;font-size:12px;line-height:1.8;margin:12px 0;}@media print{button{display:none}}</style></head><body>");
   w.document.write("<div class='card'>");
@@ -4374,7 +4339,7 @@ function exportarPDFHistorial() {
   var medico = usuarioActual ? (usuarioActual.nombre || 'Medico') : 'Medico';
   var fecha = new Date().toLocaleString('es-CO');
   var w = window.open('', '_blank');
-  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Historial ECG</title>');
+  w.document.write('<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Historial ECG</title>');
   w.document.write('<style>*{box-sizing:border-box;margin:0;padding:0;}body{font-family:Arial,sans-serif;color:#1e293b;font-size:11px;padding:20px;}');
   w.document.write('.hdr{display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #1d4ed8;padding-bottom:12px;margin-bottom:16px;}');
   w.document.write('.hdr-title{font-size:16px;font-weight:700;color:#1d4ed8;}');
@@ -5142,7 +5107,7 @@ function exportarReporteCompleto() {
   ];
 
   var w = window.open('', '_blank');
-  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Reporte Completo ECG - ' + pacNom + '</title>');
+  w.document.write('<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Reporte Completo ECG - ' + pacNom + '</title>');
   w.document.write('<style>');
   w.document.write('*{box-sizing:border-box;margin:0;padding:0;}');
   w.document.write('body{font-family:Arial,Helvetica,sans-serif;color:#1e293b;font-size:12px;padding:20px;max-width:900px;margin:0 auto;}');
@@ -5468,42 +5433,7 @@ function cargarDemo(tipo) {
     // Restaurar estructura HTML del resultado
     var preview = document.getElementById('resultadoPreview');
     if (preview) {
-      preview.innerHTML = [
-        '<div class="card" style="height:100%;">',
-        '<div class="card-hd" style="margin-bottom:12px;">',
-        '<div class="card-title">Resultado del diagn\xF3stico</div>',
-        '<div id="urgenciaBadge" style="font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;"></div>',
-        '</div>',
-        '<div id="diagPrincipal" style="background:var(--bg3);border-radius:12px;padding:16px;margin-bottom:12px;text-align:center;">',
-        '<div style="font-size:32px;margin-bottom:8px;" id="diagEmoji">\u2764\uFE0F</div>',
-        '<div style="font-size:18px;font-weight:700;" id="diagTexto">-</div>',
-        '<div style="font-size:13px;color:var(--text2);margin-top:4px;" id="diagConfianza">-</div>',
-        '</div>',
-        '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;">',
-        '<div style="background:var(--bg4);border-radius:8px;padding:10px;text-align:center;"><div style="font-size:16px;font-weight:700;color:var(--accent3);" id="indFC">-</div><div style="font-size:10px;color:var(--text3);">FC (lpm)</div></div>',
-        '<div style="background:var(--bg4);border-radius:8px;padding:10px;text-align:center;"><div style="font-size:16px;font-weight:700;color:var(--cyan);" id="indQT">-</div><div style="font-size:10px;color:var(--text3);">QTc (ms)</div></div>',
-        '<div style="background:var(--bg4);border-radius:8px;padding:10px;text-align:center;"><div style="font-size:16px;font-weight:700;color:var(--purple2);" id="indPR">-</div><div style="font-size:10px;color:var(--text3);">PR (ms)</div></div>',
-        '</div>',
-        '<div id="probPatologias" style="margin-bottom:12px;"></div>',
-        '<div style="margin-bottom:12px;"><label style="font-size:11px;font-weight:600;color:var(--text2);display:block;margin-bottom:4px;">\uD83D\uDCDD Notas cl\xEDnicas</label>',
-        '<textarea id="notasMedico" style="width:100%;min-height:60px;background:var(--bg4);border:1px solid var(--border2);border-radius:8px;padding:10px;color:var(--text);font-size:12px;font-family:inherit;resize:vertical;" placeholder="Observaciones..."></textarea>',
-        '</div>',
-        '<div style="display:flex;gap:8px;flex-wrap:wrap;">',
-        '<button class="btn btn-primary" style="flex:1;" onclick="abrirFirma()">\u270D\uFE0F Firmar</button>',
-        '<button class="btn btn-green" style="flex:1;" onclick="exportarPDFProfesional()">\uD83D\uDCCB PDF</button>',
-        '<button style="padding:10px 12px;background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.3);border-radius:10px;color:#25D366;cursor:pointer;font-size:13px;" onclick="compartirWhatsApp()">\uD83D\uDCF2</button>',
-        '</div>',
-        '<div style="margin-top:8px;display:flex;gap:8px;">',
-        '<button class="btn btn-ghost" style="flex:1;" onclick="switchTab(\'historial\')">\uD83D\uDCCA Historial</button>',
-        '<button class="btn btn-secondary" style="flex:1;" onclick="exportarReporteCompleto()">\uD83D\uDCCB 4 Casos</button>',
-        '</div>',
-        '<div style="margin-top:8px;">',
-        '<button id="btnMarcarUrgente" class="btn btn-full" style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);color:var(--red2);font-weight:600;padding:11px;" onclick="marcarUltimoUrgente()">',
-        '\uD83D\uDD34 Marcar como caso urgente',
-        '</button>',
-        '</div>',
-        '</div>'
-      ].join('');
+      preview.style.display = 'block'; // V12: usar HTML estatico del panel
     }
     mostrarResultadoDemo(demo, tipo);
     if (fi) fi.innerHTML = '\u2705 Caso demo: <strong>' + demo.nombre + '</strong>';
@@ -5839,7 +5769,7 @@ function exportarPDFProfesional() {
 
   // Abrir ventana PDF
   var w = window.open('', '_blank');
-  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Reporte ECG - ' + pacNom + '</title>');
+  w.document.write('<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Reporte ECG - ' + pacNom + '</title>');
   w.document.write('<style>');
   w.document.write('*{box-sizing:border-box;margin:0;padding:0;}');
   w.document.write('body{font-family:Arial,Helvetica,sans-serif;color:#1e293b;font-size:12px;padding:20px;max-width:900px;margin:0 auto;}');
@@ -6331,7 +6261,7 @@ function procesarPago() {
 
     // Notificacion
     var w = window.open('', '_blank');
-    w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Plan activado</title><style>body{font-family:Arial,sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;background:#060912;color:#f1f5f9;margin:0;}.box{text-align:center;padding:40px;background:#0d1424;border-radius:20px;border:1px solid rgba(16,185,129,.3);max-width:400px;}.check{font-size:64px;margin-bottom:16px;}.title{font-size:24px;font-weight:700;color:#34d399;margin-bottom:8px;}.sub{font-size:14px;color:#94a3b8;margin-bottom:20px;}.btn{padding:12px 28px;background:#2563eb;color:#fff;border:none;border-radius:10px;font-size:14px;cursor:pointer;font-weight:600;}</style></head><body>');
+    w.document.write('<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Plan activado</title><style>body{font-family:Arial,sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;background:#060912;color:#f1f5f9;margin:0;}.box{text-align:center;padding:40px;background:#0d1424;border-radius:20px;border:1px solid rgba(16,185,129,.3);max-width:400px;}.check{font-size:64px;margin-bottom:16px;}.title{font-size:24px;font-weight:700;color:#34d399;margin-bottom:8px;}.sub{font-size:14px;color:#94a3b8;margin-bottom:20px;}.btn{padding:12px 28px;background:#2563eb;color:#fff;border:none;border-radius:10px;font-size:14px;cursor:pointer;font-weight:600;}</style></head><body>');
     w.document.write('<div class="box"><div class="check">&#x2705;</div><div class="title">Plan ' + config.nombre + ' activado</div><div class="sub">Bienvenido a Cardio-IA Latam. Tu suscripcion esta activa.</div><button class="btn" onclick="window.close()">Volver al sistema</button></div></body></html>');
     w.document.close();
 
@@ -6836,7 +6766,7 @@ function imprimirInformeMensual() {
     }
   } catch(e) {}
   var w = window.open('', '_blank');
-  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Informe Mensual - ' + mesNombre + ' ' + anioVal + '</title>');
+  w.document.write('<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Informe Mensual - ' + mesNombre + ' ' + anioVal + '</title>');
   w.document.write('<style>body{font-family:Arial,sans-serif;max-width:800px;margin:0 auto;padding:30px;color:#1a1a1a;}');
   w.document.write('.header{display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #2563eb;padding-bottom:16px;margin-bottom:20px;}');
   w.document.write('.logo-area{display:flex;align-items:center;gap:12px;}');
@@ -9538,7 +9468,7 @@ function exportarPDF() {
   var fecha = new Date().toLocaleString('es-CO');
   var w = window.open('', '_blank');
   var color = ultimoResultado.diagnostico.includes('Normal') ? '#22c55e' : '#ef4444';
-  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Reporte Cardio-IA</title>');
+  w.document.write('<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Reporte Cardio-IA</title>');
   w.document.write('<style>body{font-family:Arial,sans-serif;max-width:800px;margin:0 auto;padding:24px;color:#1a1a1a;}.hdr{background:#2563eb;color:#fff;padding:16px;border-radius:8px;margin-bottom:16px;}.diag{background:#eff6ff;border:2px solid ' + color + ';padding:14px;border-radius:8px;margin:12px 0;}.footer{font-size:10px;color:#666;border-top:1px solid #e2e8f0;padding-top:10px;margin-top:20px;}@media print{.no-print{display:none}}</style>');
   w.document.write('</head><body>');
   var orgLogoDataPDF = '';
@@ -10146,42 +10076,7 @@ cargarDemo = function(tipo) {
     var btn = document.getElementById('btnAnalizar');
     if (btn) btn.disabled = false;
     if (preview) {
-      preview.innerHTML = [
-        '<div class="card" style="height:100%;">',
-        '<div class="card-hd" style="margin-bottom:12px;">',
-        '<div class="card-title">Resultado del diagnóstico</div>',
-        '<div id="urgenciaBadge" style="font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;"></div>',
-        '</div>',
-        '<div id="diagPrincipal" style="background:var(--bg3);border-radius:12px;padding:16px;margin-bottom:12px;text-align:center;">',
-        '<div style="font-size:32px;margin-bottom:8px;" id="diagEmoji">\u2764\uFE0F</div>',
-        '<div style="font-size:18px;font-weight:700;" id="diagTexto">-</div>',
-        '<div style="font-size:13px;color:var(--text2);margin-top:4px;" id="diagConfianza">-</div>',
-        '</div>',
-        '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;">',
-        '<div style="background:var(--bg4);border-radius:8px;padding:10px;text-align:center;"><div style="font-size:16px;font-weight:700;color:var(--accent3);" id="indFC">-</div><div style="font-size:10px;color:var(--text3);">FC (lpm)</div></div>',
-        '<div style="background:var(--bg4);border-radius:8px;padding:10px;text-align:center;"><div style="font-size:16px;font-weight:700;color:var(--cyan);" id="indQT">-</div><div style="font-size:10px;color:var(--text3);">QTc (ms)</div></div>',
-        '<div style="background:var(--bg4);border-radius:8px;padding:10px;text-align:center;"><div style="font-size:16px;font-weight:700;color:var(--purple2);" id="indPR">-</div><div style="font-size:10px;color:var(--text3);">PR (ms)</div></div>',
-        '</div>',
-        '<div id="probPatologias" style="margin-bottom:12px;"></div>',
-        '<div style="margin-bottom:12px;"><label style="font-size:11px;font-weight:600;color:var(--text2);display:block;margin-bottom:4px;">\uD83D\uDCDD Notas clínicas</label>',
-        '<textarea id="notasMedico" style="width:100%;min-height:60px;background:var(--bg4);border:1px solid var(--border2);border-radius:8px;padding:10px;color:var(--text);font-size:12px;font-family:inherit;resize:vertical;" placeholder="Observaciones..."></textarea>',
-        '</div>',
-        '<div style="display:flex;gap:8px;flex-wrap:wrap;">',
-        '<button class="btn btn-primary" style="flex:1;" onclick="abrirFirma()">\u270D\uFE0F Firmar</button>',
-        '<button class="btn btn-green" style="flex:1;" onclick="exportarPDFProfesional()">\uD83D\uDCCB PDF</button>',
-        '<button style="padding:10px 12px;background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.3);border-radius:10px;color:#25D366;cursor:pointer;font-size:13px;" onclick="compartirWhatsApp()" title="WhatsApp">\uD83D\uDCF2</button>',
-        '</div>',
-        '<div style="margin-top:8px;display:flex;gap:8px;">',
-        '<button class="btn btn-ghost" style="flex:1;" onclick="switchTab(\'historial\')">\uD83D\uDCCA Historial</button>',
-        '<button class="btn btn-secondary" style="flex:1;" onclick="exportarReporteCompleto()">\uD83D\uDCCB 4 Casos</button>',
-        '</div>',
-        '<div style="margin-top:8px;">',
-        '<button id="btnMarcarUrgente" class="btn btn-full" style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);color:var(--red2);font-weight:600;padding:11px;" onclick="marcarUltimoUrgente()">',
-        '\uD83D\uDD34 Marcar como caso urgente',
-        '</button>',
-        '</div>',
-        '</div>'
-      ].join('');
+      preview.style.display = 'block'; // V12: usar HTML estatico del panel
     }
     mostrarResultadoDemo(demo, tipo);
     if (fi) fi.innerHTML = '\u2705 Demo: <strong>' + demo.nombre + '</strong>';
@@ -12500,6 +12395,29 @@ function verDocGateway() {
   showToast('Documentacion del Gateway Agent en docs.cardio-ia.com/gateway', 'info');
 }
 
+
+
+// ===== KEYBOARD NAVIGATION =====
+document.addEventListener('keydown', function(e) {
+  // Enter/Space en nav items
+  if ((e.key === 'Enter' || e.key === ' ') && e.target.classList.contains('nav-item')) {
+    e.preventDefault();
+    e.target.click();
+  }
+  // Arrow keys en sidebar
+  if (e.key === 'ArrowDown' && e.target.classList.contains('nav-item')) {
+    e.preventDefault();
+    var next = e.target.nextElementSibling;
+    while (next && !next.classList.contains('nav-item')) next = next.nextElementSibling;
+    if (next) next.focus();
+  }
+  if (e.key === 'ArrowUp' && e.target.classList.contains('nav-item')) {
+    e.preventDefault();
+    var prev = e.target.previousElementSibling;
+    while (prev && !prev.classList.contains('nav-item')) prev = prev.previousElementSibling;
+    if (prev) prev.focus();
+  }
+});
 
 console.log('Cardio-IA Latam v11.4 cargado ✅');
 
