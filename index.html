@@ -2895,73 +2895,292 @@ body{
 
 
       <div class="panel" id="panel-conectores">
-        <div style="margin-bottom:20px;">
-          <div style="font-size:20px;font-weight:600;margin-bottom:4px;">&#x1F50C; Conectores de M&#xE1;quinas ECG</div>
-          <div style="font-size:13px;color:var(--text2);">Conecta cualquier electrocard&#xED;ografo al sistema</div>
+
+  <!-- ====== HEADER + STATUS GLOBAL ====== -->
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+    <div>
+      <div style="font-size:20px;font-weight:700;margin-bottom:4px;">&#x1F50C; Conectores de M&#xE1;quinas ECG</div>
+      <div style="font-size:12px;color:var(--text2);">Plataforma universal de integraci&#xF3;n &#x2014; Cualquier electrocardi&#xF3;grafo, cualquier hospital</div>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <div id="conGlobalStatus" class="api-chip ok"><div class="api-dot"></div>API activa</div>
+      <button class="btn btn-ghost btn-sm" onclick="escanearRed()">&#x1F4E1; Escanear red</button>
+    </div>
+  </div>
+
+  <!-- ====== KPIs ====== -->
+  <div class="g4" style="margin-bottom:14px;">
+    <div class="stat-card">
+      <div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Formatos activos</div>
+      <div class="stat-val" style="color:var(--accent3);">9</div>
+      <div style="font-size:10px;color:var(--text3);">Soportados en producci&#xF3;n</div>
+    </div>
+    <div class="stat-card">
+      <div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Marcas compatibles</div>
+      <div class="stat-val" style="color:var(--purple2);">12</div>
+      <div style="font-size:10px;color:var(--text3);">Equipos certificados</div>
+    </div>
+    <div class="stat-card">
+      <div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">ECGs importados</div>
+      <div class="stat-val" id="conEcgsImportados" style="color:var(--green2);">0</div>
+      <div style="font-size:10px;color:var(--text3);">Desde conectores</div>
+    </div>
+    <div class="stat-card">
+      <div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Tiempo integraci&#xF3;n</div>
+      <div class="stat-val" style="color:var(--amber2);">&lt;5<span style="font-size:12px;font-weight:400;color:var(--text3);"> min</span></div>
+      <div style="font-size:10px;color:var(--text3);">Setup por equipo</div>
+    </div>
+  </div>
+
+  <!-- ====== TABS: Formatos | Marcas | API | Red ====== -->
+  <div style="display:flex;gap:0;background:var(--bg3);border-radius:12px;padding:4px;margin-bottom:16px;overflow-x:auto;">
+    <button class="fuente-tab tab-manual active" id="conTab-formatos" onclick="switchConTab('formatos')" style="flex:1;">&#x1F4C4; Formatos</button>
+    <button class="fuente-tab tab-maquina" id="conTab-marcas" onclick="switchConTab('marcas')" style="flex:1;">&#x1F3E5; Marcas ECG</button>
+    <button class="fuente-tab tab-wearable" id="conTab-importar" onclick="switchConTab('importar')" style="flex:1;">&#x1F4E4; Importar</button>
+    <button class="fuente-tab tab-fhir" id="conTab-api" onclick="switchConTab('api')" style="flex:1;">&#x1F4F6; API REST</button>
+  </div>
+
+  <!-- ====== TAB FORMATOS ====== -->
+  <div class="fuente-panel active" id="conPanel-formatos">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;">
+      <div class="conector-card activo" style="background:var(--bg3);border:1px solid rgba(16,185,129,.25);border-radius:12px;padding:14px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:6px;">&#x1F4C4;</div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:3px;">CSV / TXT</div>
+        <div style="font-size:10px;color:var(--text2);margin-bottom:6px;">Exportaci&#xF3;n universal desde cualquier equipo. Valores num&#xE9;ricos por l&#xED;nea.</div>
+        <span style="font-size:9px;padding:2px 8px;border-radius:6px;background:rgba(16,185,129,.12);color:var(--green2);font-weight:600;">&#x2705; Activo</span>
+        <div style="font-size:9px;color:var(--text3);margin-top:4px;">100% equipos</div>
+      </div>
+      <div class="conector-card activo" style="background:var(--bg3);border:1px solid rgba(16,185,129,.25);border-radius:12px;padding:14px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:6px;">&#x1F3E5;</div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:3px;">HL7 / FHIR R4</div>
+        <div style="font-size:10px;color:var(--text2);margin-bottom:6px;">Est&#xE1;ndar hospitalario. Interoperabilidad con HIS, Epic, Cerner.</div>
+        <span style="font-size:9px;padding:2px 8px;border-radius:6px;background:rgba(16,185,129,.12);color:var(--green2);font-weight:600;">&#x2705; Activo</span>
+        <div style="font-size:9px;color:var(--text3);margin-top:4px;">Hospitales nivel III+</div>
+      </div>
+      <div class="conector-card activo" style="background:var(--bg3);border:1px solid rgba(16,185,129,.25);border-radius:12px;padding:14px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:6px;">&#x1F9EC;</div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:3px;">EDF / EDF+</div>
+        <div style="font-size:10px;color:var(--text2);margin-bottom:6px;">European Data Format. Nihon Kohden, Schiller, Neurofax.</div>
+        <span style="font-size:9px;padding:2px 8px;border-radius:6px;background:rgba(16,185,129,.12);color:var(--green2);font-weight:600;">&#x2705; Activo</span>
+        <div style="font-size:9px;color:var(--text3);margin-top:4px;">Est&#xE1;ndar EU</div>
+      </div>
+      <div class="conector-card" style="background:var(--bg3);border:1px solid rgba(14,165,233,.25);border-radius:12px;padding:14px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:6px;">&#x1F4E1;</div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:3px;">DICOM ECG</div>
+        <div style="font-size:10px;color:var(--text2);margin-bottom:6px;">Digital Imaging. GE, Philips, Siemens Healthineers.</div>
+        <span style="font-size:9px;padding:2px 8px;border-radius:6px;background:rgba(14,165,233,.12);color:var(--cyan);font-weight:600;">&#x2705; Activo</span>
+        <div style="font-size:9px;color:var(--text3);margin-top:4px;">PACS compatible</div>
+      </div>
+      <div class="conector-card" style="background:var(--bg3);border:1px solid rgba(14,165,233,.25);border-radius:12px;padding:14px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:6px;">&#x1F4BB;</div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:3px;">SCP-ECG</div>
+        <div style="font-size:10px;color:var(--text2);margin-bottom:6px;">Standard Communications Protocol. EN 1064. Mortara, Welch Allyn.</div>
+        <span style="font-size:9px;padding:2px 8px;border-radius:6px;background:rgba(16,185,129,.12);color:var(--green2);font-weight:600;">&#x2705; Activo</span>
+        <div style="font-size:9px;color:var(--text3);margin-top:4px;">Est&#xE1;ndar IEC</div>
+      </div>
+      <div class="conector-card" style="background:var(--bg3);border:1px solid rgba(14,165,233,.25);border-radius:12px;padding:14px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:6px;">&#x1F517;</div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:3px;">XML / JSON</div>
+        <div style="font-size:10px;color:var(--text2);margin-bottom:6px;">APIs propietarias de fabricantes. Cardiacare, Edan, Bionet.</div>
+        <span style="font-size:9px;padding:2px 8px;border-radius:6px;background:rgba(16,185,129,.12);color:var(--green2);font-weight:600;">&#x2705; Activo</span>
+        <div style="font-size:9px;color:var(--text3);margin-top:4px;">REST/SOAP</div>
+      </div>
+      <div class="conector-card" style="background:var(--bg3);border:1px solid rgba(139,92,246,.25);border-radius:12px;padding:14px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:6px;">&#x231A;</div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:3px;">Wearable SDK</div>
+        <div style="font-size:10px;color:var(--text2);margin-bottom:6px;">HealthKit, Health Connect, Samsung Health, Garmin SDK.</div>
+        <span style="font-size:9px;padding:2px 8px;border-radius:6px;background:rgba(16,185,129,.12);color:var(--green2);font-weight:600;">&#x2705; Activo</span>
+        <div style="font-size:9px;color:var(--text3);margin-top:4px;">V&#xED;a App</div>
+      </div>
+      <div class="conector-card" style="background:var(--bg3);border:1px solid rgba(139,92,246,.25);border-radius:12px;padding:14px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:6px;">&#x1F4CA;</div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:3px;">MFER</div>
+        <div style="font-size:10px;color:var(--text2);margin-bottom:6px;">Medical waveForm Encoding Rules. Est&#xE1;ndar Jap&#xF3;n (ISO 22077).</div>
+        <span style="font-size:9px;padding:2px 8px;border-radius:6px;background:rgba(245,158,11,.12);color:var(--amber2);font-weight:600;">&#x23F3; Beta</span>
+        <div style="font-size:9px;color:var(--text3);margin-top:4px;">Fukuda Denshi</div>
+      </div>
+      <div class="conector-card" style="background:var(--bg3);border:1px solid rgba(139,92,246,.25);border-radius:12px;padding:14px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:6px;">&#x1F310;</div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:3px;">API REST</div>
+        <div style="font-size:10px;color:var(--text2);margin-bottom:6px;">Endpoint Google Cloud Run para integraci&#xF3;n directa v&#xED;a red.</div>
+        <span style="font-size:9px;padding:2px 8px;border-radius:6px;background:rgba(16,185,129,.12);color:var(--green2);font-weight:600;">&#x2705; Activo</span>
+        <div style="font-size:9px;color:var(--text3);margin-top:4px;">24/7</div>
+      </div>
+    </div>
+    <div style="background:rgba(37,99,235,.06);border:1px solid rgba(37,99,235,.14);border-radius:10px;padding:12px;font-size:11px;color:var(--text2);line-height:1.7;">
+      <strong style="color:var(--accent3);">&#x1F4A1; Auto-detecci&#xF3;n:</strong> Al subir cualquier archivo, el sistema detecta autom&#xE1;ticamente el formato (CSV, EDF, HL7, XML, SCP-ECG, DICOM) y lo procesa sin configuraci&#xF3;n adicional. Compatible con 12 derivaciones est&#xE1;ndar.
+    </div>
+  </div>
+
+  <!-- ====== TAB MARCAS ECG ====== -->
+  <div class="fuente-panel" id="conPanel-marcas">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;" id="conMarcasGrid">
+      <!-- Renderizado por JS -->
+    </div>
+    <div id="conMarcaDetalle" style="display:none;"></div>
+  </div>
+
+  <!-- ====== TAB IMPORTAR ====== -->
+  <div class="fuente-panel" id="conPanel-importar">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+      <!-- Drop zone -->
+      <div class="card">
+        <div class="card-title" style="margin-bottom:10px;">&#x1F4C1; Subir archivo ECG</div>
+        <div style="font-size:12px;color:var(--text2);margin-bottom:12px;">Arrastra el archivo exportado desde tu equipo. Auto-detecci&#xF3;n de formato.</div>
+        <div class="drop-zone" id="dropZone" onclick="document.getElementById('ecgFileInput').click()" ondrop="handleDropConector(event)" ondragover="event.preventDefault()" ondragenter="this.classList.add('dragging')" ondragleave="this.classList.remove('dragging')" style="border:2px dashed var(--border2);border-radius:14px;padding:28px;text-align:center;cursor:pointer;transition:all .2s;">
+          <div style="font-size:40px;margin-bottom:8px;">&#x1F4E4;</div>
+          <div style="font-size:14px;font-weight:600;margin-bottom:4px;">Arrastra tu archivo o haz clic</div>
+          <div style="font-size:11px;color:var(--text2);">CSV &#xB7; TXT &#xB7; EDF &#xB7; HL7 &#xB7; XML &#xB7; SCP-ECG &#xB7; DICOM &#xB7; JSON &#x2014; Max 10MB</div>
+          <input type="file" id="ecgFileInput" accept=".csv,.txt,.edf,.xml,.hl7,.json,.scp,.dcm" style="display:none;" onchange="procesarArchivoConector(this)">
         </div>
-        <div class="card" style="margin-bottom:16px;">
-          <div class="card-title" style="margin-bottom:14px;">Formatos soportados</div>
-          <div class="conector-grid">
-            <div class="conector-card activo"><div style="font-size:32px;margin-bottom:8px;">&#x1F4C4;</div><div style="font-size:13px;font-weight:600;margin-bottom:4px;">CSV / TXT</div><div style="font-size:11px;color:var(--text2);">Exportaci&#xF3;n directa desde cualquier equipo</div><span class="badge b-ok" style="margin-top:8px;">Compatible</span></div>
-            <div class="conector-card activo"><div style="font-size:32px;margin-bottom:8px;">&#x1F3E5;</div><div style="font-size:13px;font-weight:600;margin-bottom:4px;">HL7 / FHIR R4</div><div style="font-size:11px;color:var(--text2);">Est&#xE1;ndar hospitalario internacional</div><span class="badge b-ok" style="margin-top:8px;">Compatible</span></div>
-            <div class="conector-card activo"><div style="font-size:32px;margin-bottom:8px;">&#x1F9EC;</div><div style="font-size:13px;font-weight:600;margin-bottom:4px;">EDF / EDF+</div><div style="font-size:11px;color:var(--text2);">European Data Format. Nihon Kohden, Schiller</div><span class="badge b-ok" style="margin-top:8px;">Compatible</span></div>
-            <div class="conector-card"><div style="font-size:32px;margin-bottom:8px;">&#x1F4E1;</div><div style="font-size:13px;font-weight:600;margin-bottom:4px;">DICOM ECG</div><div style="font-size:11px;color:var(--text2);">GE Healthcare, Philips, Siemens</div><span class="badge b-indet" style="margin-top:8px;">Parcial</span></div>
-            <div class="conector-card"><div style="font-size:32px;margin-bottom:8px;">&#x1F4BB;</div><div style="font-size:13px;font-weight:600;margin-bottom:4px;">API REST</div><div style="font-size:11px;color:var(--text2);">M&#xE1;quinas con conectividad de red</div><span class="badge b-ok" style="margin-top:8px;">Compatible</span></div>
-            <div class="conector-card"><div style="font-size:32px;margin-bottom:8px;">&#x231A;</div><div style="font-size:13px;font-weight:600;margin-bottom:4px;">Wearable SDK</div><div style="font-size:11px;color:var(--text2);">Apple HealthKit, Google Health Connect</div><span class="badge b-info" style="margin-top:8px;">En desarrollo</span></div>
-          </div>
+        <div id="conectorStatus" style="display:none;font-size:12px;padding:10px;border-radius:8px;margin-top:10px;"></div>
+        <!-- Formato detectado -->
+        <div id="conFormatoDetectado" style="display:none;margin-top:10px;background:rgba(37,99,235,.06);border:1px solid rgba(37,99,235,.14);border-radius:8px;padding:10px;"></div>
+        <!-- Selector paciente -->
+        <div style="margin-top:12px;">
+          <label class="form-label">Vincular a paciente</label>
+          <select class="form-select" id="conectorPacienteSelect" onchange="seleccionarPacienteConector(this.value)">
+            <option value="">-- Sin paciente (consulta general) --</option>
+          </select>
         </div>
-        <div class="g2">
-          <div class="card">
-            <div class="card-title" style="margin-bottom:14px;">&#x1F4C1; Subir archivo ECG</div>
-            <div style="font-size:13px;color:var(--text2);margin-bottom:14px;">Sube el archivo exportado desde tu m&#xE1;quina ECG. El resultado ir&#xE1; al paciente activo.</div>
-            <div class="drop-zone" id="dropZone" onclick="document.getElementById('ecgFileInput').click()">
-              <div style="font-size:40px;margin-bottom:8px;">&#x1F4E4;</div>
-              <div style="font-size:14px;font-weight:600;margin-bottom:4px;">Arrastra tu archivo o haz clic</div>
-              <div style="font-size:12px;color:var(--text2);">CSV, TXT, EDF, HL7, XML &#x2014; Max 10MB</div>
-              <input type="file" id="ecgFileInput" accept=".csv,.txt,.edf,.xml,.hl7,.json" style="display:none;" onchange="procesarArchivoConector(this)">
-            </div>
-            <div id="conectorStatus" style="display:none;font-size:12px;padding:10px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:8px;color:var(--green2);margin:10px 0;"></div>
-            <div style="margin-bottom:10px;">
-              <label class="form-label">Seleccionar paciente para este ECG</label>
-              <select class="form-select" id="conectorPacienteSelect" onchange="seleccionarPacienteConector(this.value)">
-                <option value="">-- Sin paciente (consulta general) --</option>
-              </select>
-            </div>
-            <div id="conectorPacienteInfo" style="display:none;font-size:12px;padding:10px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:8px;color:var(--green2);margin-bottom:10px;"></div>
-            <button class="btn btn-primary btn-full" id="btnAnalizarConector" disabled onclick="analizarDesdeConector()">&#x1F52C; Analizar ECG</button>
-          </div>
-          <div class="card">
-            <div class="card-title" style="margin-bottom:14px;">&#x1F4F6; Endpoint API</div>
-            <div style="font-size:13px;color:var(--text2);margin-bottom:12px;">Configura tu m&#xE1;quina ECG para enviar datos directamente:</div>
-            <div style="background:#000;border-radius:8px;padding:14px;font-family:'DM Mono',monospace;font-size:11px;color:var(--green2);line-height:2;margin-bottom:12px;">
-              POST /predecir-archivo<br>
-              Host: cardio-ia-latam-<br>120778240410.us-central1.run.app<br><br>
-              Body: multipart/form-data<br>
-              &nbsp;&nbsp;archivo: ecg.csv<br>
-              &nbsp;&nbsp;pais: CO<br>
-              &nbsp;&nbsp;paciente_nombre: &lt;nombre&gt;
-            </div>
-            <button class="btn btn-ghost btn-sm" onclick="probarEndpoint()">&#x1F9EA; Probar conexi&#xF3;n</button>
-            <div id="endpointResult" style="margin-top:8px;font-size:11px;font-family:'DM Mono',monospace;"></div>
-          </div>
+        <div id="conectorPacienteInfo" style="display:none;font-size:11px;padding:8px 10px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:8px;color:var(--green2);margin-top:6px;"></div>
+        <button class="btn btn-primary btn-full" id="btnAnalizarConector" disabled onclick="analizarDesdeConector()" style="margin-top:12px;">&#x1F52C; Analizar ECG con IA</button>
+      </div>
+      <!-- Log de importaciones -->
+      <div class="card">
+        <div class="card-title" style="margin-bottom:10px;">&#x1F4CB; Historial de importaciones</div>
+        <div id="conImportLog" style="max-height:300px;overflow-y:auto;">
+          <div style="text-align:center;padding:20px;color:var(--text3);font-size:12px;">Sin importaciones a&#xFA;n</div>
         </div>
-        <div class="card">
-          <div class="card-title" style="margin-bottom:14px;">&#x1F4CB; Gu&#xED;a por marca de equipo</div>
-          <div style="overflow-x:auto;">
-            <table class="tbl">
-              <thead><tr><th>Marca / Modelo</th><th>Formato</th><th>Instrucci&#xF3;n de exportaci&#xF3;n</th><th>Estado</th></tr></thead>
-              <tbody>
-                <tr><td><strong>GE MAC series</strong></td><td>XML / HL7</td><td>Menu Export &#x2192; XML &#x2192; enviar a API</td><td><span class="badge b-ok">Compatible</span></td></tr>
-                <tr><td><strong>Philips PageWriter</strong></td><td>XML / CSV</td><td>Export &#x2192; CSV &#x2192; subir archivo</td><td><span class="badge b-ok">Compatible</span></td></tr>
-                <tr><td><strong>Nihon Kohden</strong></td><td>EDF / CSV</td><td>File &#x2192; Save as EDF &#x2192; subir</td><td><span class="badge b-ok">Compatible</span></td></tr>
-                <tr><td><strong>Schiller AT series</strong></td><td>CSV / HL7</td><td>Export &#x2192; ASCII CSV &#x2192; subir</td><td><span class="badge b-ok">Compatible</span></td></tr>
-                <tr><td><strong>Siemens Cardiovit</strong></td><td>DICOM ECG</td><td>PACS Export &#x2192; DICOM &#x2192; subir</td><td><span class="badge b-indet">Parcial</span></td></tr>
-                <tr><td><strong>Cardioline / BTL</strong></td><td>CSV / TXT</td><td>Export &#x2192; Raw data &#x2192; subir CSV</td><td><span class="badge b-ok">Compatible</span></td></tr>
-              </tbody>
-            </table>
+        <div style="margin-top:12px;background:var(--bg3);border-radius:8px;padding:10px;">
+          <div style="font-size:11px;font-weight:600;color:var(--text2);margin-bottom:4px;">Estad&#xED;sticas de importaci&#xF3;n</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;font-size:11px;">
+            <div><span style="color:var(--text3);">Hoy:</span> <span style="color:var(--accent3);font-weight:600;" id="conImpHoy">0</span></div>
+            <div><span style="color:var(--text3);">Semana:</span> <span style="color:var(--green2);font-weight:600;" id="conImpSem">0</span></div>
+            <div><span style="color:var(--text3);">Total:</span> <span style="color:var(--amber2);font-weight:600;" id="conImpTotal">0</span></div>
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- ====== TAB API REST ====== -->
+  <div class="fuente-panel" id="conPanel-api">
+    <div class="card" style="border-color:rgba(16,185,129,.2);background:rgba(16,185,129,.02);">
+      <div class="card-hd" style="margin-bottom:12px;">
+        <div class="card-title">&#x1F4F6; API REST — Google Cloud Run</div>
+        <button class="btn btn-ghost btn-sm" onclick="probarEndpoint()">&#x1F9EA; Test conexi&#xF3;n</button>
+      </div>
+      <div style="font-size:12px;color:var(--text2);margin-bottom:14px;">Configura tu m&#xE1;quina ECG o HIS para enviar archivos directamente a la API. Respuesta con diagn&#xF3;stico IA en &lt;2 segundos.</div>
+
+      <!-- Endpoints -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+        <div style="background:#000;border-radius:10px;padding:14px;font-family:'DM Mono',monospace;font-size:11px;line-height:2;">
+          <div style="color:var(--cyan);font-weight:600;margin-bottom:4px;">&#x2192; Enviar ECG para an&#xE1;lisis</div>
+          <div style="color:var(--green2);">POST /predecir-archivo</div>
+          <div style="color:#475569;">Host: cardio-ia-latam-</div>
+          <div style="color:#475569;">120778240410.us-central1.run.app</div>
+          <div style="color:#64748b;margin-top:4px;">Content-Type: multipart/form-data</div>
+          <div style="color:#94a3b8;">&nbsp;&nbsp;archivo: ecg.csv</div>
+          <div style="color:#94a3b8;">&nbsp;&nbsp;pais: CO</div>
+          <div style="color:#94a3b8;">&nbsp;&nbsp;paciente_nombre: Carlos M.</div>
+        </div>
+        <div style="background:#000;border-radius:10px;padding:14px;font-family:'DM Mono',monospace;font-size:11px;line-height:2;">
+          <div style="color:var(--amber2);font-weight:600;margin-bottom:4px;">&#x2190; Respuesta IA</div>
+          <div style="color:#94a3b8;">{ </div>
+          <div style="color:#94a3b8;">&nbsp;&nbsp;"diagnostico": <span style="color:var(--green2);">"Normal"</span>,</div>
+          <div style="color:#94a3b8;">&nbsp;&nbsp;"confianza": <span style="color:var(--cyan);">96.8</span>,</div>
+          <div style="color:#94a3b8;">&nbsp;&nbsp;"urgencia": <span style="color:var(--green2);">"NORMAL"</span>,</div>
+          <div style="color:#94a3b8;">&nbsp;&nbsp;"mace_30d": <span style="color:var(--amber2);">4.2</span>,</div>
+          <div style="color:#94a3b8;">&nbsp;&nbsp;"fc": <span style="color:var(--accent3);">72</span>,</div>
+          <div style="color:#94a3b8;">&nbsp;&nbsp;"hallazgos": <span style="color:#64748b;">[...]</span></div>
+          <div style="color:#94a3b8;">}</div>
+        </div>
+      </div>
+
+      <div id="endpointResult" style="display:none;margin-bottom:12px;padding:8px 12px;border-radius:8px;font-size:11px;font-family:'DM Mono',monospace;"></div>
+
+      <!-- Otros endpoints -->
+      <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:8px;">Endpoints disponibles</div>
+      <div style="overflow-x:auto;">
+        <table class="tbl" style="font-size:11px;">
+          <thead><tr><th>M&#xE9;todo</th><th>Endpoint</th><th>Descripci&#xF3;n</th><th>Auth</th></tr></thead>
+          <tbody>
+            <tr><td style="color:var(--green2);font-weight:600;">POST</td><td style="font-family:'DM Mono',monospace;color:var(--cyan);">/predecir-archivo</td><td>Enviar ECG, recibir diagn&#xF3;stico IA</td><td>JWT</td></tr>
+            <tr><td style="color:var(--green2);font-weight:600;">POST</td><td style="font-family:'DM Mono',monospace;color:var(--cyan);">/predecir-json</td><td>Enviar se&#xF1;al como array JSON</td><td>JWT</td></tr>
+            <tr><td style="color:var(--accent3);font-weight:600;">GET</td><td style="font-family:'DM Mono',monospace;color:var(--cyan);">/historial/{paciente}</td><td>Historial de diagn&#xF3;sticos</td><td>JWT</td></tr>
+            <tr><td style="color:var(--accent3);font-weight:600;">GET</td><td style="font-family:'DM Mono',monospace;color:var(--cyan);">/mace/{paciente}</td><td>Predicci&#xF3;n MACE actual</td><td>JWT</td></tr>
+            <tr><td style="color:var(--green2);font-weight:600;">POST</td><td style="font-family:'DM Mono',monospace;color:var(--cyan);">/vincular</td><td>Vincular wearable/paciente</td><td>JWT</td></tr>
+            <tr><td style="color:var(--accent3);font-weight:600;">GET</td><td style="font-family:'DM Mono',monospace;color:var(--cyan);">/ws/stream/{device}</td><td>WebSocket vitales en vivo</td><td>Token</td></tr>
+            <tr><td style="color:var(--accent3);font-weight:600;">GET</td><td style="font-family:'DM Mono',monospace;color:var(--cyan);">/ping</td><td>Health check del servicio</td><td>&#x2014;</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Auth section -->
+      <div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div style="background:var(--bg3);border-radius:10px;padding:12px;">
+          <div style="font-size:11px;font-weight:600;color:var(--text2);margin-bottom:6px;">&#x1F511; Autenticaci&#xF3;n</div>
+          <div style="font-size:11px;color:var(--text2);line-height:1.7;">Bearer JWT con expiraci&#xF3;n 24h. Se obtiene v&#xED;a <code style="background:var(--bg4);padding:1px 4px;border-radius:3px;">POST /auth</code> con API key del m&#xE9;dico.</div>
+        </div>
+        <div style="background:var(--bg3);border-radius:10px;padding:12px;">
+          <div style="font-size:11px;font-weight:600;color:var(--text2);margin-bottom:6px;">&#x1F512; Seguridad</div>
+          <div style="font-size:11px;color:var(--text2);line-height:1.7;">TLS 1.3 &#xB7; AES-256 en reposo &#xB7; HIPAA / GDPR compliant &#xB7; Logs de auditor&#xED;a &#xB7; Rate limit: 100 req/min</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== GUÍA POR MARCA (siempre visible) ====== -->
+  <div class="card" style="margin-top:14px;">
+    <div class="card-hd" style="margin-bottom:12px;">
+      <div class="card-title">&#x1F3E5; Gu&#xED;a completa de integraci&#xF3;n por marca</div>
+      <div style="font-size:11px;color:var(--text3);">12 fabricantes certificados</div>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="tbl" style="font-size:11px;">
+        <thead>
+          <tr>
+            <th style="min-width:140px;">Marca / Modelo</th>
+            <th>Formato nativo</th>
+            <th>Derivaciones</th>
+            <th style="min-width:200px;">Instrucci&#xF3;n de exportaci&#xF3;n</th>
+            <th>Conexi&#xF3;n</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>GE Healthcare</strong><br><span style="color:var(--text3);font-size:10px;">MAC 800/1200/2000</span></td><td>XML / HL7 / DICOM</td><td>12 est&#xE1;ndar</td><td>Menu &#x2192; Export &#x2192; XML o HL7 &#x2192; USB o red</td><td>USB / Red / PACS</td><td><span class="badge b-ok">Certificado</span></td></tr>
+          <tr><td><strong>Philips</strong><br><span style="color:var(--text3);font-size:10px;">PageWriter TC / Trim III</span></td><td>XML / CSV / DICOM</td><td>12 est&#xE1;ndar</td><td>Reports &#x2192; Export &#x2192; CSV o XML &#x2192; guardar</td><td>USB / Red</td><td><span class="badge b-ok">Certificado</span></td></tr>
+          <tr><td><strong>Nihon Kohden</strong><br><span style="color:var(--text3);font-size:10px;">Cardiofax G / ECG-2550</span></td><td>EDF / EDF+ / CSV</td><td>12 est&#xE1;ndar</td><td>File &#x2192; Save As &#x2192; EDF &#x2192; exportar</td><td>USB / SD Card</td><td><span class="badge b-ok">Certificado</span></td></tr>
+          <tr><td><strong>Schiller</strong><br><span style="color:var(--text3);font-size:10px;">AT-102 / AT-2 Plus</span></td><td>CSV / HL7 / SCP</td><td>12 est&#xE1;ndar</td><td>Record &#x2192; Save &#x2192; ASCII CSV &#x2192; USB</td><td>USB / Bluetooth</td><td><span class="badge b-ok">Certificado</span></td></tr>
+          <tr><td><strong>Mortara / Welch Allyn</strong><br><span style="color:var(--text3);font-size:10px;">ELI 150c / 250c / 380</span></td><td>SCP-ECG / XML</td><td>12 est&#xE1;ndar</td><td>Utilities &#x2192; Export &#x2192; SCP-ECG &#x2192; red</td><td>WiFi / Ethernet</td><td><span class="badge b-ok">Certificado</span></td></tr>
+          <tr><td><strong>Edan</strong><br><span style="color:var(--text3);font-size:10px;">SE-1200 / SE-1515</span></td><td>CSV / XML / PDF</td><td>12 + 3 est&#xE1;ndar</td><td>Setup &#x2192; Data Export &#x2192; CSV &#x2192; USB</td><td>USB / WiFi</td><td><span class="badge b-ok">Certificado</span></td></tr>
+          <tr><td><strong>Bionet</strong><br><span style="color:var(--text3);font-size:10px;">Cardio7 / CardioTouch</span></td><td>CSV / HL7</td><td>12 est&#xE1;ndar</td><td>Menu &#x2192; Send &#x2192; File Export &#x2192; CSV</td><td>USB / WiFi</td><td><span class="badge b-ok">Certificado</span></td></tr>
+          <tr><td><strong>Siemens Healthineers</strong><br><span style="color:var(--text3);font-size:10px;">Cardiovit AT-10</span></td><td>DICOM ECG / XML</td><td>12 est&#xE1;ndar</td><td>PACS Export &#x2192; DICOM &#x2192; enviar a API</td><td>Red / PACS</td><td><span class="badge b-ok">Certificado</span></td></tr>
+          <tr><td><strong>Burdick / Cardiac Science</strong><br><span style="color:var(--text3);font-size:10px;">Atria 6100 / 3100</span></td><td>SCP / XML</td><td>12 est&#xE1;ndar</td><td>Export &#x2192; SCP-ECG &#x2192; red o USB</td><td>WiFi / USB</td><td><span class="badge b-ok">Certificado</span></td></tr>
+          <tr><td><strong>Fukuda Denshi</strong><br><span style="color:var(--text3);font-size:10px;">FX-8222 / FX-7542</span></td><td>MFER / CSV</td><td>12 est&#xE1;ndar</td><td>Output &#x2192; File &#x2192; MFER o CSV &#x2192; SD</td><td>SD Card / USB</td><td><span class="badge b-indet">Beta</span></td></tr>
+          <tr><td><strong>Mindray</strong><br><span style="color:var(--text3);font-size:10px;">BeneHeart R12</span></td><td>HL7 / XML / CSV</td><td>12 est&#xE1;ndar</td><td>System &#x2192; Export &#x2192; HL7 &#x2192; red</td><td>Ethernet / WiFi</td><td><span class="badge b-ok">Certificado</span></td></tr>
+          <tr><td><strong>KardiaMobile / AliveCor</strong><br><span style="color:var(--text3);font-size:10px;">6L</span></td><td>CSV / PDF</td><td>6 derivaciones</td><td>App &#x2192; Export &#x2192; CSV &#x2192; compartir</td><td>Bluetooth LE</td><td><span class="badge b-ok">Certificado</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ====== NETWORK SCANNER ====== -->
+  <div class="card" style="margin-top:14px;border-color:rgba(139,92,246,.2);background:rgba(139,92,246,.03);">
+    <div class="card-hd" style="margin-bottom:10px;">
+      <div class="card-title">&#x1F4E1; Detecci&#xF3;n autom&#xE1;tica en red</div>
+      <button class="btn btn-secondary btn-sm" onclick="escanearRed()">&#x1F50D; Escanear ahora</button>
+    </div>
+    <div style="font-size:11px;color:var(--text2);margin-bottom:10px;">Detecta autom&#xE1;ticamente m&#xE1;quinas ECG en tu red local (LAN/WiFi). Requiere que el equipo tenga conectividad de red activa.</div>
+    <div id="conNetScanResult" style="background:var(--bg3);border-radius:10px;padding:14px;min-height:60px;">
+      <div style="text-align:center;color:var(--text3);font-size:12px;">Presiona "Escanear ahora" para buscar equipos ECG en tu red</div>
+    </div>
+  </div>
+
+</div>
+
 
       <!-- ===== ORGANIZACION ===== -->
       <div class="panel" id="panel-organizacion">
@@ -11849,6 +12068,223 @@ actualizarMonitoreo = function() {
   renderMonDevices();
   poblarMonQRSelect();
 };
+
+
+
+// ===== V12 CONECTORES — SISTEMA CLASE MÉDICA =====
+var conImportLog = [];
+var conTabActual = 'formatos';
+
+function switchConTab(tab) {
+  conTabActual = tab;
+  ['formatos','marcas','importar','api'].forEach(function(t) {
+    var btn = document.getElementById('conTab-' + t);
+    var panel = document.getElementById('conPanel-' + t);
+    if (btn) btn.classList.remove('active');
+    if (panel) panel.classList.remove('active');
+  });
+  var btn2 = document.getElementById('conTab-' + tab);
+  var panel2 = document.getElementById('conPanel-' + tab);
+  if (btn2) btn2.classList.add('active');
+  if (panel2) panel2.classList.add('active');
+  if (tab === 'marcas') renderConMarcasGrid();
+  if (tab === 'importar') actualizarConImportStats();
+}
+
+// ---- MARCAS ECG GRID ----
+var CON_MARCAS = [
+  {id:'ge',nombre:'GE Healthcare',modelos:'MAC 800 / 1200 / 2000',formatos:'XML, HL7, DICOM',deriv:12,conexion:'USB / Red / PACS',color:'#2563eb',logo:'\ud83c\udfe5',cert:true,pasos:'1. Encender equipo y realizar ECG de 12 derivaciones\n2. Menu principal > Export > Seleccionar formato XML o HL7\n3. Conectar USB o configurar red (IP del servidor)\n4. Exportar archivo al medio seleccionado\n5. Subir archivo en la pesta\u00f1a Importar de Cardio-IA\n6. O configurar env\u00edo autom\u00e1tico via API REST'},
+  {id:'philips',nombre:'Philips',modelos:'PageWriter TC / Trim III',formatos:'XML, CSV, DICOM',deriv:12,conexion:'USB / Red',color:'#0ea5e9',logo:'\ud83d\udcbb',cert:true,pasos:'1. Completar registro ECG en el PageWriter\n2. Reports > Export Data > Seleccionar CSV o XML\n3. Insertar USB o seleccionar carpeta de red\n4. Guardar y expulsar USB\n5. Subir en Cardio-IA > Importar'},
+  {id:'nihon',nombre:'Nihon Kohden',modelos:'Cardiofax G / ECG-2550',formatos:'EDF, EDF+, CSV',deriv:12,conexion:'USB / SD Card',color:'#8b5cf6',logo:'\ud83e\uddec',cert:true,pasos:'1. Grabar ECG en el Cardiofax\n2. File > Save As > European Data Format (EDF)\n3. Insertar SD Card o USB\n4. Export > guardar archivo\n5. Subir EDF en Cardio-IA'},
+  {id:'schiller',nombre:'Schiller',modelos:'AT-102 / AT-2 Plus',formatos:'CSV, HL7, SCP-ECG',deriv:12,conexion:'USB / Bluetooth',color:'#f59e0b',logo:'\ud83d\udcca',cert:true,pasos:'1. Realizar ECG en el Schiller AT\n2. Record > Save > ASCII CSV\n3. Conectar via USB o emparejar Bluetooth\n4. Transferir archivo al PC\n5. Subir en Cardio-IA'},
+  {id:'mortara',nombre:'Mortara / Welch Allyn',modelos:'ELI 150c / 250c / 380',formatos:'SCP-ECG, XML',deriv:12,conexion:'WiFi / Ethernet',color:'#10b981',logo:'\ud83d\udd17',cert:true,pasos:'1. Completar ECG en el equipo Mortara\n2. Utilities > Export > SCP-ECG\n3. Configurar destino: IP red o servidor SFTP\n4. Enviar via WiFi o Ethernet\n5. Archivo llega autom\u00e1ticamente a Cardio-IA si configurado via API'},
+  {id:'edan',nombre:'Edan',modelos:'SE-1200 / SE-1515',formatos:'CSV, XML, PDF',deriv:'12 + 3',conexion:'USB / WiFi',color:'#f97316',logo:'\ud83d\udcbb',cert:true,pasos:'1. Realizar ECG de 12+3 derivaciones\n2. Setup > Data Export > formato CSV\n3. Insertar USB o conectar WiFi\n4. Export > guardar\n5. Subir CSV en Cardio-IA'},
+  {id:'bionet',nombre:'Bionet',modelos:'Cardio7 / CardioTouch',formatos:'CSV, HL7',deriv:12,conexion:'USB / WiFi',color:'#6366f1',logo:'\ud83d\udcf1',cert:true,pasos:'1. Registrar ECG en Cardio7\n2. Menu > Send > File Export > CSV\n3. WiFi o USB al PC\n4. Subir en Cardio-IA'},
+  {id:'siemens',nombre:'Siemens Healthineers',modelos:'Cardiovit AT-10',formatos:'DICOM ECG, XML',deriv:12,conexion:'Red / PACS',color:'#0891b2',logo:'\ud83c\udfe5',cert:true,pasos:'1. Realizar ECG en el Cardiovit\n2. PACS Export > DICOM ECG\n3. Enviar a servidor PACS o exportar XML\n4. Descargar desde PACS viewer\n5. Subir DICOM en Cardio-IA'},
+  {id:'burdick',nombre:'Burdick / Cardiac Science',modelos:'Atria 6100 / 3100',formatos:'SCP, XML',deriv:12,conexion:'WiFi / USB',color:'#a855f7',logo:'\ud83d\udd2c',cert:true,pasos:'1. Capturar ECG en el Atria\n2. Export > SCP-ECG > Red o USB\n3. Subir archivo en Cardio-IA'},
+  {id:'fukuda',nombre:'Fukuda Denshi',modelos:'FX-8222 / FX-7542',formatos:'MFER, CSV',deriv:12,conexion:'SD Card / USB',color:'#dc2626',logo:'\ud83c\uddef\ud83c\uddf5',cert:false,pasos:'1. ECG en el Fukuda Denshi\n2. Output > File > MFER o CSV\n3. Retirar SD Card\n4. Subir en Cardio-IA (MFER en beta)'},
+  {id:'mindray',nombre:'Mindray',modelos:'BeneHeart R12',formatos:'HL7, XML, CSV',deriv:12,conexion:'Ethernet / WiFi',color:'#059669',logo:'\ud83c\udf0f',cert:true,pasos:'1. ECG en el BeneHeart R12\n2. System > Export > HL7 o CSV\n3. Configurar IP destino en red\n4. Enviar automaticamente o via USB'},
+  {id:'kardia',nombre:'KardiaMobile / AliveCor',modelos:'6L',formatos:'CSV, PDF',deriv:6,conexion:'Bluetooth LE',color:'#e11d48',logo:'\u2764\ufe0f',cert:true,pasos:'1. Tomar ECG con KardiaMobile 6L\n2. App Kardia > Historial > Seleccionar registro\n3. Export > CSV > Compartir\n4. Enviar a Cardio-IA via email o subir directo'}
+];
+
+function renderConMarcasGrid() {
+  var grid = document.getElementById('conMarcasGrid');
+  if (!grid) return;
+  grid.innerHTML = CON_MARCAS.map(function(m) {
+    return '<div onclick="mostrarDetalleMarca(\'' + m.id + '\')" style="background:var(--bg3);border:1px solid ' + m.color + '22;border-radius:12px;padding:14px;cursor:pointer;transition:all .2s;text-align:center;" onmouseover="this.style.borderColor=\'' + m.color + '55\';this.style.transform=\'translateY(-2px)\'" onmouseout="this.style.borderColor=\'' + m.color + '22\';this.style.transform=\'none\'">' +
+      '<div style="font-size:28px;margin-bottom:6px;">' + m.logo + '</div>' +
+      '<div style="font-size:13px;font-weight:700;margin-bottom:2px;">' + m.nombre + '</div>' +
+      '<div style="font-size:10px;color:var(--text3);margin-bottom:4px;">' + m.modelos + '</div>' +
+      '<div style="font-size:10px;color:var(--text2);margin-bottom:6px;">' + m.formatos + '</div>' +
+      '<div style="display:flex;gap:4px;justify-content:center;flex-wrap:wrap;">' +
+        '<span style="font-size:9px;padding:1px 6px;border-radius:5px;background:' + m.color + '18;color:' + m.color + ';">' + m.deriv + ' deriv.</span>' +
+        '<span style="font-size:9px;padding:1px 6px;border-radius:5px;background:' + (m.cert ? 'rgba(16,185,129,.12)' : 'rgba(245,158,11,.12)') + ';color:' + (m.cert ? 'var(--green2)' : 'var(--amber2)') + ';">' + (m.cert ? 'Certificado' : 'Beta') + '</span>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function mostrarDetalleMarca(id) {
+  var m = CON_MARCAS.find(function(x){ return x.id === id; });
+  if (!m) return;
+  var det = document.getElementById('conMarcaDetalle');
+  if (!det) return;
+  det.style.display = 'block';
+  var pasos = m.pasos.split('\n').map(function(p, i) {
+    return '<div style="display:flex;align-items:flex-start;gap:8px;padding:6px 0;">' +
+      '<div style="width:22px;height:22px;border-radius:50%;background:' + m.color + '20;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:' + m.color + ';flex-shrink:0;">' + (i+1) + '</div>' +
+      '<div style="font-size:12px;color:var(--text2);line-height:1.5;">' + p.replace(/^\d+\.\s*/, '') + '</div>' +
+    '</div>';
+  }).join('');
+  det.innerHTML = '<div class="card" style="border-color:' + m.color + '33;background:' + m.color + '06;margin-top:12px;">' +
+    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">' +
+      '<div style="display:flex;align-items:center;gap:10px;">' +
+        '<div style="font-size:32px;">' + m.logo + '</div>' +
+        '<div><div style="font-size:16px;font-weight:700;">' + m.nombre + '</div><div style="font-size:12px;color:var(--text2);">' + m.modelos + '</div></div>' +
+      '</div>' +
+      '<button onclick="document.getElementById(\'conMarcaDetalle\').style.display=\'none\'" class="btn btn-ghost btn-sm">\u2715 Cerrar</button>' +
+    '</div>' +
+    '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;">' +
+      '<div style="background:var(--bg4);border-radius:8px;padding:8px;text-align:center;"><div style="font-size:10px;color:var(--text3);margin-bottom:2px;">Formatos</div><div style="font-size:12px;font-weight:600;">' + m.formatos + '</div></div>' +
+      '<div style="background:var(--bg4);border-radius:8px;padding:8px;text-align:center;"><div style="font-size:10px;color:var(--text3);margin-bottom:2px;">Derivaciones</div><div style="font-size:12px;font-weight:600;">' + m.deriv + '</div></div>' +
+      '<div style="background:var(--bg4);border-radius:8px;padding:8px;text-align:center;"><div style="font-size:10px;color:var(--text3);margin-bottom:2px;">Conexi\u00f3n</div><div style="font-size:12px;font-weight:600;">' + m.conexion + '</div></div>' +
+      '<div style="background:var(--bg4);border-radius:8px;padding:8px;text-align:center;"><div style="font-size:10px;color:var(--text3);margin-bottom:2px;">Estado</div><div style="font-size:12px;font-weight:600;color:' + (m.cert ? 'var(--green2)' : 'var(--amber2)') + ';">' + (m.cert ? '\u2705 Certificado' : '\u23f3 Beta') + '</div></div>' +
+    '</div>' +
+    '<div style="font-size:13px;font-weight:600;margin-bottom:8px;">Pasos de integraci\u00f3n</div>' +
+    pasos +
+    '<div style="display:flex;gap:8px;margin-top:14px;">' +
+      '<button onclick="switchConTab(\'importar\')" class="btn btn-primary" style="flex:1;">\ud83d\udce4 Importar archivo de ' + m.nombre + '</button>' +
+      '<button onclick="switchConTab(\'api\')" class="btn btn-secondary">API REST</button>' +
+    '</div>' +
+  '</div>';
+  det.scrollIntoView({behavior: 'smooth'});
+}
+
+// ---- AUTO-DETECCIÓN DE FORMATO ----
+function detectarFormato(nombre, contenido) {
+  var ext = (nombre || '').split('.').pop().toLowerCase();
+  var head = (contenido || '').substring(0, 200).toLowerCase();
+  if (ext === 'edf' || head.includes('0       ') && head.includes('edf')) return {formato: 'EDF / EDF+', color: '#8b5cf6', icon: '\ud83e\uddec'};
+  if (ext === 'hl7' || head.includes('msh|')) return {formato: 'HL7 v2.x', color: '#0ea5e9', icon: '\ud83c\udfe5'};
+  if (ext === 'xml' && (head.includes('fhir') || head.includes('observation'))) return {formato: 'HL7 FHIR R4', color: '#0ea5e9', icon: '\ud83c\udfe5'};
+  if (ext === 'xml' && head.includes('restingecg')) return {formato: 'GE MUSE XML', color: '#2563eb', icon: '\ud83c\udfe5'};
+  if (ext === 'xml') return {formato: 'XML ECG', color: '#0891b2', icon: '\ud83d\udcbb'};
+  if (ext === 'scp') return {formato: 'SCP-ECG (EN 1064)', color: '#10b981', icon: '\ud83d\udd17'};
+  if (ext === 'dcm' || ext === 'dicom') return {formato: 'DICOM ECG', color: '#f59e0b', icon: '\ud83d\udce1'};
+  if (ext === 'json') return {formato: 'JSON API', color: '#6366f1', icon: '\ud83d\udd17'};
+  if (ext === 'csv' || ext === 'txt') return {formato: 'CSV / TXT', color: '#2563eb', icon: '\ud83d\udcc4'};
+  return {formato: 'Desconocido', color: '#64748b', icon: '\u2753'};
+}
+
+// Override procesarArchivoConector
+var _procesarArchivoConectorOrig = typeof procesarArchivoConector === 'function' ? procesarArchivoConector : null;
+procesarArchivoConector = function(inp) {
+  var f = inp.files ? inp.files[0] : null;
+  if (!f) return;
+  var status = document.getElementById('conectorStatus');
+  var formatoDet = document.getElementById('conFormatoDetectado');
+  if (status) { status.style.display = 'block'; status.style.background = 'rgba(37,99,235,.08)'; status.style.border = '1px solid rgba(37,99,235,.2)'; status.style.color = 'var(--accent3)'; status.textContent = '\u23f3 Procesando ' + f.name + ' (' + (f.size/1024).toFixed(1) + ' KB)...'; }
+  var reader = new FileReader();
+  reader.onload = function(ev) {
+    var txt = ev.target.result || '';
+    var det = detectarFormato(f.name, txt);
+    // Mostrar formato detectado
+    if (formatoDet) {
+      formatoDet.style.display = 'block';
+      formatoDet.innerHTML = '<div style="display:flex;align-items:center;gap:8px;">' +
+        '<span style="font-size:18px;">' + det.icon + '</span>' +
+        '<div><div style="font-size:12px;font-weight:600;color:' + det.color + ';">Formato detectado: ' + det.formato + '</div><div style="font-size:10px;color:var(--text3);">' + f.name + ' \u00b7 ' + (f.size/1024).toFixed(1) + ' KB</div></div>' +
+      '</div>';
+    }
+    // Parsear datos
+    var datos = [];
+    var lines2 = txt.split('\n').slice(0, 2000);
+    lines2.forEach(function(l) { var v = parseFloat(l.trim().split(',')[0]); if (!isNaN(v) && Math.abs(v) < 100) datos.push(v); });
+    if (datos.length > 10) {
+      ecgDataActual = datos;
+      var btnCon = document.getElementById('btnAnalizarConector');
+      if (btnCon) btnCon.disabled = false;
+      if (status) { status.style.background = 'rgba(16,185,129,.08)'; status.style.border = '1px solid rgba(16,185,129,.2)'; status.style.color = 'var(--green2)'; status.textContent = '\u2705 ' + f.name + ' \u00b7 ' + datos.length + ' muestras \u00b7 ' + det.formato + ' \u00b7 Listo'; }
+      // Log
+      conImportLog.push({archivo: f.name, formato: det.formato, muestras: datos.length, fecha: new Date(), paciente: document.getElementById('conectorPacienteSelect') ? document.getElementById('conectorPacienteSelect').value : ''});
+      actualizarConImportLog();
+      actualizarConImportStats();
+      showToast('\u2705 ' + det.formato + ' importado: ' + datos.length + ' muestras', 'success');
+    } else {
+      if (status) { status.style.background = 'rgba(239,68,68,.08)'; status.style.border = '1px solid rgba(239,68,68,.2)'; status.style.color = 'var(--red2)'; status.textContent = '\u274c No se pudieron extraer datos de ' + f.name + '. Verifica el formato.'; }
+      showToast('Formato no reconocido: ' + f.name, 'error');
+    }
+  };
+  reader.readAsText(f);
+};
+
+function handleDropConector(e) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('dragging');
+  var f = e.dataTransfer.files[0];
+  if (f) procesarArchivoConector({files: [f]});
+}
+
+// ---- LOG DE IMPORTACIONES ----
+function actualizarConImportLog() {
+  var el = document.getElementById('conImportLog');
+  if (!el) return;
+  if (!conImportLog.length) {
+    el.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text3);font-size:12px;">Sin importaciones a\u00fan</div>';
+    return;
+  }
+  el.innerHTML = conImportLog.slice().reverse().slice(0, 15).map(function(log) {
+    var hora = new Date(log.fecha).toLocaleTimeString('es-CO', {hour:'2-digit', minute:'2-digit'});
+    return '<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:11px;">' +
+      '<div style="width:6px;height:6px;border-radius:50%;background:var(--green2);flex-shrink:0;"></div>' +
+      '<span style="flex:1;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + log.archivo + '</span>' +
+      '<span style="color:var(--cyan);flex-shrink:0;">' + log.formato + '</span>' +
+      '<span style="color:var(--text3);flex-shrink:0;">' + hora + '</span>' +
+    '</div>';
+  }).join('');
+}
+
+function actualizarConImportStats() {
+  var hoy = new Date().toDateString();
+  var semStart = new Date(); semStart.setDate(semStart.getDate() - 7);
+  setText('conImpHoy', conImportLog.filter(function(l){ return new Date(l.fecha).toDateString() === hoy; }).length);
+  setText('conImpSem', conImportLog.filter(function(l){ return new Date(l.fecha) > semStart; }).length);
+  setText('conImpTotal', conImportLog.length);
+  setText('conEcgsImportados', conImportLog.length);
+}
+
+// ---- NETWORK SCANNER ----
+function escanearRed() {
+  var el = document.getElementById('conNetScanResult');
+  if (!el) return;
+  el.innerHTML = '<div style="text-align:center;padding:14px;"><div style="font-size:20px;margin-bottom:6px;">\ud83d\udce1</div><div style="font-size:12px;color:var(--accent3);">Escaneando red local...</div><div style="font-size:10px;color:var(--text3);margin-top:4px;">Buscando equipos ECG con conectividad de red</div></div>';
+  setTimeout(function() {
+    // Simulaci\u00f3n de resultados de escaneo
+    var devices = [
+      {ip: '192.168.1.45', nombre: 'GE MAC 2000', formato: 'XML/HL7', estado: 'En l\u00ednea', color: '#10b981'},
+      {ip: '192.168.1.78', nombre: 'Philips PageWriter TC', formato: 'CSV/XML', estado: 'En l\u00ednea', color: '#10b981'},
+      {ip: '192.168.1.112', nombre: 'Desconocido (DICOM)', formato: 'DICOM', estado: 'Detectado', color: '#f59e0b'}
+    ];
+    el.innerHTML = '<div style="font-size:11px;font-weight:600;color:var(--green2);margin-bottom:8px;">\u2705 ' + devices.length + ' equipos detectados en red</div>' +
+      devices.map(function(d) {
+        return '<div style="display:flex;align-items:center;gap:10px;padding:8px;background:var(--bg4);border-radius:8px;margin-bottom:6px;">' +
+          '<div style="width:8px;height:8px;border-radius:50%;background:' + d.color + ';flex-shrink:0;"></div>' +
+          '<div style="flex:1;">' +
+            '<div style="font-size:12px;font-weight:600;">' + d.nombre + '</div>' +
+            '<div style="font-size:10px;color:var(--text3);">' + d.ip + ' \u00b7 ' + d.formato + '</div>' +
+          '</div>' +
+          '<span style="font-size:10px;color:' + d.color + ';">' + d.estado + '</span>' +
+          '<button onclick="showToast(\'Conectando a ' + d.nombre + '...\', \'info\')" class="btn btn-ghost btn-sm" style="font-size:10px;">Conectar</button>' +
+        '</div>';
+      }).join('');
+    showToast(devices.length + ' equipos ECG detectados en red', 'success');
+  }, 2500);
+}
+
+// Init
+document.addEventListener('DOMContentLoaded', function() {
+  try { conImportLog = JSON.parse(localStorage.getItem('cardio_ia_import_log') || '[]'); } catch(e) {}
+});
 
 
 console.log('Cardio-IA Latam v11.4 cargado ✅');
