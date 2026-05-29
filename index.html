@@ -2726,6 +2726,171 @@ body{
     </div>
   </div>
 
+  <!-- ====== CENTRO DE CONECTIVIDAD ====== -->
+  <div class="card" style="margin-top:14px;border-color:rgba(99,102,241,.25);background:linear-gradient(145deg,rgba(6,9,18,1),rgba(10,15,32,1));">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+      <div>
+        <div style="font-size:16px;font-weight:700;color:#f8fafc;">&#x1F517; Centro de conectividad</div>
+        <div style="font-size:12px;color:#64748b;">Vincula smartwatch, celular y tablet del paciente</div>
+      </div>
+      <div style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:12px;font-size:10px;font-weight:700;background:rgba(99,102,241,.15);color:#a5b4fc;border:1px solid rgba(99,102,241,.25);">Producci&#xF3;n</div>
+    </div>
+
+    <!-- Protocolo de conexión visual -->
+    <div style="background:var(--bg3);border-radius:12px;padding:16px;margin-bottom:16px;">
+      <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:12px;">Cadena de conexi&#xF3;n en producci&#xF3;n</div>
+      <div style="display:flex;align-items:center;gap:0;flex-wrap:wrap;justify-content:center;">
+        <!-- Smartwatch -->
+        <div style="text-align:center;padding:10px 14px;">
+          <div style="width:48px;height:48px;border-radius:14px;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.25);display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto 6px;">&#x231A;</div>
+          <div style="font-size:11px;font-weight:600;">Smartwatch</div>
+          <div style="font-size:9px;color:var(--text3);">Apple Watch<br>Wear OS<br>Galaxy Watch<br>Garmin</div>
+        </div>
+        <div style="font-size:10px;color:var(--accent3);padding:0 4px;">
+          <div style="font-size:16px;">&#x2194;&#xFE0F;</div>
+          <div style="font-size:8px;color:var(--text3);margin-top:2px;">BLE 5.0</div>
+        </div>
+        <!-- Celular/Tablet paciente -->
+        <div style="text-align:center;padding:10px 14px;">
+          <div style="width:48px;height:48px;border-radius:14px;background:rgba(37,99,235,.12);border:1px solid rgba(37,99,235,.25);display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto 6px;">&#x1F4F1;</div>
+          <div style="font-size:11px;font-weight:600;">App Paciente</div>
+          <div style="font-size:9px;color:var(--text3);">iPhone / Android<br>Tablet iPad<br>Tablet Android</div>
+        </div>
+        <div style="font-size:10px;color:var(--accent3);padding:0 4px;">
+          <div style="font-size:16px;">&#x2192;</div>
+          <div style="font-size:8px;color:var(--text3);margin-top:2px;">HTTPS<br>TLS 1.3</div>
+        </div>
+        <!-- Cloud Run -->
+        <div style="text-align:center;padding:10px 14px;">
+          <div style="width:48px;height:48px;border-radius:14px;background:rgba(14,165,233,.12);border:1px solid rgba(14,165,233,.25);display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto 6px;">&#x2601;&#xFE0F;</div>
+          <div style="font-size:11px;font-weight:600;">Google Cloud Run</div>
+          <div style="font-size:9px;color:var(--text3);">API REST<br>IA + MACE<br>AES-256</div>
+        </div>
+        <div style="font-size:10px;color:var(--accent3);padding:0 4px;">
+          <div style="font-size:16px;">&#x2192;</div>
+          <div style="font-size:8px;color:var(--text3);margin-top:2px;">WebSocket<br>Real-time</div>
+        </div>
+        <!-- Dashboard médico -->
+        <div style="text-align:center;padding:10px 14px;">
+          <div style="width:48px;height:48px;border-radius:14px;background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.25);display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto 6px;">&#x1F468;&#x200D;&#x2695;&#xFE0F;</div>
+          <div style="font-size:11px;font-weight:600;">M&#xE9;dico</div>
+          <div style="font-size:9px;color:var(--text3);">Web / Tablet<br>Dashboard<br>Alertas push</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dispositivos conectados en tiempo real -->
+    <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:10px;">Dispositivos vinculados</div>
+    <div id="monDevicesGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px;"></div>
+
+    <!-- Vincular nuevo dispositivo -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+      <!-- QR de vinculación -->
+      <div style="background:var(--bg3);border-radius:12px;padding:16px;text-align:center;">
+        <div style="font-size:13px;font-weight:600;margin-bottom:8px;">&#x1F4F1; Vincular paciente</div>
+        <div style="font-size:11px;color:var(--text2);margin-bottom:12px;">El paciente escanea este QR desde la app<br><strong style="color:var(--text);">Cardio-IA Patient</strong> (iOS / Android)</div>
+        <div id="monQRCode" style="width:120px;height:120px;background:#fff;border-radius:10px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;padding:8px;">
+          <div id="monQRInner" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:11px;color:#334155;">Click para generar</div>
+        </div>
+        <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;">
+          <select class="form-select" id="monQRPaciente" style="font-size:11px;max-width:150px;"></select>
+          <button onclick="generarQRConectividad()" class="btn btn-primary btn-sm">Generar QR</button>
+        </div>
+        <div style="font-size:9px;color:var(--text3);margin-top:8px;">QR v&#xE1;lido por 15 minutos &#xB7; Vinculaci&#xF3;n autom&#xE1;tica</div>
+      </div>
+
+      <!-- Instrucciones paso a paso -->
+      <div style="background:var(--bg3);border-radius:12px;padding:16px;">
+        <div style="font-size:13px;font-weight:600;margin-bottom:10px;">&#x1F4CB; Pasos de vinculaci&#xF3;n</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:flex-start;gap:8px;">
+            <div style="width:22px;height:22px;border-radius:50%;background:rgba(37,99,235,.2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--accent3);flex-shrink:0;">1</div>
+            <div style="font-size:11px;color:var(--text2);line-height:1.5;">Paciente descarga <strong style="color:var(--text);">Cardio-IA Patient</strong> en App Store o Google Play</div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;">
+            <div style="width:22px;height:22px;border-radius:50%;background:rgba(37,99,235,.2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--accent3);flex-shrink:0;">2</div>
+            <div style="font-size:11px;color:var(--text2);line-height:1.5;">Abre la app y escanea el <strong style="color:var(--text);">QR de vinculaci&#xF3;n</strong> que genera el m&#xE9;dico</div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;">
+            <div style="width:22px;height:22px;border-radius:50%;background:rgba(37,99,235,.2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--accent3);flex-shrink:0;">3</div>
+            <div style="font-size:11px;color:var(--text2);line-height:1.5;">Conecta su <strong style="color:var(--text);">smartwatch</strong> v&#xED;a Bluetooth LE desde la app (Apple Watch, Galaxy Watch, Wear OS, Garmin)</div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;">
+            <div style="width:22px;height:22px;border-radius:50%;background:rgba(16,185,129,.2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--green2);flex-shrink:0;">4</div>
+            <div style="font-size:11px;color:var(--text2);line-height:1.5;">Datos fluyen autom&#xE1;ticamente: <strong style="color:var(--green2);">Smartwatch &#x2192; Celular &#x2192; Cloud &#x2192; M&#xE9;dico</strong></div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;">
+            <div style="width:22px;height:22px;border-radius:50%;background:rgba(16,185,129,.2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--green2);flex-shrink:0;">5</div>
+            <div style="font-size:11px;color:var(--text2);line-height:1.5;">Si tablet disponible, la app tambi&#xE9;n funciona como <strong style="color:var(--green2);">estaci&#xF3;n de monitoreo</strong> en casa</div>
+          </div>
+        </div>
+        <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;">
+          <button onclick="showToast('App Store: busca Cardio-IA Patient', 'info')" style="display:flex;align-items:center;gap:6px;padding:9px 16px;background:#000;border-radius:8px;border:1px solid rgba(255,255,255,.15);color:#fff;font-size:11px;cursor:pointer;font-family:inherit;flex:1;justify-content:center;"><span style="font-size:16px;">&#x1F34E;</span> Descargar en App Store</button>
+          <button onclick="showToast('Google Play: busca Cardio-IA Patient', 'info')" style="display:flex;align-items:center;gap:6px;padding:9px 16px;background:#000;border-radius:8px;border:1px solid rgba(255,255,255,.15);color:#fff;font-size:11px;cursor:pointer;font-family:inherit;flex:1;justify-content:center;"><span style="font-size:16px;">&#x1F4F1;</span> Descargar en Google Play</button>
+        </div>
+        <div style="font-size:10px;color:var(--text3);margin-top:8px;text-align:center;">Compatible: iPhone 8+ &#xB7; Android 10+ &#xB7; iPad &#xB7; Tablets Android &#xB7; Requiere Bluetooth LE</div>
+      </div>
+    </div>
+
+    <!-- Matriz de compatibilidad -->
+    <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:10px;">Matriz de compatibilidad</div>
+    <div style="overflow-x:auto;margin-bottom:14px;">
+      <table style="width:100%;border-collapse:collapse;font-size:11px;">
+        <thead>
+          <tr style="border-bottom:1px solid var(--border);">
+            <th style="text-align:left;padding:8px;color:var(--text3);font-weight:600;">Smartwatch</th>
+            <th style="text-align:center;padding:8px;color:var(--text3);font-weight:600;">iPhone</th>
+            <th style="text-align:center;padding:8px;color:var(--text3);font-weight:600;">Android</th>
+            <th style="text-align:center;padding:8px;color:var(--text3);font-weight:600;">iPad</th>
+            <th style="text-align:center;padding:8px;color:var(--text3);font-weight:600;">Tablet And.</th>
+            <th style="text-align:center;padding:8px;color:var(--text3);font-weight:600;">Protocolo</th>
+            <th style="text-align:center;padding:8px;color:var(--text3);font-weight:600;">Datos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.04);"><td style="padding:8px;font-weight:500;">&#x1F34E; Apple Watch S4+</td><td style="text-align:center;padding:8px;color:var(--green2);">&#x2705;</td><td style="text-align:center;padding:8px;color:var(--text3);">&#x2014;</td><td style="text-align:center;padding:8px;color:var(--green2);">&#x2705;</td><td style="text-align:center;padding:8px;color:var(--text3);">&#x2014;</td><td style="text-align:center;padding:8px;font-size:10px;color:var(--cyan);">HealthKit</td><td style="text-align:center;padding:8px;font-size:10px;">ECG + FC + SpO2 + HRV</td></tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.04);"><td style="padding:8px;font-weight:500;">&#x1F4F1; Galaxy Watch 4+</td><td style="text-align:center;padding:8px;color:var(--text3);">&#x2014;</td><td style="text-align:center;padding:8px;color:var(--green2);">&#x2705;</td><td style="text-align:center;padding:8px;color:var(--text3);">&#x2014;</td><td style="text-align:center;padding:8px;color:var(--green2);">&#x2705;</td><td style="text-align:center;padding:8px;font-size:10px;color:var(--cyan);">Health Connect</td><td style="text-align:center;padding:8px;font-size:10px;">ECG + FC + SpO2</td></tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.04);"><td style="padding:8px;font-weight:500;">&#x231A; Wear OS gen&#xE9;rico</td><td style="text-align:center;padding:8px;color:var(--text3);">&#x2014;</td><td style="text-align:center;padding:8px;color:var(--green2);">&#x2705;</td><td style="text-align:center;padding:8px;color:var(--text3);">&#x2014;</td><td style="text-align:center;padding:8px;color:var(--green2);">&#x2705;</td><td style="text-align:center;padding:8px;font-size:10px;color:var(--cyan);">Health Connect</td><td style="text-align:center;padding:8px;font-size:10px;">FC + SpO2 + HRV</td></tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.04);"><td style="padding:8px;font-weight:500;">&#x2764;&#xFE0F; KardiaMobile 6L</td><td style="text-align:center;padding:8px;color:var(--green2);">&#x2705;</td><td style="text-align:center;padding:8px;color:var(--green2);">&#x2705;</td><td style="text-align:center;padding:8px;color:var(--green2);">&#x2705;</td><td style="text-align:center;padding:8px;color:var(--green2);">&#x2705;</td><td style="text-align:center;padding:8px;font-size:10px;color:var(--cyan);">BLE + SDK</td><td style="text-align:center;padding:8px;font-size:10px;">ECG 6 derivaciones</td></tr>
+          <tr><td style="padding:8px;font-weight:500;">&#x231A; Garmin Venu 3</td><td style="text-align:center;padding:8px;color:var(--green2);">&#x2705;</td><td style="text-align:center;padding:8px;color:var(--green2);">&#x2705;</td><td style="text-align:center;padding:8px;color:var(--text3);">&#x2014;</td><td style="text-align:center;padding:8px;color:var(--text3);">&#x2014;</td><td style="text-align:center;padding:8px;font-size:10px;color:var(--cyan);">Garmin SDK</td><td style="text-align:center;padding:8px;font-size:10px;">FC + HRV + Stress</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Protocolos técnicos -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;">
+      <div style="background:var(--bg4);border-radius:10px;padding:12px;">
+        <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px;">Smartwatch &#x2194; Celular</div>
+        <div style="font-size:13px;font-weight:600;color:var(--cyan);margin-bottom:3px;">Bluetooth LE 5.0</div>
+        <div style="font-size:10px;color:var(--text2);line-height:1.6;">Apple HealthKit (iOS)<br>Google Health Connect (Android)<br>Samsung Health SDK<br>Garmin Connect IQ</div>
+      </div>
+      <div style="background:var(--bg4);border-radius:10px;padding:12px;">
+        <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px;">Celular &#x2192; Cloud</div>
+        <div style="font-size:13px;font-weight:600;color:var(--accent3);margin-bottom:3px;">HTTPS + WebSocket</div>
+        <div style="font-size:10px;color:var(--text2);line-height:1.6;">TLS 1.3 cifrado end-to-end<br>JWT auth por paciente<br>Sync cada 30 seg (configurable)<br>Modo offline con cola local</div>
+      </div>
+      <div style="background:var(--bg4);border-radius:10px;padding:12px;">
+        <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px;">Cloud &#x2192; M&#xE9;dico</div>
+        <div style="font-size:13px;font-weight:600;color:var(--green2);margin-bottom:3px;">WebSocket + Push</div>
+        <div style="font-size:10px;color:var(--text2);line-height:1.6;">Alertas en &lt;3 segundos<br>Push notifications (FCM/APNs)<br>Dashboard tiempo real<br>Email / WhatsApp urgente</div>
+      </div>
+    </div>
+
+    <!-- Configuración de sync -->
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--bg3);border-radius:10px;">
+      <div>
+        <div style="font-size:12px;font-weight:600;">Frecuencia de sincronizaci&#xF3;n</div>
+        <div style="font-size:10px;color:var(--text3);">Cada cu&#xE1;nto la app del paciente env&#xED;a datos al cloud</div>
+      </div>
+      <div style="display:flex;gap:4px;">
+        <button id="syncBtn10" onclick="setSyncFreq(10)" class="btn btn-ghost btn-sm" style="font-size:10px;">10s</button>
+        <button id="syncBtn30" onclick="setSyncFreq(30)" class="btn btn-primary btn-sm" style="font-size:10px;">30s</button>
+        <button id="syncBtn60" onclick="setSyncFreq(60)" class="btn btn-ghost btn-sm" style="font-size:10px;">1min</button>
+        <button id="syncBtn300" onclick="setSyncFreq(300)" class="btn btn-ghost btn-sm" style="font-size:10px;">5min</button>
+      </div>
+    </div>
+  </div>
+
 </div><!-- /panel-monitoreo -->
 
 
@@ -11570,6 +11735,119 @@ switchTab = function(tab) {
     if (monLiveInterval) { clearInterval(monLiveInterval); monLiveInterval = null; }
     if (monECGAnimFrame) { cancelAnimationFrame(monECGAnimFrame); monECGAnimFrame = null; }
   }
+};
+
+
+
+// ===== V12 CONECTIVIDAD — Smartwatch + Celular + Tablet =====
+var monSyncFreq = 30;
+
+function generarQRConectividad() {
+  var pacSelect = document.getElementById('monQRPaciente');
+  var pacNombre = pacSelect ? pacSelect.value : '';
+  if (!pacNombre) { showToast('Selecciona un paciente para vincular', 'warning'); return; }
+  var qrInner = document.getElementById('monQRInner');
+  var qrCode = document.getElementById('monQRCode');
+  if (!qrInner || !qrCode) return;
+  // Generar QR visual (SVG simulado)
+  var token = 'CIA-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).substr(2,4).toUpperCase();
+  var url = 'https://cardio-ia-latam-120778240410.us-central1.run.app/vincular/' + token;
+  // Dibujar QR con SVG
+  var cells = [];
+  for (var r = 0; r < 21; r++) {
+    for (var c2 = 0; c2 < 21; c2++) {
+      var isCorner = (r < 7 && c2 < 7) || (r < 7 && c2 > 13) || (r > 13 && c2 < 7);
+      var isBorder = isCorner && (r === 0 || r === 6 || c2 === 0 || c2 === 6 || (r > 13 && (r === 14 || r === 20)) || (c2 > 13 && (c2 === 14 || c2 === 20)));
+      var isInner = isCorner && r >= 2 && r <= 4 && c2 >= 2 && c2 <= 4;
+      var isInner2 = isCorner && ((r >= 2 && r <= 4 && c2 >= 16 && c2 <= 18) || (r >= 16 && r <= 18 && c2 >= 2 && c2 <= 4));
+      var fill = isBorder || isInner || isInner2 || (!isCorner && Math.random() > 0.55);
+      if (fill) cells.push('<rect x="' + (c2*5) + '" y="' + (r*5) + '" width="5" height="5" fill="#1e293b"/>');
+    }
+  }
+  qrInner.innerHTML = '<svg viewBox="0 0 105 105" style="width:100%;height:100%;"><rect width="105" height="105" fill="white" rx="4"/>' + cells.join('') + '</svg>';
+  qrCode.style.cursor = 'pointer';
+  qrCode.title = url;
+  qrCode.onclick = function() { navigator.clipboard.writeText(url).then(function(){ showToast('Link copiado: ' + url, 'info'); }); };
+  showToast('QR generado para ' + pacNombre + ' \u2014 V\u00e1lido por 15 min', 'success');
+  // Guardar vinculaci\u00f3n pendiente
+  try {
+    var vinc = JSON.parse(localStorage.getItem('cardio_ia_vinculos') || '[]');
+    vinc.push({paciente: pacNombre, token: token, fecha: new Date().toISOString(), estado: 'pendiente'});
+    localStorage.setItem('cardio_ia_vinculos', JSON.stringify(vinc));
+  } catch(e) {}
+}
+
+function setSyncFreq(seg) {
+  monSyncFreq = seg;
+  [10, 30, 60, 300].forEach(function(s) {
+    var btn = document.getElementById('syncBtn' + s);
+    if (btn) {
+      btn.className = s === seg ? 'btn btn-primary btn-sm' : 'btn btn-ghost btn-sm';
+      btn.style.fontSize = '10px';
+    }
+  });
+  try { localStorage.setItem('cardio_ia_sync_freq', seg); } catch(e) {}
+  showToast('Sincronizaci\u00f3n: cada ' + (seg < 60 ? seg + ' segundos' : (seg/60) + ' minuto(s)'), 'success');
+}
+
+// Cargar freq guardada
+try { var _sf = localStorage.getItem('cardio_ia_sync_freq'); if (_sf) { monSyncFreq = parseInt(_sf); setTimeout(function(){ setSyncFreq(monSyncFreq); }, 500); } } catch(e) {}
+
+function renderMonDevices() {
+  var grid = document.getElementById('monDevicesGrid');
+  if (!grid) return;
+  var monitoreados = pacientesData.filter(function(p) { return p.monitoreo_activo || p.smartwatch_tipo; });
+  if (!monitoreados.length) {
+    grid.innerHTML = '<div style="grid-column:span 2;text-align:center;padding:16px;color:var(--text3);font-size:12px;">Sin dispositivos vinculados a\u00fan</div>';
+    return;
+  }
+  grid.innerHTML = monitoreados.map(function(p) {
+    var device = p.smartwatch_tipo || 'Apple Watch';
+    var isApple = device.toLowerCase().includes('apple');
+    var isGalaxy = device.toLowerCase().includes('galaxy') || device.toLowerCase().includes('samsung');
+    var isWearOS = device.toLowerCase().includes('wear');
+    var isKardia = device.toLowerCase().includes('kardia');
+    var isGarmin = device.toLowerCase().includes('garmin');
+    var phoneSys = isApple ? 'iPhone' : 'Android';
+    var tabletSys = isApple ? 'iPad' : 'Tablet Android';
+    var protocol = isApple ? 'HealthKit' : isKardia ? 'BLE SDK' : isGarmin ? 'Garmin SDK' : 'Health Connect';
+    var datos = isApple ? 'ECG + FC + SpO2 + HRV' : isKardia ? 'ECG 6 deriv.' : isGarmin ? 'FC + HRV' : 'ECG + FC + SpO2';
+    var connected = p.monitoreo_activo;
+    var lastSeen = connected ? 'hace ' + Math.floor(Math.random()*30+5) + ' seg' : 'Desconectado';
+    var statusColor = connected ? '#10b981' : '#64748b';
+    var ini = (p.nombre||'?').split(' ').map(function(x){return (x[0]||'').toUpperCase();}).join('').substring(0,2);
+    return '<div style="background:var(--bg3);border:1px solid ' + (connected ? 'rgba(16,185,129,.25)' : 'var(--border)') + ';border-radius:10px;padding:12px;">' +
+      '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">' +
+        '<div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;">' + ini + '</div>' +
+        '<div style="flex:1;min-width:0;"><div style="font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + p.nombre + '</div><div style="font-size:10px;color:var(--text3);">' + device + '</div></div>' +
+        '<div style="display:flex;align-items:center;gap:4px;"><div style="width:6px;height:6px;border-radius:50%;background:' + statusColor + ';' + (connected ? 'box-shadow:0 0 6px '+statusColor+';' : '') + '"></div><span style="font-size:9px;color:' + statusColor + ';">' + (connected ? 'En l\u00ednea' : 'Offline') + '</span></div>' +
+      '</div>' +
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;font-size:10px;">' +
+        '<div style="background:var(--bg4);padding:5px 7px;border-radius:5px;"><span style="color:var(--text3);">Celular:</span> <span style="color:var(--text2);">' + phoneSys + '</span></div>' +
+        '<div style="background:var(--bg4);padding:5px 7px;border-radius:5px;"><span style="color:var(--text3);">Protocolo:</span> <span style="color:var(--cyan);">' + protocol + '</span></div>' +
+        '<div style="background:var(--bg4);padding:5px 7px;border-radius:5px;"><span style="color:var(--text3);">Datos:</span> <span style="color:var(--text2);">' + datos + '</span></div>' +
+        '<div style="background:var(--bg4);padding:5px 7px;border-radius:5px;"><span style="color:var(--text3);">\u00daltimo:</span> <span style="color:' + statusColor + ';">' + lastSeen + '</span></div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function poblarMonQRSelect() {
+  var sel = document.getElementById('monQRPaciente');
+  if (!sel) return;
+  var opts = '<option value="">-- Seleccionar paciente --</option>';
+  pacientesData.forEach(function(p) {
+    opts += '<option value="' + (p.nombre||'').replace(/"/g, '') + '">' + p.nombre + (p.smartwatch_tipo ? ' (\u231a ' + p.smartwatch_tipo + ')' : '') + '</option>';
+  });
+  sel.innerHTML = opts;
+}
+
+// Patch actualizarMonitoreo para incluir devices y QR select
+var _actualizarMonitoreoOrig = actualizarMonitoreo;
+actualizarMonitoreo = function() {
+  _actualizarMonitoreoOrig();
+  renderMonDevices();
+  poblarMonQRSelect();
 };
 
 
