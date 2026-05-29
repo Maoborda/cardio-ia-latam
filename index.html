@@ -4161,7 +4161,7 @@ function generarQRPaciente(nombre) {
   var orgNombre = "Cardio-IA Latam", orgLogo = "";
   try { var org=JSON.parse(localStorage.getItem("cardio_ia_org")||"{}"); if(org.nombre) orgNombre=org.nombre; if(org.logo) orgLogo=org.logo; } catch(e) {}
   var w = window.open("", "_blank");
-  w.document.write("<!DOCTYPE html><html lang="es"><head><meta charset='UTF-8'><title>QR Emergencia</title>");
+  w.document.write("<!DOCTYPE html><html><head><meta charset='UTF-8'><title>QR Emergencia</title>");
   w.document.write("<scr"+"ipt src='https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js'></scr"+"ipt>");
   w.document.write("<style>body{font-family:Arial;max-width:360px;margin:20px auto;}.card{border:2px solid "+sem.color+";border-radius:14px;padding:18px;text-align:center;}.name{font-size:18px;font-weight:700;margin:8px 0;}.alerta{background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:8px;font-size:11px;color:#dc2626;margin:8px 0;}.info{text-align:left;font-size:12px;line-height:1.8;margin:12px 0;}@media print{button{display:none}}</style></head><body>");
   w.document.write("<div class='card'>");
@@ -4339,7 +4339,7 @@ function exportarPDFHistorial() {
   var medico = usuarioActual ? (usuarioActual.nombre || 'Medico') : 'Medico';
   var fecha = new Date().toLocaleString('es-CO');
   var w = window.open('', '_blank');
-  w.document.write('<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Historial ECG</title>');
+  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Historial ECG</title>');
   w.document.write('<style>*{box-sizing:border-box;margin:0;padding:0;}body{font-family:Arial,sans-serif;color:#1e293b;font-size:11px;padding:20px;}');
   w.document.write('.hdr{display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #1d4ed8;padding-bottom:12px;margin-bottom:16px;}');
   w.document.write('.hdr-title{font-size:16px;font-weight:700;color:#1d4ed8;}');
@@ -5107,7 +5107,7 @@ function exportarReporteCompleto() {
   ];
 
   var w = window.open('', '_blank');
-  w.document.write('<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Reporte Completo ECG - ' + pacNom + '</title>');
+  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Reporte Completo ECG - ' + pacNom + '</title>');
   w.document.write('<style>');
   w.document.write('*{box-sizing:border-box;margin:0;padding:0;}');
   w.document.write('body{font-family:Arial,Helvetica,sans-serif;color:#1e293b;font-size:12px;padding:20px;max-width:900px;margin:0 auto;}');
@@ -5769,7 +5769,7 @@ function exportarPDFProfesional() {
 
   // Abrir ventana PDF
   var w = window.open('', '_blank');
-  w.document.write('<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Reporte ECG - ' + pacNom + '</title>');
+  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Reporte ECG - ' + pacNom + '</title>');
   w.document.write('<style>');
   w.document.write('*{box-sizing:border-box;margin:0;padding:0;}');
   w.document.write('body{font-family:Arial,Helvetica,sans-serif;color:#1e293b;font-size:12px;padding:20px;max-width:900px;margin:0 auto;}');
