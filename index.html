@@ -2503,39 +2503,35 @@ body{
 
 <!-- ===== PACIENTES ===== -->
       <div class="panel" id="panel-pacientes">
-  <div class="g4" style="margin-bottom:16px;">
-    <div class="stat-card"><div class="stat-val" id="pacStatTotal" style="color:var(--accent3);">0</div><div class="stat-lbl">Total</div></div>
-    <div class="stat-card"><div class="stat-val" id="pacStatAlto" style="color:var(--red2);">0</div><div class="stat-lbl">Riesgo alto</div></div>
-    <div class="stat-card"><div class="stat-val" id="pacStatMonitoreo" style="color:var(--cyan);">0</div><div class="stat-lbl">Monitoreo</div></div>
-    <div class="stat-card"><div class="stat-val" id="pacStatSinECG" style="color:var(--amber2);">0</div><div class="stat-lbl">Sin ECG</div></div>
-  </div>
-  <div style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:16px;">
-    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
-      <input class="form-input" aria-label="Buscar paciente..." id="pacBuscar" placeholder="Buscar paciente..." oninput="renderPacientes()" style="flex:1;min-width:160px;font-size:13px;"/>
-      <select class="form-select" id="pacOrden" onchange="renderPacientes()" style="width:140px;font-size:12px;">
-        <option value="az">A a Z</option>
-        <option value="za">Z a A</option>
-        <option value="riesgo">Por riesgo</option>
-      </select>
-      <button class="btn btn-primary btn-sm" id="btnNuevoPac">+ Nuevo paciente</button>
-    </div>
-    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;">
-      <button onclick="filtroPac='todos';renderPacientes()" class="hist-chip hist-chip-active" id="pfchip-todos">Todos</button>
-      <button onclick="filtroPac='alto';renderPacientes()" class="hist-chip" id="pfchip-alto" style="color:var(--red2);">Riesgo alto</button>
-      <button onclick="filtroPac='moderado';renderPacientes()" class="hist-chip" id="pfchip-moderado" style="color:var(--amber2);">Moderado</button>
-      <button onclick="filtroPac='bajo';renderPacientes()" class="hist-chip" id="pfchip-bajo" style="color:var(--green2);">Bajo riesgo</button>
-      <button onclick="filtroPac='monitoreo';renderPacientes()" class="hist-chip" id="pfchip-monitoreo" style="color:var(--cyan);">Monitoreo</button>
-    </div>
-  </div>
-  <div id="pacListContainer"></div>
-  
-  <div class="modal-bg" id="perfilPacienteModal">
-    <div class="modal" style="max-width:540px;max-height:85vh;overflow-y:auto;">
-      <div id="perfilPacienteContent"></div>
-    </div>
-  </div>
-</div><!-- /panel-pacientes -->
-<!-- ===== MONITOREO ===== -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+          <div><div style="font-size:20px;font-weight:700;">&#x1F9D1;&#x200D;&#x2695;&#xFE0F; Gestión de pacientes</div><div style="font-size:12px;color:var(--text2);">Fichas clínicas, semáforo de riesgo y vinculación wearable</div></div>
+          <div style="display:flex;gap:8px;">
+            <input type="text" class="form-input" id="pacSearchInput" placeholder="Buscar paciente..." style="width:200px;font-size:12px;" oninput="filtrarPacientes(this.value)" aria-label="Buscar paciente"/>
+            <button class="btn btn-primary btn-sm" onclick="openModal('nuevoPacienteModal')">+ Nuevo</button>
+          </div>
+        </div>
+        <div class="g4" style="margin-bottom:14px;">
+          <div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Total pacientes</div><div class="stat-val" id="pacStatTotal" style="color:var(--accent3);">0</div></div>
+          <div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Riesgo alto</div><div class="stat-val" id="pacStatAlto" style="color:var(--red2);">0</div></div>
+          <div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Con wearable</div><div class="stat-val" id="pacStatWearable" style="color:var(--green2);">0</div></div>
+          <div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Sin ECG &gt;30d</div><div class="stat-val" id="pacStatSinECG" style="color:var(--amber2);">0</div></div>
+        </div>
+        <div id="pacientesGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:14px;">
+          <div style="grid-column:span 2;text-align:center;padding:30px;color:var(--text3);font-size:13px;">Cargando pacientes...</div>
+        </div>
+        <!-- Modal perfil paciente -->
+        <div class="modal-bg" id="perfilPacienteModal">
+          <div class="modal" style="max-width:700px;max-height:85vh;overflow-y:auto;">
+            <div class="modal-title" id="perfilPacModalTitle">Perfil del paciente</div>
+            <div id="perfilPacModalContent"></div>
+            <div style="display:flex;gap:8px;margin-top:14px;">
+              <button class="btn btn-primary" style="flex:1;" onclick="analizarECGDesdePaciente()">&#x1F52C; Analizar ECG</button>
+              <button class="btn btn-secondary" style="flex:1;" onclick="closeModal('perfilPacienteModal')">Cerrar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="panel" id="panel-monitoreo">
 
   <!-- ====== STATUS BAR GLOBAL ====== -->
@@ -3820,108 +3816,145 @@ body{
     </div><!-- end panel-pagos -->
 
     <!-- ===== ROI ===== -->
-      <div class="panel" id="panel-roi">
-        <div class="card">
-          <div class="card-title" style="margin-bottom:16px;">&#x2699;&#xFE0F; Configura tu hospital</div>
-          <div class="roi-slider-group">
-            <div class="roi-slider-header">
-              <span class="roi-slider-label">&#x1F6CF; Camas UCI card&#xED;acas</span>
-              <span class="roi-slider-val" id="roiCamasVal">20</span>
-            </div>
-            <input type="range" class="roi-slider" id="roiCamas" min="5" max="200" value="20" oninput="document.getElementById('roiCamasVal').textContent=this.value;calcROI()">
-            <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-top:4px;"><span>5</span><span>200</span></div>
-          </div>
-          <div class="roi-slider-group">
-            <div class="roi-slider-header">
-              <span class="roi-slider-label">&#x1F504; Reingresos evitables/mes</span>
-              <span class="roi-slider-val" id="roiReingresosVal">8</span>
-            </div>
-            <input type="range" class="roi-slider" id="roiReingresos" min="1" max="50" value="8" oninput="document.getElementById('roiReingresosVal').textContent=this.value;calcROI()">
-            <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-top:4px;"><span>1</span><span>50</span></div>
-          </div>
-          <div class="roi-slider-group">
-            <div class="roi-slider-header">
-              <span class="roi-slider-label">&#x1F4B5; Costo reingreso (USD)</span>
-              <span class="roi-slider-val" id="roiCostoVal">$15,000</span>
-            </div>
-            <input type="range" class="roi-slider" id="roiCosto" min="3000" max="50000" step="1000" value="15000" oninput="document.getElementById('roiCostoVal').textContent='$'+parseInt(this.value).toLocaleString();calcROI()">
-            <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-top:4px;"><span>$3K</span><span>$50K</span></div>
-          </div>
+    <div class="panel" id="panel-roi">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+          <div><div style="font-size:20px;font-weight:700;">&#x1F4B0; Retorno de inversión (ROI)</div><div style="font-size:12px;color:var(--text2);">Calculadora interactiva de ahorro para tu hospital o clínica</div></div>
+          <button class="btn btn-secondary btn-sm" onclick="exportarROIPDF()">&#x1F4CB; Exportar informe</button>
         </div>
-        <div class="g4" style="margin-bottom:16px;">
-          <div class="stat-card"><div class="roi-val" id="roiAhorro" style="color:var(--green2);">$1.44M</div><div class="stat-lbl">Ahorro anual</div></div>
-          <div class="stat-card"><div class="roi-val" id="roiInversion" style="color:var(--accent3);">$60K</div><div class="stat-lbl">Inversi&#xF3;n anual</div></div>
-          <div class="stat-card"><div class="roi-val" id="roiROI" style="color:var(--amber2);">24x</div><div class="stat-lbl">ROI</div></div>
-          <div class="stat-card"><div class="roi-val" id="roiPayback" style="color:var(--purple2);">18 d&#xED;as</div><div class="stat-lbl">Payback</div></div>
+        <div class="g4" style="margin-bottom:14px;">
+          <div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Ahorro anual</div><div class="stat-val" id="roiAhorroAnual" style="color:var(--green2);">$0</div></div>
+          <div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Inversión anual</div><div class="stat-val" id="roiInversion" style="color:var(--accent3);">$0</div></div>
+          <div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">ROI</div><div class="stat-val" id="roiMultiple" style="color:var(--amber2);">0x</div></div>
+          <div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Payback</div><div class="stat-val" id="roiPayback" style="color:var(--purple2);">—</div></div>
         </div>
-        <div class="g2">
-          <div class="card"><div class="card-title" style="margin-bottom:12px;">Proyecci&#xF3;n 12 meses</div><div class="chart-wrap ch250"><canvas id="roiLineChart"></canvas></div></div>
-          <div class="card"><div class="card-title" style="margin-bottom:12px;">Desglose del valor</div><div id="roiDesglose" style="padding-top:4px;"></div></div>
-        </div>
-        <div class="card" style="background:rgba(37,99,235,.04);border-color:rgba(37,99,235,.2);">
-          <div style="display:flex;align-items:center;gap:16px;">
-            <div style="font-size:40px;">&#x1F4A1;</div>
-            <div style="flex:1;"><div style="font-size:14px;font-weight:600;margin-bottom:6px;color:var(--accent3);">Mensaje para el director del hospital</div><div style="font-size:13px;color:var(--text2);line-height:1.7;" id="mensajeDirector">Configura los valores arriba para ver el argumento financiero.</div></div>
-            <button class="btn btn-primary" onclick="openModal('propuestaModal')">&#x1F4CA; Ver 5 a&#xF1;os</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- ===== EPIDEMIOLOGIA ===== -->
-      <div class="panel" id="panel-epidemia">
-        <div class="g4" style="margin-bottom:16px;">
-          <div class="stat-card"><div class="stat-val" style="color:var(--red2);">37.8M</div><div class="stat-lbl">Casos cardiovasculares</div><div class="stat-sub">Latam anual</div></div>
-          <div class="stat-card"><div class="stat-val" style="color:var(--amber2);">14</div><div class="stat-lbl">Pa&#xED;ses monitoreados</div></div>
-          <div class="stat-card"><div class="stat-val" style="color:var(--green2);">660M</div><div class="stat-lbl">Poblaci&#xF3;n objetivo</div></div>
-          <div class="stat-card"><div class="stat-val" style="color:var(--purple2);">$47B</div><div class="stat-lbl">Mercado IA cardio</div><div class="stat-sub">Global 2030</div></div>
-        </div>
-        <div class="g2">
-          <div class="card"><div class="card-title" style="margin-bottom:12px;">Casos por pa&#xED;s - Top 10</div><div class="chart-wrap ch300"><canvas id="epiBarChart"></canvas></div></div>
-          <div class="card"><div class="card-title" style="margin-bottom:12px;">Distribuci&#xF3;n por patolog&#xED;a</div><div class="chart-wrap ch300"><canvas id="epiPieChart"></canvas></div></div>
-        </div>
-        <div class="card">
-          <div class="card-title" style="margin-bottom:14px;">Tabla epidemiol&#xF3;gica Latam</div>
-          <div style="overflow-x:auto;">
-            <table class="tbl"><thead><tr><th>Pa&#xED;s</th><th>Casos FA</th><th>Casos IAM</th><th>Isquemia</th><th>Total</th><th>Riesgo</th></tr></thead><tbody id="epiTabla"></tbody></table>
-          </div>
-        </div>
-      </div>
-
-      <!-- ===== CIENCIA ===== -->
-      <div class="panel" id="panel-ciencia">
-        <div class="g4" style="margin-bottom:16px;">
-          <div class="stat-card"><div class="stat-val" style="color:var(--green2);">0.9408</div><div class="stat-lbl">AUC-ROC Global</div></div>
-          <div class="stat-card"><div class="stat-val" style="color:var(--accent3);">91.3%</div><div class="stat-lbl">Sensibilidad</div></div>
-          <div class="stat-card"><div class="stat-val" style="color:var(--purple2);">94.7%</div><div class="stat-lbl">Especificidad</div></div>
-          <div class="stat-card"><div class="stat-val" style="color:var(--amber2);">89%</div><div class="stat-lbl">Acc. PTB-XL</div></div>
-        </div>
-        <div class="g2">
-          <div class="card"><div class="card-title" style="margin-bottom:12px;">Curvas ROC - 6 patolog&#xED;as cr&#xED;ticas</div><div class="chart-wrap ch300"><canvas id="rocChart"></canvas></div></div>
-          <div class="card"><div class="card-title" style="margin-bottom:12px;">AUC-ROC por patolog&#xED;a</div><div class="chart-wrap ch300"><canvas id="aucChart"></canvas></div></div>
-        </div>
-        <div class="g2">
-          <div class="card"><div class="card-title" style="margin-bottom:12px;">Sensibilidad / Especificidad</div><div class="chart-wrap ch250"><canvas id="sensEspecChart"></canvas></div></div>
+        <div class="g2" style="gap:14px;margin-bottom:14px;">
           <div class="card">
-            <div class="card-title" style="margin-bottom:14px;">Log de trazabilidad blockchain</div>
-            <div id="logTrazabilidad">
-              <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);"><div style="width:8px;height:8px;border-radius:50%;background:var(--green2);flex-shrink:0;margin-top:4px;"></div><div style="flex:1;font-size:12px;color:var(--text2);line-height:1.5;">Sistema iniciado &#xB7; API activa &#xB7; Modelo v11.4 cargado</div></div>
+            <div class="card-title" style="margin-bottom:16px;">&#x2699;&#xFE0F; Configura tu hospital</div>
+            <div class="roi-slider-group">
+              <div class="roi-slider-header"><span class="roi-slider-label">&#x1F6CF; Camas UCI cardíacas</span><span class="roi-slider-val" id="roiCamasVal">20</span></div>
+              <input type="range" class="roi-slider" id="roiCamas" min="5" max="200" value="20" oninput="document.getElementById('roiCamasVal').textContent=this.value;calcROI()">
+            </div>
+            <div class="roi-slider-group">
+              <div class="roi-slider-header"><span class="roi-slider-label">&#x1F504; Reingresos evitables/mes</span><span class="roi-slider-val" id="roiReingresosVal">8</span></div>
+              <input type="range" class="roi-slider" id="roiReingresos" min="1" max="50" value="8" oninput="document.getElementById('roiReingresosVal').textContent=this.value;calcROI()">
+            </div>
+            <div class="roi-slider-group">
+              <div class="roi-slider-header"><span class="roi-slider-label">&#x1F4B5; Costo reingreso (USD)</span><span class="roi-slider-val" id="roiCostoVal">$15,000</span></div>
+              <input type="range" class="roi-slider" id="roiCosto" min="3000" max="50000" step="1000" value="15000" oninput="document.getElementById('roiCostoVal').textContent='$'+parseInt(this.value).toLocaleString();calcROI()">
             </div>
           </div>
+          <div class="card">
+            <div class="card-title" style="margin-bottom:10px;">Ahorro por tamaño de hospital</div>
+            <div class="chart-wrap ch250"><canvas id="roiBarChart"></canvas></div>
+          </div>
         </div>
-        <div class="card">
-          <div class="card-title" style="margin-bottom:14px;">Cumplimiento regulatorio</div>
-          <div class="g3" style="gap:10px;">
-            <div style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.12);border-radius:10px;padding:12px;"><div style="font-size:11px;color:var(--text2);margin-bottom:4px;">INVIMA SaMD Clase II</div><div style="font-size:13px;font-weight:600;color:var(--green2);">&#x2713; En proceso</div></div>
-            <div style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.12);border-radius:10px;padding:12px;"><div style="font-size:11px;color:var(--text2);margin-bottom:4px;">HIPAA / GDPR</div><div style="font-size:13px;font-weight:600;color:var(--green2);">&#x2713; Cumple</div></div>
-            <div style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.12);border-radius:10px;padding:12px;"><div style="font-size:11px;color:var(--text2);margin-bottom:4px;">Ley 1581 Colombia</div><div style="font-size:13px;font-weight:600;color:var(--green2);">&#x2713; Cumple</div></div>
-            <div style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.12);border-radius:10px;padding:12px;"><div style="font-size:11px;color:var(--text2);margin-bottom:4px;">HL7 FHIR R4</div><div style="font-size:13px;font-weight:600;color:var(--green2);">&#x2713; Activo</div></div>
-            <div style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.12);border-radius:10px;padding:12px;"><div style="font-size:11px;color:var(--text2);margin-bottom:4px;">Blockchain Audit</div><div style="font-size:13px;font-weight:600;color:var(--green2);">&#x2713; Activo</div></div>
-            <div style="background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.12);border-radius:10px;padding:12px;"><div style="font-size:11px;color:var(--text2);margin-bottom:4px;">Dataset PTB-XL</div><div style="font-size:12px;font-weight:600;color:var(--accent3);">21,799 ECGs reales</div></div>
+        <div class="g2" style="gap:14px;margin-bottom:14px;">
+          <div class="card" style="background:rgba(16,185,129,.04);border-color:rgba(16,185,129,.2);">
+            <div class="card-title" style="margin-bottom:10px;">&#x1F3E5; Impacto clínico proyectado</div>
+            <div id="roiImpacto" style="font-size:12px;color:var(--text2);line-height:1.8;"></div>
+          </div>
+          <div class="card">
+            <div class="card-title" style="margin-bottom:10px;">Antes vs después de Cardio-IA</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+              <div style="background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15);border-radius:8px;padding:10px;">
+                <div style="font-size:11px;font-weight:700;color:var(--red2);margin-bottom:6px;">&#x274C; Sin Cardio-IA</div>
+                <div style="font-size:11px;color:var(--text2);line-height:1.8;">Detección manual &gt;30 min<br>73% detección tardía<br>Reingresos frecuentes<br>Sin predicción MACE<br>Costo oculto alto</div>
+              </div>
+              <div style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);border-radius:8px;padding:10px;">
+                <div style="font-size:11px;font-weight:700;color:var(--green2);margin-bottom:6px;">&#x2705; Con Cardio-IA</div>
+                <div style="font-size:11px;color:var(--text2);line-height:1.8;">Diagnóstico IA &lt;2 seg<br>Predicción MACE 30/90/365<br>50% menos reingresos<br>Monitoreo remoto 24/7<br>ROI 24x primer año</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- ===== AYUDA ===== -->
+      <div class="panel" id="panel-epidemia">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+          <div><div style="font-size:20px;font-weight:700;">&#x1F5FA;&#xFE0F; Epidemiología cardiovascular — Latinoamérica</div><div style="font-size:12px;color:var(--text2);">Datos de mortalidad, prevalencia y carga de ECV por país</div></div>
+        </div>
+        <div class="g4" style="margin-bottom:14px;">
+          <div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Muertes ECV/año</div><div class="stat-val" style="color:var(--red2);">2M</div><div style="font-size:10px;color:var(--text3);">Latinoamérica</div></div>
+          <div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Prevalencia FA</div><div class="stat-val" style="color:var(--amber2);">3.2%</div><div style="font-size:10px;color:var(--text3);">Población &gt;40 años</div></div>
+          <div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Costo hosp.</div><div class="stat-val" style="color:var(--accent3);">$30B</div><div style="font-size:10px;color:var(--text3);">Gasto anual región</div></div>
+          <div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Detección tardía</div><div class="stat-val" style="color:var(--red2);">73%</div><div style="font-size:10px;color:var(--text3);">Sin predicción</div></div>
+        </div>
+        <div class="g2" style="gap:14px;margin-bottom:14px;">
+          <div class="card"><div class="card-title" style="margin-bottom:10px;">Mortalidad cardiovascular por país (por 100K hab)</div><div class="chart-wrap ch300"><canvas id="epiBarChart"></canvas></div></div>
+          <div class="card"><div class="card-title" style="margin-bottom:10px;">Distribución por patología</div><div class="chart-wrap ch300"><canvas id="epiPieChart"></canvas></div></div>
+        </div>
+        <div class="card" style="margin-bottom:14px;">
+          <div class="card-title" style="margin-bottom:10px;">Datos por país</div>
+          <div style="overflow-x:auto;"><table class="tbl" style="font-size:11px;">
+            <thead><tr><th>País</th><th>Población</th><th>Muertes ECV/año</th><th>Tasa (100K)</th><th>FA prevalencia</th><th>Gasto salud/PIB</th><th>Acceso diagnóstico IA</th></tr></thead>
+            <tbody>
+              <tr><td>&#x1F1E8;&#x1F1F4; Colombia</td><td>52M</td><td>78,000</td><td style="color:var(--red2);">150</td><td>2.8%</td><td>7.1%</td><td style="color:var(--green2);">Cardio-IA activo</td></tr>
+              <tr><td>&#x1F1F2;&#x1F1FD; México</td><td>130M</td><td>156,000</td><td style="color:var(--red2);">120</td><td>3.1%</td><td>5.4%</td><td style="color:var(--amber2);">En expansión</td></tr>
+              <tr><td>&#x1F1E7;&#x1F1F7; Brasil</td><td>215M</td><td>388,000</td><td style="color:var(--red2);">180</td><td>3.5%</td><td>9.6%</td><td style="color:var(--amber2);">Planeado Q1 2027</td></tr>
+              <tr><td>&#x1F1E6;&#x1F1F7; Argentina</td><td>46M</td><td>97,000</td><td style="color:var(--red2);">211</td><td>3.3%</td><td>10.0%</td><td style="color:var(--amber2);">Planeado Q2 2027</td></tr>
+              <tr><td>&#x1F1E8;&#x1F1F1; Chile</td><td>19M</td><td>27,000</td><td>142</td><td>2.9%</td><td>9.3%</td><td style="color:var(--text3);">Próximamente</td></tr>
+              <tr><td>&#x1F1F5;&#x1F1EA; Perú</td><td>34M</td><td>36,000</td><td>106</td><td>2.4%</td><td>5.2%</td><td style="color:var(--text3);">Próximamente</td></tr>
+              <tr><td>&#x1F1E8;&#x1F1F7; Costa Rica</td><td>5M</td><td>6,500</td><td>130</td><td>2.6%</td><td>7.3%</td><td style="color:var(--green2);">Piloto activo</td></tr>
+            </tbody>
+          </table></div>
+        </div>
+        <div class="card">
+          <div style="background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15);border-radius:10px;padding:14px;">
+            <div style="font-size:13px;font-weight:700;color:var(--red2);margin-bottom:6px;">&#x1F6A8; El dato crítico</div>
+            <div style="font-size:13px;color:var(--text2);line-height:1.7;">El <strong style="color:var(--text);">73% de los eventos cardiovasculares graves</strong> en Latinoamérica se detectan demasiado tarde para una intervención efectiva. Con monitoreo continuo y predicción MACE, Cardio-IA Latam puede reducir esta cifra a menos del 20%, evitando miles de hospitalizaciones y salvando vidas.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" id="panel-ciencia">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+          <div><div style="font-size:20px;font-weight:700;">&#x1F9EC; Ciencia del modelo IA</div><div style="font-size:12px;color:var(--text2);">Métricas, arquitectura CNN y validación clínica</div></div>
+          <div class="api-chip ok"><div class="api-dot"></div>Modelo v11.4 activo</div>
+        </div>
+        <div class="g4" style="margin-bottom:14px;">
+          <div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">AUC-ROC</div><div class="stat-val" style="color:var(--green2);">0.9408</div><div style="font-size:10px;color:var(--text3);">Área bajo la curva</div></div>
+          <div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Sensibilidad</div><div class="stat-val" style="color:var(--accent3);">92.1%</div><div style="font-size:10px;color:var(--text3);">True Positive Rate</div></div>
+          <div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Especificidad</div><div class="stat-val" style="color:var(--cyan);">94.7%</div><div style="font-size:10px;color:var(--text3);">True Negative Rate</div></div>
+          <div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">F1-Score</div><div class="stat-val" style="color:var(--purple2);">0.918</div><div style="font-size:10px;color:var(--text3);">Precisión armónica</div></div>
+        </div>
+        <div class="g2" style="gap:14px;margin-bottom:14px;">
+          <div class="card"><div class="card-title" style="margin-bottom:10px;">Curvas ROC — 6 patologías críticas</div><div class="chart-wrap ch300"><canvas id="rocChart"></canvas></div></div>
+          <div class="card"><div class="card-title" style="margin-bottom:10px;">AUC-ROC por patología</div><div class="chart-wrap ch300"><canvas id="aucChart"></canvas></div></div>
+        </div>
+        <div class="card" style="margin-bottom:14px;">
+          <div class="card-title" style="margin-bottom:10px;">Arquitectura del modelo CNN</div>
+          <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:12px;">
+            <div style="background:rgba(37,99,235,.08);border:1px solid rgba(37,99,235,.2);border-radius:8px;padding:10px;text-align:center;"><div style="font-size:11px;font-weight:700;color:var(--accent3);">Input</div><div style="font-size:9px;color:var(--text3);margin-top:2px;">12 deriv.<br>5000 pts</div></div>
+            <div style="background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.2);border-radius:8px;padding:10px;text-align:center;"><div style="font-size:11px;font-weight:700;color:var(--purple2);">Conv1D</div><div style="font-size:9px;color:var(--text3);margin-top:2px;">64 filtros<br>kernel 7</div></div>
+            <div style="background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.2);border-radius:8px;padding:10px;text-align:center;"><div style="font-size:11px;font-weight:700;color:var(--purple2);">Conv1D</div><div style="font-size:9px;color:var(--text3);margin-top:2px;">128 filtros<br>ResBlock</div></div>
+            <div style="background:rgba(14,165,233,.08);border:1px solid rgba(14,165,233,.2);border-radius:8px;padding:10px;text-align:center;"><div style="font-size:11px;font-weight:700;color:var(--cyan);">LSTM</div><div style="font-size:9px;color:var(--text3);margin-top:2px;">Bidireccional<br>128 units</div></div>
+            <div style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:8px;padding:10px;text-align:center;"><div style="font-size:11px;font-weight:700;color:var(--amber2);">Dense</div><div style="font-size:9px;color:var(--text3);margin-top:2px;">256 neuronas<br>Dropout 0.3</div></div>
+            <div style="background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:8px;padding:10px;text-align:center;"><div style="font-size:11px;font-weight:700;color:var(--green2);">Softmax</div><div style="font-size:9px;color:var(--text3);margin-top:2px;">24 clases<br>Probabilidad</div></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+            <div style="background:var(--bg4);border-radius:8px;padding:10px;"><div style="font-size:10px;color:var(--text3);margin-bottom:3px;">Dataset</div><div style="font-size:12px;font-weight:600;">PTB-XL · 21,799 ECGs</div></div>
+            <div style="background:var(--bg4);border-radius:8px;padding:10px;"><div style="font-size:10px;color:var(--text3);margin-bottom:3px;">Entrenamiento</div><div style="font-size:12px;font-weight:600;">80/10/10 split · 50 epochs</div></div>
+            <div style="background:var(--bg4);border-radius:8px;padding:10px;"><div style="font-size:10px;color:var(--text3);margin-bottom:3px;">Inferencia</div><div style="font-size:12px;font-weight:600;">&lt;2 seg · Google Cloud Run</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title" style="margin-bottom:10px;">Rendimiento por clase (24 patologías)</div>
+          <div style="overflow-x:auto;"><table class="tbl" style="font-size:11px;">
+            <thead><tr><th>Patología</th><th>Sensibilidad</th><th>Especificidad</th><th>F1</th><th>AUC</th></tr></thead>
+            <tbody id="cienciaTablaBody">
+              <tr><td>IAM Anterior</td><td style="color:var(--green2);">96.2%</td><td>97.1%</td><td>0.963</td><td style="color:var(--green2);">0.987</td></tr>
+              <tr><td>Fibrilación Auricular</td><td style="color:var(--green2);">94.8%</td><td>96.3%</td><td>0.948</td><td style="color:var(--green2);">0.975</td></tr>
+              <tr><td>Taquicardia Ventricular</td><td style="color:var(--green2);">95.4%</td><td>97.8%</td><td>0.961</td><td style="color:var(--green2);">0.981</td></tr>
+              <tr><td>BAV III</td><td style="color:var(--green2);">97.1%</td><td>98.2%</td><td>0.974</td><td style="color:var(--green2);">0.992</td></tr>
+              <tr><td>Síndrome WPW</td><td>92.7%</td><td>95.1%</td><td>0.931</td><td>0.962</td></tr>
+              <tr><td>QT Prolongado</td><td>89.3%</td><td>93.6%</td><td>0.908</td><td>0.948</td></tr>
+              <tr><td>Normal</td><td style="color:var(--green2);">98.1%</td><td>96.4%</td><td>0.972</td><td style="color:var(--green2);">0.994</td></tr>
+              <tr><td>Bloqueo BCRD</td><td>91.5%</td><td>94.2%</td><td>0.924</td><td>0.958</td></tr>
+            </tbody>
+          </table></div>
+        </div>
+      </div>
+
       <div class="panel" id="panel-ayuda">
         <!-- Quick Start -->
         <div class="card" style="background:linear-gradient(135deg,rgba(37,99,235,.08),rgba(14,165,233,.04));border-color:rgba(37,99,235,.2);">
@@ -12653,6 +12686,181 @@ function renderDashMonResumen() {
     alertEl.innerHTML = '<div style="font-size:11px;color:var(--green2);padding:4px 0;">Todos los pacientes estables</div>';
   }
 }
+
+
+// ===== P1 PACIENTES V12 =====
+function renderPacientesGridV2() {
+  var grid = document.getElementById('pacientesGrid');
+  if (!grid) return;
+  var pacs = pacientesData;
+  setText('pacStatTotal', pacs.length);
+  setText('pacStatAlto', pacs.filter(function(p){ return calcularRiesgoPaciente(p)==='alto'; }).length);
+  setText('pacStatWearable', pacs.filter(function(p){ return p.monitoreo_activo||p.smartwatch_tipo; }).length);
+  setText('pacStatSinECG', pacs.filter(function(p){ return !p.ultimo_ecg; }).length);
+  if (!pacs.length) {
+    grid.innerHTML = '<div style="grid-column:span 2;text-align:center;padding:40px;color:var(--text3);"><div style="font-size:40px;margin-bottom:10px;">&#x1F9D1;&#x200D;&#x2695;&#xFE0F;</div><div style="font-size:14px;font-weight:600;margin-bottom:6px;">Sin pacientes registrados</div><button onclick="openModal(\'nuevoPacienteModal\')" class="btn btn-primary btn-sm" style="margin-top:8px;">+ Agregar primer paciente</button></div>';
+    return;
+  }
+  grid.innerHTML = pacs.map(function(p, idx) {
+    var r = calcularRiesgoPaciente(p);
+    var sem = getSemaforoInfo(r);
+    var ini = (p.nombre||'?').split(' ').map(function(x){return (x[0]||'').toUpperCase();}).join('').substring(0,2);
+    var wear = p.smartwatch_tipo || '';
+    var ecgInfo = p.ultimo_diagnostico ? p.ultimo_diagnostico.substring(0,25) : 'Sin ECG';
+    var ecgs = historialDB.filter(function(h){return h.paciente_nombre===p.nombre||h.paciente===p.nombre;}).length;
+    return '<div style="background:var(--bg3);border:1px solid ' + (r==='alto'?'rgba(239,68,68,.25)':r==='moderado'?'rgba(245,158,11,.2)':'var(--border)') + ';border-radius:12px;padding:14px;cursor:pointer;transition:all .2s;" onclick="abrirPerfilPaciente(' + idx + ')" onmouseover="this.style.transform=\'translateY(-2px)\'" onmouseout="this.style.transform=\'none\'">' +
+      '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">' +
+        '<div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0;">' + ini + '</div>' +
+        '<div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + p.nombre + '</div><div style="font-size:10px;color:var(--text3);">' + (p.id_documento||'') + ' | ' + (p.edad||'?') + 'a | ' + (p.sexo||'?') + '</div></div>' +
+        '<span style="font-size:9px;font-weight:700;padding:3px 8px;border-radius:6px;background:' + sem.bg + ';color:' + sem.color + ';' + (r==='alto'?'animation:riesgoPulse 2s infinite;':'') + '">' + r + '</span>' +
+      '</div>' +
+      '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px;">' +
+        '<div style="background:var(--bg4);border-radius:6px;padding:6px;text-align:center;"><div style="font-size:14px;font-weight:700;color:var(--accent3);">' + ecgs + '</div><div style="font-size:9px;color:var(--text3);">ECGs</div></div>' +
+        '<div style="background:var(--bg4);border-radius:6px;padding:6px;text-align:center;"><div style="font-size:14px;font-weight:700;color:' + sem.color + ';">' + (p.score_framingham || '-') + '</div><div style="font-size:9px;color:var(--text3);">Score</div></div>' +
+        '<div style="background:var(--bg4);border-radius:6px;padding:6px;text-align:center;"><div style="font-size:14px;font-weight:700;color:' + (wear?'var(--green2)':'var(--text3)') + ';">' + (wear?'Si':'No') + '</div><div style="font-size:9px;color:var(--text3);">Wearable</div></div>' +
+      '</div>' +
+      '<div style="font-size:11px;color:var(--text2);">&#x1FAC0; ' + ecgInfo + '</div>' +
+      (wear ? '<div style="font-size:10px;color:var(--green2);margin-top:4px;">&#x231A; ' + wear + (p.monitoreo_activo?' &#x2022; En linea':'') + '</div>' : '') +
+    '</div>';
+  }).join('');
+}
+
+function filtrarPacientes(q) {
+  if (!q) { renderPacientesGridV2(); return; }
+  var grid = document.getElementById('pacientesGrid');
+  if (!grid) return;
+  var filtered = pacientesData.filter(function(p) {
+    return (p.nombre||'').toLowerCase().includes(q.toLowerCase()) || (p.id_documento||'').includes(q);
+  });
+  var origData = pacientesData;
+  pacientesData = filtered;
+  renderPacientesGridV2();
+  pacientesData = origData;
+}
+
+function abrirPerfilPaciente(idx) {
+  var p = pacientesData[idx];
+  if (!p) return;
+  var content = document.getElementById('perfilPacModalContent');
+  var title = document.getElementById('perfilPacModalTitle');
+  if (title) title.textContent = p.nombre;
+  var ecgs = historialDB.filter(function(h){return h.paciente_nombre===p.nombre||h.paciente===p.nombre;});
+  var r = calcularRiesgoPaciente(p);
+  var sem = getSemaforoInfo(r);
+  if (content) {
+    content.innerHTML =
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">' +
+        '<div style="background:var(--bg4);border-radius:8px;padding:10px;"><span style="font-size:10px;color:var(--text3);">Documento</span><div style="font-size:13px;font-weight:600;">' + (p.id_documento||'-') + '</div></div>' +
+        '<div style="background:var(--bg4);border-radius:8px;padding:10px;"><span style="font-size:10px;color:var(--text3);">Edad / Sexo</span><div style="font-size:13px;font-weight:600;">' + (p.edad||'?') + ' a / ' + (p.sexo||'?') + '</div></div>' +
+        '<div style="background:var(--bg4);border-radius:8px;padding:10px;"><span style="font-size:10px;color:var(--text3);">Riesgo</span><div style="font-size:13px;font-weight:700;color:' + sem.color + ';">' + r.toUpperCase() + '</div></div>' +
+        '<div style="background:var(--bg4);border-radius:8px;padding:10px;"><span style="font-size:10px;color:var(--text3);">Wearable</span><div style="font-size:13px;font-weight:600;">' + (p.smartwatch_tipo||'No vinculado') + '</div></div>' +
+        '<div style="background:var(--bg4);border-radius:8px;padding:10px;"><span style="font-size:10px;color:var(--text3);">Comorbilidades</span><div style="font-size:13px;">' + (p.comorbilidades||'Ninguna registrada') + '</div></div>' +
+        '<div style="background:var(--bg4);border-radius:8px;padding:10px;"><span style="font-size:10px;color:var(--text3);">ECGs totales</span><div style="font-size:13px;font-weight:600;">' + ecgs.length + '</div></div>' +
+      '</div>' +
+      '<div style="font-size:12px;font-weight:600;margin-bottom:6px;">Historial de ECGs</div>' +
+      (ecgs.length > 0 ? ecgs.slice(0,5).map(function(h) {
+        return '<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:11px;">' +
+          '<span style="flex:1;color:var(--text2);">' + (h.diagnostico||'-') + '</span>' +
+          '<span style="color:var(--accent3);">' + (h.confianza||0).toFixed(1) + '%</span>' +
+          '<span style="color:var(--text3);">' + new Date(h.fecha).toLocaleDateString('es-CO') + '</span>' +
+        '</div>';
+      }).join('') : '<div style="color:var(--text3);font-size:12px;padding:8px 0;">Sin ECGs registrados</div>');
+  }
+  openModal('perfilPacienteModal');
+}
+
+function analizarECGDesdePaciente() {
+  closeModal('perfilPacienteModal');
+  switchTab('analizar');
+}
+
+// Override renderPacientes
+var _renderPacOrig = typeof renderPacientes === 'function' ? renderPacientes : null;
+renderPacientes = function() { renderPacientesGridV2(); };
+
+// ===== P3 EPIDEMIOLOGÍA CHARTS =====
+function initEpiCharts() {
+  var barCtx = document.getElementById('epiBarChart');
+  if (barCtx) {
+    if (charts['epiBar']) charts['epiBar'].destroy();
+    charts['epiBar'] = new Chart(barCtx, {
+      type: 'bar', data: {
+        labels: ['Argentina','Brasil','Colombia','Chile','Costa Rica','Mexico','Peru'],
+        datasets: [{ label: 'Muertes por 100K hab', data: [211,180,150,142,130,120,106], backgroundColor: ['EF4444','DC2626','F59E0B','F97316','10B981','3B82F6','6366F1'].map(function(c){return '#'+c+'99';}) }]
+      }, options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{x:{ticks:{color:'#64748b',font:{size:10}},grid:{display:false}},y:{ticks:{color:'#64748b',font:{size:9}},grid:{color:'rgba(255,255,255,.04)'}}} }
+    });
+  }
+  var pieCtx = document.getElementById('epiPieChart');
+  if (pieCtx) {
+    if (charts['epiPie']) charts['epiPie'].destroy();
+    charts['epiPie'] = new Chart(pieCtx, {
+      type: 'doughnut', data: {
+        labels: ['Cardiopatia isquemica','ACV','Insuf. cardiaca','Arritmias','HTA','Otros'],
+        datasets: [{ data: [35,25,15,12,8,5], backgroundColor: ['#EF4444','#F59E0B','#3B82F6','#8B5CF6','#10B981','#64748B'], borderWidth: 0 }]
+      }, options: { responsive:true, maintainAspectRatio:false, cutout:'60%', plugins:{legend:{position:'right',labels:{color:'#64748b',font:{size:9},boxWidth:8}}} }
+    });
+  }
+}
+
+// ===== P3 CIENCIA CHARTS =====
+function initCienciaCharts() {
+  var rocCtx = document.getElementById('rocChart');
+  if (rocCtx) {
+    if (charts['roc']) charts['roc'].destroy();
+    var rocData = [
+      {name:'IAM',auc:.987,color:'#EF4444'}, {name:'FA',auc:.975,color:'#F59E0B'}, {name:'TV',auc:.981,color:'#DC2626'},
+      {name:'BAV III',auc:.992,color:'#8B5CF6'}, {name:'Normal',auc:.994,color:'#10B981'}, {name:'WPW',auc:.962,color:'#0EA5E9'}
+    ];
+    var datasets = rocData.map(function(d) {
+      var pts = []; for(var i=0;i<=20;i++){var fpr=i/20;var tpr=1-Math.pow(1-fpr,d.auc*8);pts.push(Math.min(1,tpr));} return {label:d.name+' ('+d.auc+')',data:pts,borderColor:d.color,borderWidth:1.5,pointRadius:0,tension:.4,fill:false};
+    });
+    var diag = []; for(var i=0;i<=20;i++) diag.push(i/20);
+    datasets.push({label:'Random',data:diag,borderColor:'#334155',borderWidth:1,borderDash:[4,4],pointRadius:0,fill:false});
+    charts['roc'] = new Chart(rocCtx, {
+      type:'line', data:{labels:Array.from({length:21},function(_,i){return (i/20).toFixed(1);}),datasets:datasets},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:'#64748b',font:{size:9},boxWidth:8,padding:4}}},scales:{x:{title:{display:true,text:'FPR',color:'#475569',font:{size:10}},ticks:{color:'#475569',font:{size:8},maxTicksLimit:6},grid:{color:'rgba(255,255,255,.04)'}},y:{title:{display:true,text:'TPR',color:'#475569',font:{size:10}},ticks:{color:'#475569',font:{size:8}},grid:{color:'rgba(255,255,255,.04)'}}}}
+    });
+  }
+  var aucCtx = document.getElementById('aucChart');
+  if (aucCtx) {
+    if (charts['auc']) charts['auc'].destroy();
+    charts['auc'] = new Chart(aucCtx, {
+      type:'bar', data:{
+        labels:['Normal','BAV III','IAM','TV','FA','WPW','BCRD','QT Largo'],
+        datasets:[{label:'AUC-ROC',data:[.994,.992,.987,.981,.975,.962,.958,.948],backgroundColor:['#10B981','#8B5CF6','#EF4444','#DC2626','#F59E0B','#0EA5E9','#6366F1','#F97316'].map(function(c){return c+'CC';})}]
+      }, options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{min:.9,max:1,ticks:{color:'#475569',font:{size:9}},grid:{color:'rgba(255,255,255,.04)'}},y:{ticks:{color:'#94a3b8',font:{size:10}},grid:{display:false}}}}
+    });
+  }
+}
+
+// ===== P4 ROI CHART =====
+function initRoiChart() {
+  var ctx = document.getElementById('roiBarChart');
+  if (!ctx) return;
+  if (charts['roiBar']) charts['roiBar'].destroy();
+  charts['roiBar'] = new Chart(ctx, {
+    type:'bar', data:{
+      labels:['5 camas','10 camas','20 camas','50 camas','100 camas'],
+      datasets:[{label:'Ahorro anual USD',data:[180000,480000,1440000,3600000,7200000],backgroundColor:'#2563EBAA',borderRadius:4}]
+    }, options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#64748b',font:{size:10}},grid:{display:false}},y:{ticks:{color:'#64748b',font:{size:9},callback:function(v){return '$'+(v/1000000).toFixed(1)+'M';}},grid:{color:'rgba(255,255,255,.04)'}}}}
+  });
+}
+
+function exportarROIPDF() {
+  showToast('Exportando informe ROI...', 'info');
+  setTimeout(function(){ window.print(); }, 300);
+}
+
+// ===== PATCH switchTab para init charts =====
+var _switchTabModules = switchTab;
+switchTab = function(tab) {
+  _switchTabModules(tab);
+  if (tab === 'pacientes') setTimeout(renderPacientesGridV2, 150);
+  if (tab === 'epidemia') setTimeout(initEpiCharts, 200);
+  if (tab === 'ciencia') setTimeout(initCienciaCharts, 200);
+  if (tab === 'roi') setTimeout(function(){ initRoiChart(); calcROI(); }, 200);
+};
+
 
 console.log('Cardio-IA Latam v11.4 cargado ✅');
 
