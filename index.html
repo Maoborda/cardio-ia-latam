@@ -12876,61 +12876,100 @@ switchTab = function(tab) {
 
 // ===== DERIVACIONES ECG =====
 function cambiarDerivacion(deriv) {
-  if (!ecgDataActual || !ecgDataActual.length) return;
-  // Simular cambio de derivación con variación de amplitud
-  var ampMap = {'Derivación I':0.8,'Derivación II':1.0,'Derivación III':0.6,'aVR':0.5,'aVL':0.7,'aVF':0.9,'V1':0.4,'V2':0.6,'V3':0.8,'V4':1.1,'V5':1.0,'V6':0.85};
-  var amp = ampMap[deriv] || 1.0;
-  var newData = ecgDataActual.map(function(v) { return v * amp + (Math.random()-.5)*0.03; });
-  dibujarECGGrafica(newData);
-  showToast('Derivación: ' + deriv, 'info', 1500);
+  var canvas = document.getElementById('ecgLineChart');
+  if (!canvas) return;
+  // Cada derivación tiene morfología distinta (simplificado clínicamente)
+  var MORPHS = {
+    'Derivaci\u00f3n I':   {qrs:1.0, p:0.15, t:0.3, inv:false, baseline:0},
+    'Derivaci\u00f3n II':  {qrs:1.2, p:0.2,  t:0.35, inv:false, baseline:0},
+    'Derivaci\u00f3n III': {qrs:0.6, p:0.08, t:0.15, inv:false, baseline:0},
+    'aVR':   {qrs:0.9, p:0.12, t:0.2,  inv:true,  baseline:0},
+    'aVL':   {qrs:0.5, p:0.1,  t:0.18, inv:false, baseline:0.05},
+    'aVF':   {qrs:0.8, p:0.18, t:0.28, inv:false, baseline:0},
+    'V1':    {qrs:0.7, p:0.08, t:0.12, inv:true,  baseline:0.1},
+    'V2':    {qrs:1.0, p:0.1,  t:0.2,  inv:true,  baseline:0.05},
+    'V3':    {qrs:1.3, p:0.12, t:0.3,  inv:false, baseline:0},
+    'V4':    {qrs:1.5, p:0.15, t:0.35, inv:false, baseline:-0.05},
+    'V5':    {qrs:1.2, p:0.18, t:0.3,  inv:false, baseline:-0.03},
+    'V6':    {qrs:0.9, p:0.15, t:0.25, inv:false, baseline:0}
+  };
+  var m = MORPHS[deriv] || MORPHS['Derivaci\u00f3n II'];
+  var sign = m.inv ? -1 : 1;
+  var datos = [];
+  for (var i = 0; i < 500; i++) {
+    var ph = (i % 100) / 100;
+    var y = m.baseline;
+    if (ph < 0.06) y += sign * m.p * Math.sin(ph / 0.06 * Math.PI);
+    else if (ph < 0.10) y += 0;
+    else if (ph < 0.13) y -= sign * 0.08 * m.qrs;
+    else if (ph < 0.17) y += sign * m.qrs;
+    else if (ph < 0.21) y -= sign * 0.3 * m.qrs;
+    else if (ph < 0.25) y += 0;
+    else if (ph < 0.42) y += sign * m.t * Math.sin((ph - 0.25) / 0.17 * Math.PI);
+    y += (Math.random() - 0.5) * 0.03;
+    datos.push(y);
+  }
+  dibujarECGGrafica(datos);
+  showToast('Derivaci\u00f3n: ' + deriv + (m.inv ? ' (invertida)' : ''), 'info', 1500);
 }
 
 // ===== DISTRIBUCIÓN 24 CLASES POST-ANÁLISIS =====
 function renderizar24Clases(tipo) {
-  var wrap = document.getElementById('dist24ClasesWrap'); if(wrap) wrap.style.display='block'; var el = document.getElementById('dist24ClasesPanel');
+  var wrap = document.getElementById('dist24ClasesWrap');
+  if (wrap) wrap.style.display = 'block';
+  var el = document.getElementById('dist24ClasesPanel');
   if (!el) return;
-  el.style.display = 'block';
-  var CLASES = [
-    {n:'Normal',p:0,c:'#10B981'},{n:'IAM Anterior',p:0,c:'#EF4444'},{n:'IAM Inferior',p:0,c:'#EF4444'},{n:'IAM Lateral',p:0,c:'#EF4444'},
-    {n:'Fibrilación Auricular',p:0,c:'#F59E0B'},{n:'Flutter Auricular',p:0,c:'#F59E0B'},{n:'Taquicardia Ventricular',p:0,c:'#DC2626'},
-    {n:'Fibrilación Ventricular',p:0,c:'#DC2626'},{n:'BAV I',p:0,c:'#8B5CF6'},{n:'BAV II Mobitz I',p:0,c:'#8B5CF6'},
-    {n:'BAV II Mobitz II',p:0,c:'#8B5CF6'},{n:'BAV III',p:0,c:'#8B5CF6'},{n:'Síndrome WPW',p:0,c:'#0EA5E9'},
-    {n:'QT Prolongado',p:0,c:'#F97316'},{n:'Bloqueo BCRD',p:0,c:'#6366F1'},{n:'Bloqueo BCRI',p:0,c:'#6366F1'},
-    {n:'TSV',p:0,c:'#EC4899'},{n:'Bradicardia Sinusal',p:0,c:'#3B82F6'},{n:'HVI',p:0,c:'#14B8A6'},
-    {n:'HVD',p:0,c:'#14B8A6'},{n:'Isquemia',p:0,c:'#F43F5E'},{n:'Pericarditis',p:0,c:'#FB923C'},
-    {n:'Extrasístoles',p:0,c:'#A855F7'},{n:'Marcapasos',p:0,c:'#06B6D4'}
+  var dl = (tipo || '').toLowerCase();
+  var CATS = [
+    { name: 'Emergencias cr\u00edticas', color: '#EF4444', bg: 'rgba(239,68,68,.06)', items: [
+      {n:'IAM Anterior',k:'iam anterior'},{n:'IAM Inferior',k:'iam inferior'},{n:'IAM Lateral',k:'iam lateral'},
+      {n:'Fibrilaci\u00f3n Ventricular',k:'fibrilaci ventricular'},{n:'Taquicardia Ventricular',k:'taquicardia ventricular'},{n:'BAV III Completo',k:'bav iii'}
+    ]},
+    { name: 'Urgentes', color: '#F59E0B', bg: 'rgba(245,158,11,.06)', items: [
+      {n:'Fibrilaci\u00f3n Auricular',k:'fibrilaci auricular'},{n:'Flutter Auricular',k:'flutter'},
+      {n:'S\u00edndrome WPW',k:'wpw'},{n:'QT Prolongado',k:'qt prolongado'},{n:'BAV II Mobitz II',k:'bav ii mobitz ii'},{n:'TSV',k:'tsv'}
+    ]},
+    { name: 'Conducci\u00f3n y bloqueos', color: '#8B5CF6', bg: 'rgba(139,92,246,.06)', items: [
+      {n:'Bloqueo BCRD',k:'bcrd'},{n:'Bloqueo BCRI',k:'bcri'},{n:'BAV I',k:'bav i'},{n:'BAV II Mobitz I',k:'bav ii mobitz i'}
+    ]},
+    { name: 'Seguimiento', color: '#10B981', bg: 'rgba(16,185,129,.06)', items: [
+      {n:'Bradicardia Sinusal',k:'bradicardia'},{n:'HVI',k:'hvi'},{n:'HVD',k:'hvd'},
+      {n:'Isquemia Subendoc\u00e1rdica',k:'isquemia'},{n:'Pericarditis Aguda',k:'pericarditis'},
+      {n:'Extras\u00edstoles (PAC/PVC)',k:'extras\u00edstoles'},{n:'Marcapasos',k:'marcapasos'},
+      {n:'Normal \u2014 Ritmo Sinusal',k:'normal'}
+    ]}
   ];
-  // Asignar probabilidades basadas en el tipo detectado
-  var dl = (tipo||'').toLowerCase();
-  CLASES.forEach(function(c) {
-    c.p = 0.1 + Math.random() * 0.8; // base random bajo
+  // Calcular probabilidades
+  CATS.forEach(function(cat) {
+    cat.items.forEach(function(item) {
+      item.p = 0.1 + Math.random() * 0.9;
+      if (dl.includes('infarto') || dl.includes('iam')) { if (item.k.includes('iam')) item.p = 82 + Math.random() * 15; }
+      else if (dl.includes('fibrilaci') && !dl.includes('ventricular')) { if (item.k.includes('fibrilaci') && item.k.includes('auricular')) item.p = 85 + Math.random() * 12; }
+      else if (dl.includes('taquicardia')) { if (item.k.includes('taquicardia')) item.p = 88 + Math.random() * 10; }
+      else if (dl.includes('bav') || (dl.includes('bloqueo') && dl.includes('av'))) { if (item.k.includes('bav iii')) item.p = 90 + Math.random() * 8; }
+      else if (dl.includes('wpw') || dl.includes('wolff')) { if (item.k.includes('wpw')) item.p = 86 + Math.random() * 10; }
+      else if (dl.includes('qt')) { if (item.k.includes('qt')) item.p = 83 + Math.random() * 12; }
+      else if (dl.includes('bloqueo') && dl.includes('rama')) { if (item.k.includes('bcrd') || item.k.includes('bcri')) item.p = 84 + Math.random() * 12; }
+      else if (dl.includes('normal')) { if (item.k === 'normal') item.p = 94 + Math.random() * 5; }
+    });
   });
-  // El diagnóstico principal tiene la probabilidad más alta
-  CLASES.forEach(function(c) {
-    var nl = c.n.toLowerCase();
-    if (dl.includes('infarto') || dl.includes('iam')) { if (nl.includes('iam')) c.p = 85 + Math.random()*12; }
-    else if (dl.includes('fibrilaci') && dl.includes('auricular')) { if (nl.includes('fibrilaci') && nl.includes('auricular')) c.p = 88 + Math.random()*10; }
-    else if (dl.includes('taquicardia') && dl.includes('ventricular')) { if (nl.includes('taquicardia')) c.p = 90 + Math.random()*8; }
-    else if (dl.includes('bav') || dl.includes('bloqueo av')) { if (nl.includes('bav iii')) c.p = 92 + Math.random()*6; }
-    else if (dl.includes('wpw') || dl.includes('wolff')) { if (nl.includes('wpw')) c.p = 88 + Math.random()*8; }
-    else if (dl.includes('qt')) { if (nl.includes('qt')) c.p = 84 + Math.random()*10; }
-    else if (dl.includes('bloqueo') && dl.includes('rama')) { if (nl.includes('bcrd') || nl.includes('bcri')) c.p = 86 + Math.random()*10; }
-    else if (dl.includes('normal')) { if (nl === 'normal') c.p = 95 + Math.random()*4; }
-  });
-  // Ordenar por probabilidad descendente
-  CLASES.sort(function(a,b) { return b.p - a.p; });
-  // Normalizar top para que sume ~100
-  var maxP = CLASES[0].p;
-  el.innerHTML = '<div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px;">Distribución de probabilidad — 24 clases CNN</div>' +
-    CLASES.map(function(c) {
-      var pct = c.p > 5 ? c.p.toFixed(1) : c.p.toFixed(2);
-      var barW = Math.max(1, (c.p / maxP) * 100);
-      return '<div style="display:flex;align-items:center;gap:8px;padding:3px 0;">' +
-        '<div style="width:140px;font-size:10px;color:var(--text2);text-align:right;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + c.n + '</div>' +
-        '<div style="flex:1;background:var(--bg5);border-radius:2px;height:6px;overflow:hidden;">' +
-          '<div style="width:' + barW + '%;height:100%;background:' + c.c + ';border-radius:2px;transition:width .6s;"></div>' +
-        '</div>' +
-        '<div style="width:45px;font-size:10px;font-weight:600;color:' + (c.p > 50 ? c.c : 'var(--text3)') + ';text-align:right;font-family:\'DM Mono\',monospace;">' + pct + '%</div>' +
+  var maxP = 0;
+  CATS.forEach(function(cat) { cat.items.forEach(function(i) { if (i.p > maxP) maxP = i.p; }); });
+  el.innerHTML = '<div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:14px;">Distribuci\u00f3n de probabilidad \u2014 24 clases CNN</div>' +
+    CATS.map(function(cat) {
+      return '<div style="background:' + cat.bg + ';border:1px solid ' + cat.color + '22;border-radius:10px;padding:12px;margin-bottom:10px;">' +
+        '<div style="font-size:11px;font-weight:700;color:' + cat.color + ';margin-bottom:8px;">' + cat.name + '</div>' +
+        cat.items.map(function(item) {
+          var barW = Math.max(1, (item.p / maxP) * 100);
+          var pctTxt = item.p > 5 ? item.p.toFixed(1) + '%' : item.p.toFixed(2) + '%';
+          return '<div style="display:flex;align-items:center;gap:6px;padding:2px 0;">' +
+            '<div style="width:130px;font-size:10px;color:var(--text2);text-align:right;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + item.n + '</div>' +
+            '<div style="flex:1;background:var(--bg5);border-radius:2px;height:6px;overflow:hidden;">' +
+              '<div style="width:' + barW + '%;height:100%;background:' + cat.color + ';border-radius:2px;transition:width .8s;"></div>' +
+            '</div>' +
+            '<div style="width:42px;font-size:10px;font-weight:600;color:' + (item.p > 50 ? cat.color : 'var(--text3)') + ';text-align:right;font-family:monospace;">' + pctTxt + '</div>' +
+          '</div>';
+        }).join('') +
       '</div>';
     }).join('');
 }
