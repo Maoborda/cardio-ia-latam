@@ -1628,13 +1628,14 @@ body{
         </div>
       </div>
 
-      <!-- Top patologías del mes -->
-      <div class="card">
-        <div class="card-title" style="margin-bottom:12px;">Top patolog&#xED;as del mes</div>
-        <div id="dashTopPat"></div>
-        <div style="margin-top:12px;">
-          <div class="chart-wrap" style="height:110px;"><canvas id="dashDonutChart"></canvas></div>
+      <!-- Resumen monitoreo remoto -->
+      <div class="card" style="border-color:rgba(14,165,233,.2);background:rgba(14,165,233,.02);">
+        <div class="card-hd" style="margin-bottom:10px;">
+          <div class="card-title">&#x231A; Monitoreo remoto</div>
+          <button class="btn btn-ghost btn-sm" onclick="switchTab('monitoreo')">Ver todo &#x2192;</button>
         </div>
+        <div id="dashMonResumen" style="font-size:12px;color:var(--text2);">Sin pacientes en monitoreo</div>
+        <div id="dashMonAlertas" style="margin-top:8px;"></div>
       </div>
 
       <!-- TO-DO CLÍNICO + acciones rápidas -->
@@ -1716,7 +1717,7 @@ body{
         <div class="chart-wrap ch250"><canvas id="dashConfChart"></canvas></div>
       </div>
       <div class="card">
-        <div class="card-hd"><div class="card-title">Distribuci&#xF3;n de patolog&#xED;as</div></div>
+        <div class="card-hd"><div class="card-title">Eficiencia del equipo</div></div>
         <div class="chart-wrap ch250"><canvas id="dashRadarChart"></canvas></div>
       </div>
     </div>
@@ -11381,8 +11382,8 @@ switchTab = function(tab) {
     setTimeout(function() {
       actualizarPulsoDia();
       renderKpisConSparklines();
-      renderTopPatologias();
       actualizarTodoClinco();
+      renderDashMonResumen();
       renderSemaforoPacientes();
       renderProyeccion();
       renderActivityHeatmap();
@@ -11401,7 +11402,6 @@ switchTab = function(tab) {
 // ── DASHBOARD: Charts reales Chart.js ─────────────────────────────────
 function initDashCharts() {
   initDashTendChart();
-  initDashDonutChart();
 }
 
 function initDashTendChart() {
@@ -12621,6 +12621,37 @@ function exportarCertificadoPDF() {
   w.document.close();
   setTimeout(function() { w.print(); }, 500);
   showToast('Certificado de cumplimiento generado', 'success');
+}
+
+
+// ===== RESUMEN MONITOREO EN DASHBOARD =====
+function renderDashMonResumen() {
+  var el = document.getElementById('dashMonResumen');
+  var alertEl = document.getElementById('dashMonAlertas');
+  if (!el) return;
+  var monitoreados = pacientesData.filter(function(p){ return p.monitoreo_activo || p.smartwatch_tipo; });
+  var alertas = (typeof monAlertLog !== 'undefined') ? monAlertLog.filter(function(a){ return !a.resuelta; }) : [];
+  if (!monitoreados.length) {
+    el.innerHTML = '<div style="text-align:center;padding:10px;color:var(--text3);font-size:12px;">Sin pacientes en monitoreo<br><button onclick="switchTab(\'pacientes\')" class="btn btn-ghost btn-sm" style="margin-top:6px;">Vincular wearable</button></div>';
+    if (alertEl) alertEl.innerHTML = '';
+    return;
+  }
+  el.innerHTML = '<div style="display:flex;gap:12px;margin-bottom:8px;">' +
+    '<div style="text-align:center;flex:1;"><div style="font-size:20px;font-weight:700;color:var(--accent3);">' + monitoreados.length + '</div><div style="font-size:10px;color:var(--text3);">Monitoreados</div></div>' +
+    '<div style="text-align:center;flex:1;"><div style="font-size:20px;font-weight:700;color:' + (alertas.length > 0 ? 'var(--red2)' : 'var(--green2)') + ';">' + alertas.length + '</div><div style="font-size:10px;color:var(--text3);">Alertas</div></div>' +
+  '</div>';
+  // Últimas alertas
+  if (alertEl && alertas.length > 0) {
+    alertEl.innerHTML = alertas.slice(0, 3).map(function(a) {
+      return '<div style="display:flex;align-items:center;gap:6px;padding:5px 0;border-top:1px solid rgba(255,255,255,.04);font-size:11px;">' +
+        '<div style="width:6px;height:6px;border-radius:50%;background:var(--red2);flex-shrink:0;"></div>' +
+        '<span style="flex:1;color:var(--text2);">' + (a.paciente||'') + '</span>' +
+        '<span style="color:var(--red2);font-size:10px;">' + (a.msg||'').substring(0,20) + '</span>' +
+      '</div>';
+    }).join('');
+  } else if (alertEl) {
+    alertEl.innerHTML = '<div style="font-size:11px;color:var(--green2);padding:4px 0;">Todos los pacientes estables</div>';
+  }
 }
 
 console.log('Cardio-IA Latam v11.4 cargado ✅');
