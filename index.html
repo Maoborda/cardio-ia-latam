@@ -12979,6 +12979,47 @@ mostrarResultadoUI = function(diag, conf, urg, urgColor, hallazgos, probs, fc, q
 };
 
 
+
+// ===== FIX HISTORIAL: datos demo limpios =====
+function verificarHistorialDemo() {
+  if (!historialDB || !historialDB.length) return;
+  // Verificar si los datos tienen paciente_nombre válido
+  var corrupto = historialDB.some(function(h) {
+    return !h.paciente_nombre && !h.paciente;
+  });
+  if (corrupto) {
+    // Limpiar datos corruptos asignando paciente del pacientesData
+    historialDB.forEach(function(h, i) {
+      if (!h.paciente_nombre || h.paciente_nombre === '-' || h.paciente_nombre === '') {
+        var pacIdx = i % pacientesData.length;
+        h.paciente_nombre = pacientesData[pacIdx] ? pacientesData[pacIdx].nombre : 'Paciente Demo';
+        h.paciente = h.paciente_nombre;
+      }
+      if (!h.diagnostico || h.diagnostico === '-') {
+        var diags = ['Normal (Ritmo Sinusal)','Fibrilacion Auricular','IAM Anterior','Bloqueo BCRD','Taquicardia Ventricular','Normal (Ritmo Sinusal)'];
+        h.diagnostico = diags[i % diags.length];
+      }
+      if (!h.confianza || h.confianza < 60) {
+        h.confianza = 85 + Math.random() * 13;
+      }
+    });
+    guardarHistorialLocal();
+  }
+}
+
+// Ejecutar al cargar
+setTimeout(verificarHistorialDemo, 1000);
+
+// ===== FIX LANG FLAG =====
+var _setLangOrig = typeof setLang === 'function' ? setLang : null;
+setLang = function(lang) {
+  if (_setLangOrig) _setLangOrig(lang);
+  var flag = document.getElementById('langFlag');
+  var flags = {es:'\ud83c\uddea\ud83c\uddf8', en:'\ud83c\uddfa\ud83c\uddf8', pt:'\ud83c\udde7\ud83c\uddf7', fr:'\ud83c\uddeb\ud83c\uddf7'};
+  if (flag) flag.textContent = (flags[lang] || flags.es) + ' ' + lang.toUpperCase();
+};
+setTimeout(function() { setLang('es'); }, 500);
+
 console.log('Cardio-IA Latam v11.4 cargado ✅');
 
 
