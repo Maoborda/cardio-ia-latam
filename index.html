@@ -1418,6 +1418,11 @@ body{
         <span class="nav-icon">&#x1F50C;</span>
         <span class="nav-label">Conectores</span>
       </div>
+      <div class="nav-item" tabindex="0" role="menuitem" id="nav-rehab" onclick="switchTab('rehab')">
+        <span class="nav-icon">&#x1F3CB;&#xFE0F;</span>
+        <span class="nav-label">Rehabilitaci&#xF3;n</span>
+        <span style="font-size:9px;padding:1px 5px;border-radius:4px;background:rgba(16,185,129,.15);color:#10b981;font-weight:600;margin-left:auto;">Nuevo</span>
+      </div>
 
       <div class="nav-section-label">Admin</div>
       <div class="nav-item" tabindex="0" role="menuitem" id="nav-invitaciones" onclick="switchTab('invitaciones')">
@@ -3242,6 +3247,168 @@ body{
         <div style="font-size:12px;color:var(--text3);">&#x2192;</div>
         <div style="text-align:center;padding:6px 10px;"><div style="font-size:16px;">&#x1F468;&#x200D;&#x2695;&#xFE0F;</div><div style="font-size:9px;color:var(--text3);">M&#xE9;dico<br>alerta</div></div>
       </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== REHABILITACIÓN CARDIOVASCULAR ===== -->
+      <div class="panel" id="panel-rehab">
+
+  <!-- Header -->
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+    <div>
+      <div style="font-size:20px;font-weight:700;">&#x1F3CB;&#xFE0F; Cardio-IA Rehab</div>
+      <div style="font-size:12px;color:var(--text2);">Rehabilitaci&#xF3;n cardiovascular remota &#x2014; Monitoreo solo durante el ejercicio</div>
+    </div>
+    <div style="display:flex;gap:6px;">
+      <span style="font-size:10px;padding:3px 10px;border-radius:6px;background:rgba(16,185,129,.1);color:var(--green2);font-weight:600;">Protocolo Karvonen</span>
+      <span style="font-size:10px;padding:3px 10px;border-radius:6px;background:rgba(37,99,235,.1);color:var(--accent3);font-weight:600;">AHA Guidelines</span>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="g4" style="margin-bottom:14px;">
+    <div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">En rehabilitaci&#xF3;n</div><div class="stat-val" id="rehStatPacs" style="color:var(--accent3);">0</div><div style="font-size:10px;color:var(--text3);">Pacientes activos</div></div>
+    <div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Sesiones hoy</div><div class="stat-val" id="rehStatSesiones" style="color:var(--green2);">0</div><div style="font-size:10px;color:var(--text3);">Completadas / en curso</div></div>
+    <div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Alertas sesi&#xF3;n</div><div class="stat-val" id="rehStatAlertas" style="color:var(--amber2);">0</div><div style="font-size:10px;color:var(--text3);">FC fuera de rango</div></div>
+    <div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Adherencia</div><div class="stat-val" id="rehStatAdherencia" style="color:var(--green2);">0%</div><div style="font-size:10px;color:var(--text3);">Semanal promedio</div></div>
+  </div>
+
+  <!-- Plan de 8 semanas -->
+  <div class="card" style="margin-bottom:14px;">
+    <div class="card-hd" style="margin-bottom:14px;">
+      <div class="card-title">&#x1F4C5; Plan progresivo de rehabilitaci&#xF3;n &#x2014; 8 semanas, 3 fases</div>
+      <button class="btn btn-secondary btn-sm" onclick="showToast('Prescribir plan a paciente seleccionado','info')">&#x1F4CB; Prescribir plan</button>
+    </div>
+
+    <!-- Fase 1 -->
+    <div style="background:rgba(16,185,129,.04);border:1px solid rgba(16,185,129,.18);border-radius:12px;padding:14px;margin-bottom:10px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <div style="width:28px;height:28px;border-radius:50%;background:rgba(16,185,129,.15);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--green2);">1</div>
+        <div><div style="font-size:13px;font-weight:700;color:var(--green2);">Fase 1 &#x2014; Estabilizaci&#xF3;n</div><div style="font-size:10px;color:var(--text3);">Semanas 1-2 &#xB7; FC m&#xE1;x 55% &#xB7; 15-20 min/sesi&#xF3;n &#xB7; 3x/semana</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;">
+        <div style="background:var(--bg3);border-radius:8px;padding:8px;text-align:center;"><div style="font-size:16px;margin-bottom:4px;">&#x1F6B6;</div><div style="font-size:10px;font-weight:600;">Caminata</div><div style="font-size:9px;color:var(--text3);">50-55% FCM</div><div style="font-size:9px;color:var(--green2);">15 min</div></div>
+        <div style="background:var(--bg3);border-radius:8px;padding:8px;text-align:center;"><div style="font-size:16px;margin-bottom:4px;">&#x1F9D8;</div><div style="font-size:10px;font-weight:600;">Yoga cardio</div><div style="font-size:9px;color:var(--text3);">45-50% FCM</div><div style="font-size:9px;color:var(--green2);">20 min</div></div>
+        <div style="background:var(--bg3);border-radius:8px;padding:8px;text-align:center;"><div style="font-size:16px;margin-bottom:4px;">&#x1F4A8;</div><div style="font-size:10px;font-weight:600;">Respiraci&#xF3;n</div><div style="font-size:9px;color:var(--text3);">40-45% FCM</div><div style="font-size:9px;color:var(--green2);">15 min</div></div>
+        <div style="background:var(--bg3);border-radius:8px;padding:8px;text-align:center;"><div style="font-size:16px;margin-bottom:4px;">&#x1F3D4;&#xFE0F;</div><div style="font-size:10px;font-weight:600;">Marcha n&#xF3;rdica</div><div style="font-size:9px;color:var(--text3);">50-55% FCM</div><div style="font-size:9px;color:var(--green2);">20 min</div></div>
+        <div style="background:var(--bg3);border-radius:8px;padding:8px;text-align:center;"><div style="font-size:16px;margin-bottom:4px;">&#x1F30A;</div><div style="font-size:10px;font-weight:600;">Aquagym</div><div style="font-size:9px;color:var(--text3);">45-55% FCM</div><div style="font-size:9px;color:var(--green2);">20 min</div></div>
+      </div>
+    </div>
+
+    <!-- Fase 2 -->
+    <div style="background:rgba(37,99,235,.04);border:1px solid rgba(37,99,235,.18);border-radius:12px;padding:14px;margin-bottom:10px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <div style="width:28px;height:28px;border-radius:50%;background:rgba(37,99,235,.15);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--accent3);">2</div>
+        <div><div style="font-size:13px;font-weight:700;color:var(--accent3);">Fase 2 &#x2014; Adaptaci&#xF3;n</div><div style="font-size:10px;color:var(--text3);">Semanas 3-5 &#xB7; FC m&#xE1;x 70% &#xB7; 25-35 min/sesi&#xF3;n &#xB7; 4x/semana</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;">
+        <div style="background:var(--bg3);border-radius:8px;padding:8px;text-align:center;"><div style="font-size:16px;margin-bottom:4px;">&#x1F3C3;</div><div style="font-size:10px;font-weight:600;">Trote suave</div><div style="font-size:9px;color:var(--text3);">60-65% FCM</div><div style="font-size:9px;color:var(--accent3);">25 min</div></div>
+        <div style="background:var(--bg3);border-radius:8px;padding:8px;text-align:center;"><div style="font-size:16px;margin-bottom:4px;">&#x1F6B4;</div><div style="font-size:10px;font-weight:600;">Ciclismo</div><div style="font-size:9px;color:var(--text3);">60-70% FCM</div><div style="font-size:9px;color:var(--accent3);">30 min</div></div>
+        <div style="background:var(--bg3);border-radius:8px;padding:8px;text-align:center;"><div style="font-size:16px;margin-bottom:4px;">&#x1F3CA;</div><div style="font-size:10px;font-weight:600;">Nataci&#xF3;n</div><div style="font-size:9px;color:var(--text3);">55-65% FCM</div><div style="font-size:9px;color:var(--accent3);">30 min</div></div>
+        <div style="background:var(--bg3);border-radius:8px;padding:8px;text-align:center;"><div style="font-size:16px;margin-bottom:4px;">&#x1F3A2;</div><div style="font-size:10px;font-weight:600;">Escaladora</div><div style="font-size:9px;color:var(--text3);">60-70% FCM</div><div style="font-size:9px;color:var(--accent3);">25 min</div></div>
+        <div style="background:var(--bg3);border-radius:8px;padding:8px;text-align:center;"><div style="font-size:16px;margin-bottom:4px;">&#x1F6A3;</div><div style="font-size:10px;font-weight:600;">Remo</div><div style="font-size:9px;color:var(--text3);">60-68% FCM</div><div style="font-size:9px;color:var(--accent3);">35 min</div></div>
+      </div>
+    </div>
+
+    <!-- Fase 3 -->
+    <div style="background:rgba(245,158,11,.04);border:1px solid rgba(245,158,11,.18);border-radius:12px;padding:14px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <div style="width:28px;height:28px;border-radius:50%;background:rgba(245,158,11,.15);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--amber2);">3</div>
+        <div><div style="font-size:13px;font-weight:700;color:var(--amber2);">Fase 3 &#x2014; Consolidaci&#xF3;n</div><div style="font-size:10px;color:var(--text3);">Semanas 6-8 &#xB7; FC m&#xE1;x 82% &#xB7; 35-50 min/sesi&#xF3;n &#xB7; 5x/semana &#xB7; Requiere aprobaci&#xF3;n m&#xE9;dica</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px;">
+        <div style="background:var(--bg3);border-radius:8px;padding:8px;text-align:center;"><div style="font-size:16px;margin-bottom:4px;">&#x26A1;</div><div style="font-size:10px;font-weight:600;">HIIT card&#xED;aco supervisado</div><div style="font-size:9px;color:var(--text3);">70-82% FCM &#xB7; Intervalos 30/60s</div><div style="font-size:9px;color:var(--amber2);">40 min</div></div>
+        <div style="background:var(--bg3);border-radius:8px;padding:8px;text-align:center;"><div style="font-size:16px;margin-bottom:4px;">&#x1F504;</div><div style="font-size:10px;font-weight:600;">Circuito aer&#xF3;bico</div><div style="font-size:9px;color:var(--text3);">70-80% FCM &#xB7; 6 estaciones</div><div style="font-size:9px;color:var(--amber2);">50 min</div></div>
+      </div>
+    </div>
+
+    <div style="margin-top:12px;background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.15);border-radius:8px;padding:10px;font-size:11px;color:var(--text2);line-height:1.7;">
+      <strong style="color:var(--purple2);">&#x26A0;&#xFE0F; Criterios de progresi&#xF3;n:</strong> El sistema no avanza al paciente autom&#xE1;ticamente de fase. El m&#xE9;dico debe aprobar la transici&#xF3;n. Si hay alertas recurrentes de FC o SpO2, el sistema retrocede al paciente a la fase anterior.
+    </div>
+  </div>
+
+  <!-- Pacientes en sesión activa -->
+  <div class="card" style="margin-bottom:14px;">
+    <div class="card-hd" style="margin-bottom:10px;">
+      <div class="card-title">&#x1F4E1; Sesiones activas ahora</div>
+      <div class="live-dot" style="margin-left:6px;"></div>
+    </div>
+    <div id="rehSesionesActivas">
+      <div style="text-align:center;padding:20px;color:var(--text3);font-size:12px;">Sin sesiones activas en este momento</div>
+    </div>
+  </div>
+
+  <!-- Alertas en tiempo real -->
+  <div class="g2" style="gap:14px;margin-bottom:14px;">
+    <div class="card" style="border-color:rgba(239,68,68,.2);background:rgba(239,68,68,.02);">
+      <div class="card-hd" style="margin-bottom:10px;">
+        <div style="font-size:13px;font-weight:700;color:var(--red2);">&#x1F6A8; Alertas de sesi&#xF3;n</div>
+        <span id="rehAlertCount" style="font-size:11px;padding:2px 8px;border-radius:10px;background:rgba(239,68,68,.15);color:var(--red2);font-weight:700;">0</span>
+      </div>
+      <div id="rehAlertTimeline">
+        <div style="text-align:center;padding:14px;color:var(--text3);font-size:12px;">&#x2705; Sin alertas &#x2014; Todos los pacientes en rango seguro</div>
+      </div>
+    </div>
+
+    <!-- Prescripción -->
+    <div class="card">
+      <div class="card-title" style="margin-bottom:10px;">&#x1F4CB; Prescribir ejercicio</div>
+      <div class="form-group">
+        <label class="form-label">Paciente</label>
+        <select class="form-select" id="rehPacienteSelect" aria-label="Seleccionar paciente para rehabilitacion">
+          <option value="">-- Seleccionar paciente --</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Fase</label>
+        <select class="form-select" id="rehFaseSelect" aria-label="Seleccionar fase">
+          <option value="1">Fase 1 &#x2014; Estabilizaci&#xF3;n (FC &#x2264;55%)</option>
+          <option value="2">Fase 2 &#x2014; Adaptaci&#xF3;n (FC &#x2264;70%)</option>
+          <option value="3">Fase 3 &#x2014; Consolidaci&#xF3;n (FC &#x2264;82%)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Ejercicio</label>
+        <select class="form-select" id="rehEjercicioSelect" aria-label="Seleccionar ejercicio">
+          <option value="caminata">&#x1F6B6; Caminata terap&#xE9;utica</option>
+          <option value="yoga">&#x1F9D8; Yoga cardiovascular</option>
+          <option value="respiracion">&#x1F4A8; Ejercicios respiratorios</option>
+          <option value="nordica">&#x1F3D4;&#xFE0F; Marcha n&#xF3;rdica</option>
+          <option value="aquagym">&#x1F30A; Aquagym</option>
+          <option value="trote">&#x1F3C3; Trote suave</option>
+          <option value="ciclismo">&#x1F6B4; Ciclismo</option>
+          <option value="natacion">&#x1F3CA; Nataci&#xF3;n</option>
+          <option value="escaladora">&#x1F3A2; Escaladora</option>
+          <option value="remo">&#x1F6A3; Remo ergom&#xE9;tro</option>
+          <option value="hiit">&#x26A1; HIIT card&#xED;aco</option>
+          <option value="circuito">&#x1F504; Circuito aer&#xF3;bico</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Duraci&#xF3;n (min)</label>
+        <input type="range" id="rehDuracion" min="10" max="60" value="20" oninput="document.getElementById('rehDurVal').textContent=this.value+' min'" aria-label="Duracion en minutos"/>
+        <span id="rehDurVal" style="font-size:12px;color:var(--accent3);font-weight:600;">20 min</span>
+      </div>
+      <button onclick="prescribirEjercicio()" class="btn btn-primary btn-full">&#x1F4CB; Prescribir sesi&#xF3;n</button>
+    </div>
+  </div>
+
+  <!-- Monitoreo: solo durante ejercicio -->
+  <div style="background:rgba(14,165,233,.06);border:1px solid rgba(14,165,233,.15);border-radius:12px;padding:14px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+      <div style="font-size:24px;">&#x231A;</div>
+      <div>
+        <div style="font-size:14px;font-weight:700;color:var(--cyan);">Monitoreo inteligente &#x2014; solo durante la sesi&#xF3;n</div>
+        <div style="font-size:11px;color:var(--text2);">El wearable activa el monitoreo cuando el paciente inicia la sesi&#xF3;n y lo desactiva al terminar. Esto protege la bater&#xED;a, reduce falsos positivos y genera reportes limpios por sesi&#xF3;n.</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px;">
+      <div style="background:var(--bg3);border-radius:8px;padding:8px;text-align:center;"><div style="font-size:11px;font-weight:600;color:var(--red2);">FC en vivo</div><div style="font-size:10px;color:var(--text3);">Zona objetivo + l&#xED;mite</div></div>
+      <div style="background:var(--bg3);border-radius:8px;padding:8px;text-align:center;"><div style="font-size:11px;font-weight:600;color:var(--green2);">SpO2</div><div style="font-size:10px;color:var(--text3);">Alerta si &lt;92%</div></div>
+      <div style="background:var(--bg3);border-radius:8px;padding:8px;text-align:center;"><div style="font-size:11px;font-weight:600;color:var(--purple2);">HRV</div><div style="font-size:10px;color:var(--text3);">Estr&#xE9;s auton&#xF3;mico</div></div>
+      <div style="background:var(--bg3);border-radius:8px;padding:8px;text-align:center;"><div style="font-size:11px;font-weight:600;color:var(--accent3);">ECG</div><div style="font-size:10px;color:var(--text3);">Arritmia en ejercicio</div></div>
     </div>
   </div>
 
@@ -13019,6 +13186,76 @@ setLang = function(lang) {
   if (flag) flag.textContent = (flags[lang] || flags.es) + ' ' + lang.toUpperCase();
 };
 setTimeout(function() { setLang('es'); }, 500);
+
+
+// ===== CARDIO-IA REHAB =====
+function initRehab() {
+  // Poblar selector de pacientes
+  var sel = document.getElementById('rehPacienteSelect');
+  if (sel) {
+    sel.innerHTML = '<option value="">-- Seleccionar paciente --</option>';
+    pacientesData.forEach(function(p) {
+      sel.innerHTML += '<option value="' + (p.nombre||'').replace(/"/g,'') + '">' + p.nombre + '</option>';
+    });
+  }
+  // KPIs
+  var rehPacs = pacientesData.filter(function(p){ return p.en_rehab; }).length || Math.min(pacientesData.length, 3);
+  setText('rehStatPacs', rehPacs);
+  setText('rehStatSesiones', Math.floor(Math.random()*4) + 1);
+  setText('rehStatAlertas', Math.floor(Math.random()*2));
+  setText('rehStatAdherencia', (70 + Math.floor(Math.random()*25)) + '%');
+  // Sesiones activas demo
+  renderSesionesActivas();
+}
+
+function renderSesionesActivas() {
+  var el = document.getElementById('rehSesionesActivas');
+  if (!el) return;
+  var sesiones = [
+    {pac:'Diego', ejercicio:'Caminata terapeutica', fase:1, fc:98, fcMax:110, spo2:97, min:12, duracion:20, estado:'normal'},
+    {pac:'Ana Ramirez', ejercicio:'Ciclismo', fase:2, fc:125, fcMax:140, spo2:96, min:18, duracion:30, estado:'normal'},
+  ];
+  if (!sesiones.length) {
+    el.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text3);font-size:12px;">Sin sesiones activas</div>';
+    return;
+  }
+  el.innerHTML = sesiones.map(function(s) {
+    var pctFC = Math.round(s.fc / s.fcMax * 100);
+    var pctTime = Math.round(s.min / s.duracion * 100);
+    var zonaColor = pctFC > 90 ? 'var(--red2)' : pctFC > 75 ? 'var(--amber2)' : 'var(--green2)';
+    var ini = s.pac.split(' ').map(function(x){return (x[0]||'').toUpperCase();}).join('').substring(0,2);
+    return '<div style="display:flex;align-items:center;gap:12px;padding:10px;background:var(--bg3);border-radius:10px;margin-bottom:8px;border-left:3px solid ' + zonaColor + ';">' +
+      '<div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0;">' + ini + '</div>' +
+      '<div style="flex:1;min-width:0;">' +
+        '<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><span style="font-size:12px;font-weight:600;">' + s.pac + '</span><span style="font-size:9px;padding:1px 6px;border-radius:4px;background:' + (s.fase===1?'rgba(16,185,129,.1)':s.fase===2?'rgba(37,99,235,.1)':'rgba(245,158,11,.1)') + ';color:' + (s.fase===1?'var(--green2)':s.fase===2?'var(--accent3)':'var(--amber2)') + ';">Fase ' + s.fase + '</span></div>' +
+        '<div style="font-size:11px;color:var(--text2);">' + s.ejercicio + ' &middot; ' + s.min + '/' + s.duracion + ' min</div>' +
+        '<div style="display:flex;gap:4px;margin-top:4px;">' +
+          '<div style="background:var(--bg4);border-radius:3px;height:4px;flex:1;overflow:hidden;"><div style="width:' + pctTime + '%;height:100%;background:var(--accent);border-radius:3px;"></div></div>' +
+        '</div>' +
+      '</div>' +
+      '<div style="display:flex;gap:10px;flex-shrink:0;">' +
+        '<div style="text-align:center;"><div style="font-size:16px;font-weight:700;color:' + zonaColor + ';">' + s.fc + '</div><div style="font-size:9px;color:var(--text3);">FC</div></div>' +
+        '<div style="text-align:center;"><div style="font-size:16px;font-weight:700;color:var(--green2);">' + s.spo2 + '%</div><div style="font-size:9px;color:var(--text3);">SpO2</div></div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function prescribirEjercicio() {
+  var pac = document.getElementById('rehPacienteSelect') ? document.getElementById('rehPacienteSelect').value : '';
+  var fase = document.getElementById('rehFaseSelect') ? document.getElementById('rehFaseSelect').value : '1';
+  var ej = document.getElementById('rehEjercicioSelect') ? document.getElementById('rehEjercicioSelect').selectedOptions[0].text : '';
+  var dur = document.getElementById('rehDuracion') ? document.getElementById('rehDuracion').value : '20';
+  if (!pac) { showToast('Selecciona un paciente', 'warning'); return; }
+  showToast('Sesion prescrita: ' + ej + ' (' + dur + ' min) para ' + pac + ' - Fase ' + fase, 'success');
+}
+
+// Patch switchTab para rehab
+var _switchTabRehab = switchTab;
+switchTab = function(tab) {
+  _switchTabRehab(tab);
+  if (tab === 'rehab') setTimeout(initRehab, 200);
+};
 
 console.log('Cardio-IA Latam v11.4 cargado ✅');
 
