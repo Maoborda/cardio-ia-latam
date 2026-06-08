@@ -2570,7 +2570,15 @@ body{
           <div style="grid-column:span 2;text-align:center;padding:30px;color:var(--text3);font-size:13px;">Cargando pacientes...</div>
         </div>
 
-        <!-- Zona de importaci&#xF3;n de documentos -->
+        
+    <!-- TABS de monitoreo -->
+    <div style="display:flex;gap:6px;margin-bottom:14px;">
+      <button class="btn btn-primary btn-sm" id="monTabLive" onclick="monSwitchSub('live')" style="font-size:11px;">&#x1F4C8; Pacientes en vivo</button>
+      <button class="btn btn-ghost btn-sm" id="monTabDevices" onclick="monSwitchSub('devices')" style="font-size:11px;">&#x1F4F1; Dispositivos y conectividad</button>
+      <button class="btn btn-ghost btn-sm" id="monTabConfig" onclick="monSwitchSub('config')" style="font-size:11px;">&#x2699;&#xFE0F; Configuraci&#xF3;n</button>
+    </div>
+
+<!-- Zona de importaci&#xF3;n de documentos -->
         <div class="card" style="margin-bottom:14px;border-color:rgba(37,99,235,.2);background:rgba(37,99,235,.02);">
           <div class="card-hd" style="margin-bottom:10px;">
             <div class="card-title">&#x1F4C1; Importar documentos cl&#xED;nicos</div>
@@ -2728,7 +2736,9 @@ body{
   <div id="monConfigPanel" style="display:none;margin-top:14px;">
     <div class="card">
       <div class="card-hd" style="margin-bottom:12px;">
-        <div class="card-title">&#x2699;&#xFE0F; Umbrales de alerta personalizados</div>
+        </div>
+  <div class="mon-sub-section mon-sub-config" style="display:none;">
+  <div class="card"><div class="card-title">&#x2699;&#xFE0F; Umbrales de alerta personalizados</div>
         <button class="btn btn-ghost btn-sm" onclick="guardarUmbrales()">&#x1F4BE; Guardar</button>
       </div>
       <div style="font-size:11px;color:var(--text2);margin-bottom:10px;">Define cu&#xE1;ndo el sistema genera alertas autom&#xE1;ticas. Se aplican a todos los pacientes monitoreados.</div>
@@ -2757,6 +2767,7 @@ body{
   </div>
 
   <!-- ====== DISPOSITIVOS COMPATIBLES ====== -->
+  <div class="mon-sub-section mon-sub-devices" style="display:none;">
   <div class="card" style="margin-top:14px;">
     <div class="card-title" style="margin-bottom:12px;">&#x1F4F1; Dispositivos y app del paciente</div>
     <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;">
@@ -13933,6 +13944,28 @@ iniciarSesionRehab = function() {
   iniciarSesionConEjercicio(idx);
 };
 
+
+
+// ═══ MONITOREO: Sub-secciones tabs ═══
+function monSwitchSub(sub) {
+  // Toggle botones
+  ['monTabLive','monTabDevices','monTabConfig'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) { el.className = 'btn btn-ghost btn-sm'; el.style.fontSize = '11px'; }
+  });
+  var active = document.getElementById('monTab' + sub.charAt(0).toUpperCase() + sub.slice(1));
+  if (!active && sub === 'live') active = document.getElementById('monTabLive');
+  if (!active && sub === 'devices') active = document.getElementById('monTabDevices');
+  if (!active && sub === 'config') active = document.getElementById('monTabConfig');
+  if (active) { active.className = 'btn btn-primary btn-sm'; active.style.fontSize = '11px'; }
+  // Toggle secciones
+  var panel = document.getElementById('panel-monitoreo');
+  if (!panel) return;
+  var sections = panel.querySelectorAll('.mon-sub-section');
+  sections.forEach(function(s) { s.style.display = 'none'; });
+  var target = panel.querySelectorAll('.mon-sub-' + sub);
+  target.forEach(function(t) { t.style.display = 'block'; });
+}
 
 console.log('Cardio-IA Latam v11.4 cargado ✅');
 
