@@ -13942,28 +13942,7 @@ iniciarSesionRehab = function() {
 
 
 // ═══ MONITOREO: Sub-secciones tabs ═══
-function monSwitchSub(sub) {
-  ['monTabLive','monTabDevices','monTabConfig'].forEach(function(id) {
-    var el = document.getElementById(id);
-    if (el) { el.className = 'btn btn-ghost btn-sm'; el.style.fontSize = '11px'; }
-  });
-  var activeId = sub === 'live' ? 'monTabLive' : sub === 'devices' ? 'monTabDevices' : 'monTabConfig';
-  var activeBtn = document.getElementById(activeId);
-  if (activeBtn) { activeBtn.className = 'btn btn-primary btn-sm'; activeBtn.style.fontSize = '11px'; }
-  // Show/hide sections
-  var panel = document.getElementById('panel-monitoreo');
-  if (!panel) return;
-  // Live sections (grid, ECG, alertas, MACE, costos)
-  panel.querySelectorAll('#monPatientGrid, [id^="monECG"], .mon-alert-card, .mon-mace-card, .mon-costs-card').forEach(function(el) {
-    var card = el.closest('.card') || el;
-    card.style.display = sub === 'live' ? '' : 'none';
-  });
-  // Device sections
-  panel.querySelectorAll('.monDevicesSection').forEach(function(el) { el.style.display = sub === 'devices' ? '' : 'none'; });
-  // Config sections
-  panel.querySelectorAll('.monConfigSection').forEach(function(el) { el.style.display = sub === 'config' ? '' : 'none'; });
-  // Always show KPIs and tabs
-}
+
 
 
 // ═══ FIX MONITOREO: pacientes demo con wearable ═══
@@ -14021,8 +14000,6 @@ switchTab = function(tab) {
   if (tab === 'monitoreo') {
     setTimeout(function() {
       // Asegurar que los tabs estén visibles
-      var tabLive = document.getElementById('monTabLive');
-      if (tabLive) tabLive.style.display = '';
       // Forzar actualización
       actualizarMonitoreo();
     }, 300);
