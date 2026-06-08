@@ -10548,29 +10548,6 @@ window.alert = function(msg) {
 };
 
 // ===== V11.4 PATCH SWITCHAB para heatmap y counters =====
-var _switchTabOrig = switchTab;
-switchTab = function(tab) {
-  try { _switchTabOrig(tab); } catch(e) { console.error('switchTab V11.4:', e); }
-  if (tab === 'dashboard') {
-    setTimeout(renderActivityHeatmap, 400);
-    setTimeout(function() {
-      var statEls = document.querySelectorAll('.stat-val');
-      statEls.forEach(function(el) {
-        var txt = el.textContent.replace(/[^0-9.]/g, '');
-        if (txt && parseFloat(txt) > 0) {
-          var suffix = el.textContent.replace(/[0-9.]/g, '');
-          el.style.animation = 'none';
-          el.offsetHeight;
-          el.style.animation = '';
-        }
-      });
-    }, 200);
-  }
-  if (tab === 'monitoreo') {
-    setTimeout(iniciarMonitoreoLive, 500);
-  }
-};
-
 // ===== V11.4 ACTIVIDAD HEATMAP en Dashboard HTML (inject) =====
 document.addEventListener('DOMContentLoaded', function() {
   var dashHist = document.getElementById('dashHistorial');
@@ -11510,43 +11487,11 @@ function enviarAlertaPaciente() {
 }
 
 // Cleanup al salir del tab
-var _switchTabOrigAnalizar = switchTab;
-switchTab = function(tab) {
-  if (tab !== 'analizar' && wearableInterval) { clearInterval(wearableInterval); wearableInterval = null; }
-  try { _switchTabOrigAnalizar(tab); } catch(e) { console.error('switchTab Analizar:', e); }
-};
-
-
-
 // ======================================================
 // CORRECCIONES AUDITORÍA — Dashboard, Perfil, Organización
 // ======================================================
 
 // ── PATCH switchTab: auto-inicializar dashboard al entrar ──────────────
-var _switchTabAudit = switchTab;
-switchTab = function(tab) {
-  try { _switchTabAudit(tab); } catch(e) { console.error('switchTab Audit:', e); }
-  if (tab === 'dashboard') {
-    setTimeout(function() {
-      actualizarPulsoDia();
-      renderKpisConSparklines();
-      actualizarTodoClinco();
-      renderDashMonResumen();
-      renderSemaforoPacientes();
-      renderProyeccion();
-      renderActivityHeatmap();
-      initDashCharts();
-      initDirectorView();
-    }, 150);
-  }
-  if (tab === 'perfil') {
-    setTimeout(function() {
-      initPerfilChart();
-      actualizarCompletitudPerfil();
-    }, 150);
-  }
-};
-
 // ── DASHBOARD: Charts reales Chart.js ─────────────────────────────────
 function initDashCharts() {
   initDashTendChart();
@@ -12262,21 +12207,6 @@ function iniciarMonitoreoLiveV2() {
 }
 
 // PATCH switchTab para monitoreo
-var _switchTabMon = switchTab;
-switchTab = function(tab) {
-  try { _switchTabMon(tab); } catch(e) { console.error('switchTab Mon:', e); }
-  if (tab === 'monitoreo') {
-    setTimeout(actualizarMonitoreo, 200);
-    setTimeout(iniciarMonitoreoLiveV2, 400);
-  }
-  if (tab !== 'monitoreo') {
-    if (monLiveInterval) { clearInterval(monLiveInterval); monLiveInterval = null; }
-    if (monECGAnimFrame) { cancelAnimationFrame(monECGAnimFrame); monECGAnimFrame = null; }
-  }
-};
-
-
-
 // ===== V12 CONECTIVIDAD — Smartwatch + Celular + Tablet =====
 var monSyncFreq = 30;
 
@@ -12967,17 +12897,6 @@ function exportarROIPDF() {
 }
 
 // ===== PATCH switchTab para init charts =====
-var _switchTabModules = switchTab;
-switchTab = function(tab) {
-  try { _switchTabModules(tab); } catch(e) { console.error('switchTab Modules:', e); }
-  if (tab === 'pacientes') setTimeout(renderPacientesGridV2, 150);
-  if (tab === 'epidemia') setTimeout(initEpiCharts, 200);
-  if (tab === 'ciencia') setTimeout(initCienciaCharts, 200);
-  if (tab === 'roi') setTimeout(function(){ initRoiChart(); calcROI(); }, 200);
-};
-
-
-
 // ===== DERIVACIONES ECG =====
 function cambiarDerivacion(deriv) {
   var canvas = document.getElementById('ecgLineChart');
@@ -13260,13 +13179,6 @@ function prescribirPlan() {
 }
 
 // Patch switchTab
-var _switchTabRehab = switchTab;
-switchTab = function(tab) {
-  try { _switchTabRehab(tab); } catch(e) { console.error('switchTab Rehab:', e); }
-  if (tab === 'rehab') setTimeout(initRehabModule, 200);
-};
-
-
 // ===== PACIENTES V12: DOCUMENTOS + RED =====
 var pacDocumentos = [];
 
@@ -13626,27 +13538,6 @@ calcROI = function() {
 };
 
 // Fix: mejorar datos de Invitaciones al entrar
-var _switchTabInv = switchTab;
-switchTab = function(tab) {
-  _switchTabInv(tab);
-  if (tab === 'invitaciones') {
-    setTimeout(function() {
-      var grid = document.getElementById('invMedicosGrid');
-      if (grid && grid.innerHTML.includes('Sin m')) {
-        grid.innerHTML = '<div style="display:flex;flex-direction:column;gap:8px;">' +
-          '<div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--bg3);border-radius:8px;">' +
-            '<div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;">DG</div>' +
-            '<div><div style="font-size:13px;font-weight:600;">' + (window.usuarioActual ? window.usuarioActual.nombre : 'Dr. Demo') + '</div><div style="font-size:10px;color:var(--text3);">Admin | Activo</div></div>' +
-            '<span style="margin-left:auto;font-size:10px;padding:2px 8px;border-radius:5px;background:rgba(16,185,129,.12);color:var(--green2);">Online</span>' +
-          '</div>' +
-        '</div>';
-      }
-    }, 200);
-  }
-};
-
-
-
 // ═══════════════════════════════════════════════
 // CLASE A UPGRADES — TODOS LOS MÓDULOS
 // ═══════════════════════════════════════════════
@@ -13679,28 +13570,6 @@ initRehabModule = function() {
 };
 
 // ═══ HISTORIAL: Fix columnas + KPIs reales ═══
-var _switchTabHistA = switchTab;
-switchTab = function(tab) {
-  _switchTabHistA(tab);
-  if (tab === 'historial') {
-    setTimeout(function() {
-      var total = historialDB.length;
-      var criticos = historialDB.filter(function(h){ return h.urgencia === 'CRITICO' || (h.diagnostico && !h.diagnostico.includes('Normal')); }).length;
-      var firmados = historialDB.filter(function(h){ return h.firmado; }).length;
-      var confProm = total > 0 ? Math.round(historialDB.reduce(function(a,h){ return a + (h.confianza||0); }, 0) / total) : 0;
-      setText('hStat1', total);
-      setText('hStat2', criticos);
-      setText('hStat3', firmados);
-      setText('hStat4', confProm);
-    }, 300);
-  }
-  if (tab === 'epidemia') setTimeout(initEpiCharts, 300);
-  if (tab === 'ciencia') setTimeout(initCienciaCharts, 300);
-  if (tab === 'roi') setTimeout(function(){ if(typeof initRoiChart==='function') initRoiChart(); if(typeof calcROI==='function') calcROI(); }, 300);
-  if (tab === 'pagos') setTimeout(initPagosA, 200);
-  if (tab === 'ayuda') setTimeout(initAyudaA, 200);
-};
-
 // ═══ PAGOS: mejorar con pasarelas y confirmacion ═══
 function initPagosA() {
   var planCards = document.querySelectorAll('#panel-pagos .stat-card, #panel-pagos [style*="plan"]');
@@ -13825,19 +13694,6 @@ renderMonPatientGrid = function(pacs) {
 };
 
 // Limpiar al salir de monitoreo
-var _switchTabMonClean = switchTab;
-switchTab = function(tab) {
-  if (tab !== 'monitoreo') {
-    Object.keys(monMiniECGFrames).forEach(function(k) { cancelAnimationFrame(monMiniECGFrames[k]); });
-    monMiniECGFrames = {};
-  }
-  if (tab !== 'rehab' && rehabSesionInterval) {
-    clearInterval(rehabSesionInterval);
-    rehabSesionInterval = null;
-  }
-  _switchTabMonClean(tab);
-};
-
 // ═══ REHAB: Sesión interactiva en tiempo real ═══
 var rehabSesionActiva = false;
 var rehabSesionInterval = null;
@@ -14140,20 +13996,6 @@ initRehabModule = function() {
 };
 
 // ═══ FIX MONITOREO: tabs visibles y datos al entrar ═══
-var _switchTabMonFix2 = switchTab;
-switchTab = function(tab) {
-  _switchTabMonFix2(tab);
-  if (tab === 'monitoreo') {
-    setTimeout(function() {
-      // Asegurar que los tabs estén visibles
-      // Forzar actualización
-      actualizarMonitoreo();
-    }, 300);
-  }
-};
-
-
-
 // ═══ MONITOREO: Botones de dispositivo ═══
 function monSelectDevice(tipo) {
   var msgs = {
@@ -14306,17 +14148,174 @@ function testConexionMon() {
 }
 
 // Limpiar stream al salir de monitoreo
-var _switchTabStreamClean = switchTab;
+
+// ═══════════════════════════════════════════════
+// switchTab CONSOLIDADO — 1 función, 0 overrides
+// ═══════════════════════════════════════════════
+var _switchTabBase = switchTab;
 switchTab = function(tab) {
-  if (tab !== 'monitoreo' && dataStreamInterval) {
-    clearInterval(dataStreamInterval);
-    dataStreamInterval = null;
+  // Limpiar recursos del tab anterior
+  if (typeof monMiniECGFrames !== 'undefined') {
+    Object.keys(monMiniECGFrames).forEach(function(k) { cancelAnimationFrame(monMiniECGFrames[k]); });
+    monMiniECGFrames = {};
   }
-  _switchTabStreamClean(tab);
-  if (tab === 'monitoreo') {
-    setTimeout(initMonitoreoConectividad, 500);
+  if (typeof dataStreamInterval !== 'undefined' && dataStreamInterval && tab !== 'monitoreo') {
+    clearInterval(dataStreamInterval); dataStreamInterval = null;
+  }
+  if (typeof rehabSesionInterval !== 'undefined' && rehabSesionInterval && tab !== 'rehab') {
+    clearInterval(rehabSesionInterval); rehabSesionInterval = null;
+  }
+
+  // Ejecutar switchTab base
+  try { _switchTabBase(tab); } catch(e) { console.error('switchTab base error:', e); }
+
+  // Acciones por módulo
+  switch(tab) {
+    case 'dashboard':
+      setTimeout(function() {
+        if (typeof initCharts === 'function') initCharts();
+        if (typeof actualizarPulsoDia === 'function') actualizarPulsoDia();
+        if (typeof actualizarTodoClinco === 'function') actualizarTodoClinco();
+        if (typeof renderDashMonResumen === 'function') renderDashMonResumen();
+        if (typeof renderSemaforoPacientes === 'function') renderSemaforoPacientes();
+        if (typeof renderActivityHeatmap === 'function') renderActivityHeatmap();
+      }, 200);
+      break;
+    case 'analizar':
+      setTimeout(function() {
+        if (typeof poblarSelectorAnalizar === 'function') poblarSelectorAnalizar();
+        if (pacienteActivo && typeof cargarMiniHistorial === 'function') cargarMiniHistorial(pacienteActivo.nombre);
+      }, 150);
+      break;
+    case 'historial':
+      setTimeout(function() {
+        if (typeof cargarHistorial === 'function') cargarHistorial();
+        if (typeof filtrarHistorial === 'function') filtrarHistorial();
+        // KPIs
+        var total = historialDB.length;
+        var criticos = historialDB.filter(function(h){ return h.urgencia === 'CRITICO' || (h.diagnostico && !h.diagnostico.includes('Normal')); }).length;
+        var firmados = historialDB.filter(function(h){ return h.firmado; }).length;
+        var confProm = total > 0 ? Math.round(historialDB.reduce(function(a,h){ return a + (h.confianza||0); }, 0) / total) : 0;
+        setText('hStat1', total); setText('hStat2', criticos); setText('hStat3', firmados); setText('hStat4', confProm);
+      }, 200);
+      break;
+    case 'pacientes':
+      setTimeout(function() {
+        if (typeof renderPacientesGridV2 === 'function') renderPacientesGridV2();
+        else if (typeof renderPacientes === 'function') renderPacientes();
+        if (typeof cargarPacientes === 'function') cargarPacientes();
+      }, 150);
+      break;
+    case 'monitoreo':
+      setTimeout(function() {
+        if (typeof ensureMonitoreoData === 'function') ensureMonitoreoData();
+        if (typeof actualizarMonitoreo === 'function') actualizarMonitoreo();
+        if (typeof initMonitoreoConectividad === 'function') initMonitoreoConectividad();
+        if (typeof iniciarMonitoreoLiveV2 === 'function') iniciarMonitoreoLiveV2();
+      }, 300);
+      break;
+    case 'rehab':
+      setTimeout(function() {
+        if (typeof initRehabModule === 'function') initRehabModule();
+      }, 200);
+      break;
+    case 'conectores':
+      setTimeout(function() {
+        if (typeof renderConMarcasGrid === 'function') renderConMarcasGrid();
+      }, 200);
+      break;
+    case 'invitaciones':
+      setTimeout(function() {
+        if (typeof cargarMedicosOrg === 'function') cargarMedicosOrg();
+        if (typeof renderInvitaciones === 'function') renderInvitaciones();
+        // KPIs + roles dinámicos
+        var container = document.querySelector('#panel-invitaciones');
+        if (container && !container.querySelector('#invUpgraded')) {
+          var header = container.querySelector('div:first-child');
+          if (header) {
+            var kpis = document.createElement('div');
+            kpis.id = 'invUpgraded'; kpis.className = 'g4'; kpis.style.cssText = 'margin:14px 0;';
+            kpis.innerHTML = '<div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Medicos activos</div><div class="stat-val" style="color:var(--accent3);">1</div></div><div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Invitaciones</div><div class="stat-val" style="color:var(--green2);">0</div></div><div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Pendientes</div><div class="stat-val" style="color:var(--amber2);">0</div></div><div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Roles</div><div class="stat-val" style="color:var(--purple2);">3</div></div>';
+            header.after(kpis);
+            var roles = document.createElement('div'); roles.className = 'card'; roles.style.cssText = 'margin-top:14px;';
+            roles.innerHTML = '<div class="card-title" style="margin-bottom:10px;">Roles y permisos</div><div style="overflow-x:auto;"><table class="tbl" style="font-size:11px;"><thead><tr><th>Rol</th><th>Analizar</th><th>Firmar</th><th>Monitoreo</th><th>Config</th><th>Invitar</th></tr></thead><tbody><tr><td style="font-weight:600;">Admin</td><td style="color:var(--green2);">Si</td><td style="color:var(--green2);">Si</td><td style="color:var(--green2);">Si</td><td style="color:var(--green2);">Si</td><td style="color:var(--green2);">Si</td></tr><tr><td style="font-weight:600;">Medico</td><td style="color:var(--green2);">Si</td><td style="color:var(--green2);">Si</td><td style="color:var(--green2);">Si</td><td style="color:var(--red2);">No</td><td style="color:var(--red2);">No</td></tr><tr><td style="font-weight:600;">Lectura</td><td style="color:var(--red2);">No</td><td style="color:var(--red2);">No</td><td style="color:var(--green2);">Si</td><td style="color:var(--red2);">No</td><td style="color:var(--red2);">No</td></tr></tbody></table></div>';
+            kpis.after(roles);
+          }
+        }
+      }, 200);
+      break;
+    case 'pagos':
+      setTimeout(function() {
+        if (typeof cargarPlanActivo === 'function') cargarPlanActivo();
+        if (typeof actualizarPasarelas === 'function') actualizarPasarelas();
+      }, 150);
+      break;
+    case 'roi':
+      setTimeout(function() {
+        if (typeof initRoiChart === 'function') initRoiChart();
+        if (typeof calcROI === 'function') calcROI();
+      }, 250);
+      break;
+    case 'epidemia':
+      setTimeout(initEpiCharts, 250);
+      break;
+    case 'ciencia':
+      setTimeout(initCienciaCharts, 250);
+      break;
+    case 'perfil':
+      setTimeout(function() {
+        if (typeof actualizarPerfil === 'function') actualizarPerfil();
+      }, 200);
+      break;
+    case 'organizacion':
+      setTimeout(function() {
+        if (typeof cargarStatsOrg === 'function') cargarStatsOrg();
+        if (typeof actualizarLogoHeader === 'function') actualizarLogoHeader();
+        if (typeof mostrarPlanOrg === 'function') mostrarPlanOrg();
+      }, 200);
+      break;
+    case 'ayuda':
+      setTimeout(function() {
+        if (typeof initAyudaA === 'function') initAyudaA();
+      }, 200);
+      break;
   }
 };
+
+// ═══ DATOS DEMO SÍNCRONOS ═══
+// Asegurar que pacientes + historial existen ANTES de cualquier render
+(function ensureDemoData() {
+  // Pacientes
+  if (!pacientesData || pacientesData.length === 0) {
+    try { var saved = localStorage.getItem('cardio_ia_pacientes'); if (saved) pacientesData = JSON.parse(saved); } catch(e) {}
+  }
+  if (!pacientesData || pacientesData.length === 0) {
+    pacientesData = [
+      {id:1001,nombre:'Carlos Medina',edad:62,sexo:'M',id_documento:'CC-45678901',comorbilidades:'HTA, Diabetes tipo 2',score_framingham:18,smartwatch_tipo:'Apple Watch Series 9',monitoreo_activo:true,ultimo_diagnostico:'Fibrilacion Auricular',nivel_riesgo:'alto'},
+      {id:1002,nombre:'Ana Ramirez',edad:55,sexo:'F',id_documento:'CC-23456789',comorbilidades:'Dislipidemia',score_framingham:12,smartwatch_tipo:'Samsung Galaxy Watch 6',monitoreo_activo:true,ultimo_diagnostico:'Normal (Ritmo Sinusal)',nivel_riesgo:'bajo'},
+      {id:1003,nombre:'Pedro Gomez',edad:71,sexo:'M',id_documento:'CC-67890123',comorbilidades:'ICC, EPOC',score_framingham:24,smartwatch_tipo:'KardiaMobile 6L',monitoreo_activo:true,ultimo_diagnostico:'Bloqueo AV Tercer Grado',nivel_riesgo:'alto'},
+      {id:1004,nombre:'Maria Torres',edad:48,sexo:'F',id_documento:'CC-34567890',comorbilidades:'Ninguna',score_framingham:8,smartwatch_tipo:'Garmin Venu 3',monitoreo_activo:true,ultimo_diagnostico:'Normal (Ritmo Sinusal)',nivel_riesgo:'bajo'},
+      {id:1005,nombre:'Diego Borda',edad:51,sexo:'M',id_documento:'CC-88213573',comorbilidades:'HTA leve',score_framingham:14,smartwatch_tipo:'Wear OS Pixel Watch 2',monitoreo_activo:true,ultimo_diagnostico:'Normal (Ritmo Sinusal)',nivel_riesgo:'moderado'}
+    ];
+    try { localStorage.setItem('cardio_ia_pacientes', JSON.stringify(pacientesData)); } catch(e) {}
+  }
+  // Asignar vitales simulados
+  pacientesData.forEach(function(p) {
+    if (p.monitoreo_activo) {
+      p._fc = p._fc || (65 + Math.floor(Math.random() * 30));
+      p._spo2 = p._spo2 || (95 + Math.floor(Math.random() * 4));
+      p._hrv = p._hrv || (20 + Math.floor(Math.random() * 25));
+    }
+  });
+  // Historial
+  if (!historialDB || historialDB.length === 0) {
+    try { var h = localStorage.getItem('cardio_ia_historial'); if (h) historialDB = JSON.parse(h); } catch(e) {}
+  }
+  if (!historialDB || historialDB.length < 10) {
+    if (typeof generarHistorialDemoLimpio === 'function') generarHistorialDemoLimpio();
+  }
+})();
+
 
 console.log('Cardio-IA Latam v11.4 cargado ✅');
 
