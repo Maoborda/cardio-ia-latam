@@ -3452,6 +3452,8 @@ body{
       <button id="btnIniciarSesion" class="btn btn-primary btn-sm" onclick="iniciarSesionRehab()">Iniciar sesion demo</button>
     </div>
     <div id="rehabSesionLive" style="display:none;">
+      <!-- Info ejercicio -->
+      <div id="rehabLiveEjInfo" style="background:var(--bg3);border-radius:10px;padding:12px;margin-bottom:10px;"></div>
       <!-- Alerta -->
       <div id="rehabLiveAlert" style="display:none;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);border-radius:10px;padding:10px;margin-bottom:10px;color:var(--red2);font-size:12px;"></div>
       <!-- Vitales -->
@@ -3474,8 +3476,8 @@ body{
           <div style="font-size:10px;color:var(--text3);">Tiempo</div>
         </div>
         <div style="background:var(--bg4);border-radius:8px;padding:10px;text-align:center;">
-          <div style="font-size:16px;" id="rehabLiveEj">--</div>
-          <div style="font-size:10px;color:var(--text3);">Ejercicio</div>
+          <div style="font-size:20px;font-weight:700;color:var(--purple2);" id="rehabLiveMETs">--</div>
+          <div style="font-size:10px;color:var(--text3);">METs</div>
         </div>
       </div>
       <!-- Zona de FC -->
@@ -3485,7 +3487,7 @@ body{
           <span>FC max</span>
         </div>
         <div style="background:var(--bg5);border-radius:4px;height:10px;overflow:hidden;position:relative;">
-          <div style="position:absolute;left:75%;top:0;bottom:0;width:2px;background:var(--red2);z-index:1;"></div>
+          <div id="rehabZoneMin" style="position:absolute;left:50%;top:0;bottom:0;width:2px;background:var(--green2);z-index:1;"></div><div id="rehabZoneMax" style="position:absolute;left:75%;top:0;bottom:0;width:2px;background:var(--red2);z-index:1;"></div>
           <div id="rehabZoneBar" style="height:100%;background:var(--green2);border-radius:4px;transition:width .5s,background .3s;width:45%;"></div>
         </div>
         <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text3);margin-top:2px;">
@@ -13095,10 +13097,10 @@ function initRehabModule() {
   // Ejercicios grid
   var grid = document.getElementById('rehabEjerciciosGrid');
   if (grid) {
-    grid.innerHTML = REHAB_EJERCICIOS.map(function(e) {
+    grid.innerHTML = REHAB_EJERCICIOS.map(function(e, idx) {
       var intColor = e.int === 'baja' ? '#10B981' : e.int === 'moderada' ? '#3B82F6' : '#F59E0B';
       var intBg = e.int === 'baja' ? 'rgba(16,185,129,.08)' : e.int === 'moderada' ? 'rgba(37,99,235,.08)' : 'rgba(245,158,11,.08)';
-      return '<div style="background:' + intBg + ';border:1px solid ' + intColor + '22;border-radius:10px;padding:10px;text-align:center;">' +
+      return '<div style="background:' + intBg + ';border:1px solid ' + intColor + '22;border-radius:10px;padding:10px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.transform=\'scale(1.04)\'" onmouseout="this.style.transform=\'none\'" onclick="iniciarSesionConEjercicio(' + idx + ')">' +
         '<div style="font-size:24px;margin-bottom:4px;">' + e.icon + '</div>' +
         '<div style="font-size:11px;font-weight:600;margin-bottom:3px;">' + e.n + '</div>' +
         '<div style="display:flex;gap:3px;justify-content:center;flex-wrap:wrap;">' +
@@ -13822,6 +13824,114 @@ function dibujarECGRehab() {
   ctx.stroke();
   ctx.shadowBlur = 0;
 }
+
+
+
+// ═══ REHAB: Iniciar sesión con ejercicio específico ═══
+function iniciarSesionConEjercicio(idx) {
+  var ejs = (typeof REHAB_EJERCICIOS !== 'undefined') ? REHAB_EJERCICIOS : [];
+  if (!ejs[idx]) return;
+  rehabSesionEjercicio = ejs[idx];
+  // Si ya hay sesión activa, detener primero
+  if (rehabSesionActiva) detenerSesionRehab();
+  // Parsear FC objetivo del ejercicio
+  var fcRange = rehabSesionEjercicio.fc || '50-70%';
+  var parts = fcRange.replace(/%/g,'').split('-');
+  rehabSesionFCMin = parseInt(parts[0]) || 50;
+  rehabSesionFCMax = parseInt(parts[1]) || 70;
+  // Iniciar
+  rehabSesionActiva = true;
+  rehabSesionTimer = 0;
+  rehabSesionFC = 68 + Math.floor(Math.random() * 8);
+  var panel = document.getElementById('rehabSesionLive');
+  if (!panel) return;
+  panel.style.display = 'block';
+  panel.scrollIntoView({behavior:'smooth'});
+  // Actualizar info del ejercicio
+  var ejInfo = document.getElementById('rehabLiveEjInfo');
+  if (ejInfo) {
+    ejInfo.innerHTML = '<div style="display:flex;align-items:center;gap:10px;">' +
+      '<span style="font-size:28px;">' + rehabSesionEjercicio.icon + '</span>' +
+      '<div>' +
+        '<div style="font-size:14px;font-weight:700;">' + rehabSesionEjercicio.n + '</div>' +
+        '<div style="font-size:11px;color:var(--text3);">Intensidad: <span style="color:' + (rehabSesionEjercicio.int==='baja'?'var(--green2)':rehabSesionEjercicio.int==='moderada'?'var(--accent3)':'var(--amber2)') + ';font-weight:600;">' + rehabSesionEjercicio.int + '</span> | FC objetivo: <span style="font-weight:600;">' + rehabSesionEjercicio.fc + ' FCM</span> | ' + rehabSesionEjercicio.dur + ' min | ' + rehabSesionEjercicio.mets + ' METs</div>' +
+      '</div>' +
+    '</div>';
+  }
+  var btnStart = document.getElementById('btnIniciarSesion');
+  if (btnStart) { btnStart.textContent = 'Detener sesion'; btnStart.style.background = 'rgba(239,68,68,.15)'; btnStart.style.borderColor = 'rgba(239,68,68,.3)'; btnStart.style.color = '#ef4444'; }
+  showToast('Sesion iniciada: ' + rehabSesionEjercicio.icon + ' ' + rehabSesionEjercicio.n + ' (FC objetivo: ' + rehabSesionEjercicio.fc + ' FCM)', 'success');
+  // Loop de monitoreo
+  rehabSesionInterval = setInterval(function() {
+    rehabSesionTimer++;
+    // FC sube según intensidad
+    var intensityBoost = rehabSesionEjercicio.int === 'alta' ? 3 : rehabSesionEjercicio.int === 'moderada' ? 2 : 1;
+    var targetFC = (rehabSesionFCMin + (rehabSesionFCMax - rehabSesionFCMin) * 0.7) / 100 * 165;
+    targetFC += Math.sin(rehabSesionTimer * 0.1) * 5 + (Math.random() - 0.5) * 4;
+    if (rehabSesionTimer < 30) targetFC = 72 + (targetFC - 72) * (rehabSesionTimer / 30); // warmup
+    rehabSesionFC = Math.round(rehabSesionFC * 0.85 + targetFC * 0.15);
+    rehabSesionFC = Math.max(60, Math.min(180, rehabSesionFC));
+    var fcMaxAbs = 165;
+    var pctFC = Math.round(rehabSesionFC / fcMaxAbs * 100);
+    var inZone = pctFC <= rehabSesionFCMax;
+    var belowZone = pctFC < rehabSesionFCMin;
+    // Vitales
+    setText('rehabLiveFC', rehabSesionFC);
+    var statusText = pctFC + '% FCM ';
+    if (inZone && !belowZone) statusText += '\u2714 En zona';
+    else if (belowZone) statusText += '\u25b2 Calentando';
+    else statusText += '\u26a0 FUERA';
+    setText('rehabLivePct', statusText);
+    setText('rehabLiveTimer', formatTime(rehabSesionTimer));
+    setText('rehabLiveEj', rehabSesionEjercicio.icon + ' ' + rehabSesionEjercicio.n);
+    var fcEl = document.getElementById('rehabLiveFC');
+    var pctEl = document.getElementById('rehabLivePct');
+    if (fcEl) fcEl.style.color = !inZone ? 'var(--red2)' : belowZone ? 'var(--amber2)' : 'var(--green2)';
+    if (pctEl) pctEl.style.color = !inZone ? 'var(--red2)' : belowZone ? 'var(--amber2)' : 'var(--green2)';
+    // Zona bar
+    var zoneBar = document.getElementById('rehabZoneBar');
+    if (zoneBar) { zoneBar.style.width = Math.min(100, pctFC) + '%'; zoneBar.style.background = !inZone ? '#ef4444' : belowZone ? '#f59e0b' : '#10b981'; }
+    // Zona markers
+    var zoneMin = document.getElementById('rehabZoneMin');
+    var zoneMax = document.getElementById('rehabZoneMax');
+    if (zoneMin) zoneMin.style.left = rehabSesionFCMin + '%';
+    if (zoneMax) zoneMax.style.left = rehabSesionFCMax + '%';
+    // SpO2 + HRV
+    var spo2 = rehabSesionEjercicio.int === 'alta' ? 94 + Math.floor(Math.random() * 4) : 96 + Math.floor(Math.random() * 3);
+    setText('rehabLiveSPO2', spo2 + '%');
+    var hrv = Math.max(12, 50 - Math.floor(rehabSesionTimer / 4) - intensityBoost * 5 + Math.floor(Math.random() * 5));
+    setText('rehabLiveHRV', hrv + 'ms');
+    // METs
+    var mets = rehabSesionEjercicio.mets || 3;
+    setText('rehabLiveMETs', mets.toFixed(1));
+    // Alerta
+    var alertEl = document.getElementById('rehabLiveAlert');
+    if (alertEl) {
+      if (!inZone && !belowZone) {
+        alertEl.style.display = 'block';
+        alertEl.innerHTML = '<div style="display:flex;align-items:center;gap:8px;"><span style="font-size:18px;">\u26a0\ufe0f</span><div><div style="font-weight:600;">FC fuera de zona segura (' + pctFC + '% > ' + rehabSesionFCMax + '% FCM)</div><div style="font-size:11px;">Reducir intensidad. Notificando al medico...</div></div></div>';
+      } else { alertEl.style.display = 'none'; }
+    }
+    dibujarECGRehab();
+    // Auto-stop si llega al tiempo máximo del ejercicio
+    var durMax = parseInt(rehabSesionEjercicio.dur.split('-').pop()) * 60 || 1800;
+    if (rehabSesionTimer >= durMax) {
+      detenerSesionRehab();
+      showToast('Sesion completada! Tiempo: ' + formatTime(durMax), 'success', 4000);
+    }
+  }, 1000);
+}
+
+var rehabSesionFCMin = 50;
+var rehabSesionFCMax = 70;
+
+// Override iniciarSesionRehab para usar un ejercicio aleatorio si se llama sin args
+var _iniciarSesionRehabOrig = iniciarSesionRehab;
+iniciarSesionRehab = function() {
+  if (rehabSesionActiva) { detenerSesionRehab(); return; }
+  var idx = Math.floor(Math.random() * Math.min(8, REHAB_EJERCICIOS.length));
+  iniciarSesionConEjercicio(idx);
+};
 
 
 console.log('Cardio-IA Latam v11.4 cargado ✅');
