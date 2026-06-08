@@ -12926,12 +12926,6 @@ function prescribirEjercicio() {
 }
 
 // Patch switchTab para rehab
-var _switchTabRehab = switchTab;
-switchTab = function(tab) {
-  try { _switchTabRehab(tab); } catch(e) { console.error('switchTab Rehab:', e); }
-  if (tab === 'rehab') setTimeout(initRehabModule, 200);
-};
-
 
 // ===== CARDIO-IA REHAB MODULE =====
 var REHAB_EJERCICIOS = [
