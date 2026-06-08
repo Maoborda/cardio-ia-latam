@@ -2010,6 +2010,82 @@ body{
           </div>
         </div>
 
+
+        <!-- PLANES Y BILLING -->
+        <div class="card" style="margin-top:14px;">
+          <div class="card-title" style="margin-bottom:12px;">&#x1F4B3; Planes y facturaci&#xF3;n</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+            <!-- Consultorio -->
+            <div onclick="seleccionarPlanOrg('consultorio')" style="background:var(--bg4);border:2px solid transparent;border-radius:10px;padding:14px;cursor:pointer;transition:all .2s;text-align:center;" id="planCardConsultorio" onmouseover="this.style.borderColor='#10B981'" onmouseout="this.style.borderColor='transparent'">
+              <div style="font-size:28px;margin-bottom:6px;">&#x1FA7A;</div>
+              <div style="font-size:14px;font-weight:700;margin-bottom:4px;">Consultorio</div>
+              <div style="font-size:22px;font-weight:700;color:var(--green2);margin-bottom:8px;">$99<span style="font-size:12px;font-weight:400;color:var(--text3);">/mes</span></div>
+              <div style="font-size:10px;color:var(--text2);line-height:1.7;text-align:left;">
+                &#x2713; 1 m&#xE9;dico<br>
+                &#x2713; 50 ECGs/mes<br>
+                &#x2713; 3 pacientes monitoreo<br>
+                &#x2713; Soporte email<br>
+                &#x2713; App paciente b&#xE1;sica
+              </div>
+              <button class="btn btn-ghost btn-sm" style="width:100%;margin-top:8px;font-size:10px;" onclick="event.stopPropagation();activarPlan('consultorio')">Seleccionar plan</button>
+            </div>
+            <!-- Clínica -->
+            <div onclick="seleccionarPlanOrg('clinica')" style="background:var(--bg4);border:2px solid var(--accent3);border-radius:10px;padding:14px;cursor:pointer;transition:all .2s;text-align:center;position:relative;" id="planCardClinica">
+              <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--accent3);color:var(--bg);font-size:9px;font-weight:700;padding:2px 10px;border-radius:6px;">M&#xC1;S POPULAR</div>
+              <div style="font-size:28px;margin-bottom:6px;">&#x1F3E5;</div>
+              <div style="font-size:14px;font-weight:700;margin-bottom:4px;">Cl&#xED;nica</div>
+              <div style="font-size:22px;font-weight:700;color:var(--cyan);margin-bottom:8px;">$499<span style="font-size:12px;font-weight:400;color:var(--text3);">/mes</span></div>
+              <div style="font-size:10px;color:var(--text2);line-height:1.7;text-align:left;">
+                &#x2713; 5 m&#xE9;dicos<br>
+                &#x2713; 500 ECGs/mes<br>
+                &#x2713; 20 pacientes monitoreo<br>
+                &#x2713; Conectores + Gateway<br>
+                &#x2713; Rehab m&#xF3;dulo incluido<br>
+                &#x2713; Soporte prioritario
+              </div>
+              <button class="btn btn-primary btn-sm" style="width:100%;margin-top:8px;font-size:10px;" onclick="event.stopPropagation();activarPlan('clinica')">Seleccionar plan</button>
+            </div>
+            <!-- Hospital -->
+            <div onclick="seleccionarPlanOrg('hospital')" style="background:var(--bg4);border:2px solid transparent;border-radius:10px;padding:14px;cursor:pointer;transition:all .2s;text-align:center;" id="planCardHospital" onmouseover="this.style.borderColor='#F59E0B'" onmouseout="this.style.borderColor='transparent'">
+              <div style="font-size:28px;margin-bottom:6px;">&#x1F3E8;</div>
+              <div style="font-size:14px;font-weight:700;margin-bottom:4px;">Hospital</div>
+              <div style="font-size:22px;font-weight:700;color:var(--amber2);margin-bottom:8px;">$2,499<span style="font-size:12px;font-weight:400;color:var(--text3);">/mes</span></div>
+              <div style="font-size:10px;color:var(--text2);line-height:1.7;text-align:left;">
+                &#x2713; Ilimitado m&#xE9;dicos<br>
+                &#x2713; Ilimitado ECGs<br>
+                &#x2713; 200+ monitoreo<br>
+                &#x2713; HL7 FHIR + PACS<br>
+                &#x2713; Biomarcadores lab<br>
+                &#x2713; Onboarding dedicado<br>
+                &#x2713; SLA 99.9%
+              </div>
+              <button class="btn btn-ghost btn-sm" style="width:100%;margin-top:8px;font-size:10px;" onclick="event.stopPropagation();activarPlan('hospital')">Seleccionar plan</button>
+            </div>
+          </div>
+          <div style="font-size:10px;color:var(--text3);margin-top:10px;text-align:center;">
+            M&#xF3;dulos adicionales: Biomedicina +$200/mes | Gen&#xF3;mica +$500/mes | Digital Twin +$800/mes | API White-label desde $999/mes
+          </div>
+        </div>
+
+        <!-- Registro de organización (se muestra al seleccionar plan) -->
+        <div class="card" id="orgRegistroForm" style="margin-top:14px;display:none;border-color:rgba(16,185,129,.3);">
+          <div class="card-title" style="margin-bottom:10px;">&#x1F4DD; Registro — Plan <span id="orgPlanSeleccionado" style="color:var(--green2);"></span></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div><label style="font-size:10px;color:var(--text3);display:block;margin-bottom:2px;">Nombre de la organizaci&#xF3;n *</label><input class="form-input" id="regOrgNombre" style="font-size:12px;" placeholder="Ej: Cl&#xED;nica CardioVida"/></div>
+            <div><label style="font-size:10px;color:var(--text3);display:block;margin-bottom:2px;">NIT / RUC / RFC *</label><input class="form-input" id="regOrgNIT" style="font-size:12px;" placeholder="Identificaci&#xF3;n fiscal"/></div>
+            <div><label style="font-size:10px;color:var(--text3);display:block;margin-bottom:2px;">Pa&#xED;s *</label>
+              <select class="form-select" id="regOrgPais" style="font-size:12px;"><option>Colombia</option><option>M&#xE9;xico</option><option>Brasil</option><option>Argentina</option><option>Chile</option><option>Per&#xFA;</option><option>Costa Rica</option><option>Panam&#xE1;</option></select>
+            </div>
+            <div><label style="font-size:10px;color:var(--text3);display:block;margin-bottom:2px;">Tel&#xE9;fono</label><input class="form-input" id="regOrgTel" style="font-size:12px;" placeholder="+57 300 123 4567"/></div>
+            <div><label style="font-size:10px;color:var(--text3);display:block;margin-bottom:2px;">Email de facturaci&#xF3;n *</label><input class="form-input" id="regOrgEmail" style="font-size:12px;" placeholder="admin@clinica.com"/></div>
+            <div><label style="font-size:10px;color:var(--text3);display:block;margin-bottom:2px;">Cantidad de m&#xE9;dicos</label><input class="form-input" id="regOrgMedicos" style="font-size:12px;" placeholder="Ej: 5" type="number"/></div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:12px;">
+            <button class="btn btn-primary btn-sm" onclick="confirmarRegistroOrg()">&#x2705; Confirmar registro</button>
+            <button class="btn btn-ghost btn-sm" onclick="document.getElementById('orgRegistroForm').style.display='none'">Cancelar</button>
+          </div>
+        </div>
+
         <!-- Certificaciones por país -->
         <div class="card" style="margin-top:14px;">
           <div class="card-title" style="margin-bottom:12px;">&#x1F3C5; Certificaciones por pa&#xED;s</div>
@@ -14377,6 +14453,40 @@ switchTab = function(tab) {
   }
 })();
 
+
+
+// ═══ ORGANIZACIÓN: Planes y registro ═══
+function seleccionarPlanOrg(plan) {
+  var nombres = {consultorio:'Consultorio ($99/mes)',clinica:'Clinica ($499/mes)',hospital:'Hospital ($2,499/mes)'};
+  var form = document.getElementById('orgRegistroForm');
+  var label = document.getElementById('orgPlanSeleccionado');
+  if (form) { form.style.display = 'block'; form.scrollIntoView({behavior:'smooth'}); }
+  if (label) label.textContent = nombres[plan] || plan;
+  // Highlight card
+  ['planCardConsultorio','planCardClinica','planCardHospital'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.style.borderColor = 'transparent';
+  });
+  var active = document.getElementById('planCard' + plan.charAt(0).toUpperCase() + plan.slice(1));
+  if (active) active.style.borderColor = plan === 'consultorio' ? '#10B981' : plan === 'clinica' ? '#0EA5E9' : '#F59E0B';
+  if (plan === 'clinica') {
+    var el2 = document.getElementById('planCardClinica');
+    if (el2) el2.style.borderColor = '#0EA5E9';
+  }
+}
+
+function activarPlan(plan) {
+  seleccionarPlanOrg(plan);
+}
+
+function confirmarRegistroOrg() {
+  var nombre = document.getElementById('regOrgNombre') ? document.getElementById('regOrgNombre').value : '';
+  if (!nombre) { showToast('Ingresa el nombre de la organizacion', 'error'); return; }
+  showToast('Organizacion "' + nombre + '" registrada exitosamente', 'success');
+  document.getElementById('orgRegistroForm').style.display = 'none';
+  var orgNombre = document.getElementById('orgPlanNombre');
+  if (orgNombre) orgNombre.textContent = document.getElementById('orgPlanSeleccionado').textContent.split(' (')[0];
+}
 
 console.log('Cardio-IA Latam v11.4 cargado ✅');
 
