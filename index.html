@@ -3444,6 +3444,64 @@ body{
     </div>
   </div>
 
+
+  <!-- SESIÓN EN VIVO -->
+  <div class="card" style="margin-bottom:14px;">
+    <div class="card-hd" style="margin-bottom:10px;">
+      <div class="card-title">&#x25B6;&#xFE0F; Sesion de ejercicio en vivo</div>
+      <button id="btnIniciarSesion" class="btn btn-primary btn-sm" onclick="iniciarSesionRehab()">Iniciar sesion demo</button>
+    </div>
+    <div id="rehabSesionLive" style="display:none;">
+      <!-- Alerta -->
+      <div id="rehabLiveAlert" style="display:none;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);border-radius:10px;padding:10px;margin-bottom:10px;color:var(--red2);font-size:12px;"></div>
+      <!-- Vitales -->
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:10px;">
+        <div style="background:var(--bg4);border-radius:8px;padding:10px;text-align:center;">
+          <div style="font-size:24px;font-weight:700;" id="rehabLiveFC">--</div>
+          <div style="font-size:10px;color:var(--text3);">FC (lpm)</div>
+          <div style="font-size:11px;font-weight:600;" id="rehabLivePct">--</div>
+        </div>
+        <div style="background:var(--bg4);border-radius:8px;padding:10px;text-align:center;">
+          <div style="font-size:24px;font-weight:700;color:var(--green2);" id="rehabLiveSPO2">--%</div>
+          <div style="font-size:10px;color:var(--text3);">SpO2</div>
+        </div>
+        <div style="background:var(--bg4);border-radius:8px;padding:10px;text-align:center;">
+          <div style="font-size:24px;font-weight:700;color:var(--cyan);" id="rehabLiveHRV">--</div>
+          <div style="font-size:10px;color:var(--text3);">HRV</div>
+        </div>
+        <div style="background:var(--bg4);border-radius:8px;padding:10px;text-align:center;">
+          <div style="font-size:24px;font-weight:700;color:var(--amber2);" id="rehabLiveTimer">00:00</div>
+          <div style="font-size:10px;color:var(--text3);">Tiempo</div>
+        </div>
+        <div style="background:var(--bg4);border-radius:8px;padding:10px;text-align:center;">
+          <div style="font-size:16px;" id="rehabLiveEj">--</div>
+          <div style="font-size:10px;color:var(--text3);">Ejercicio</div>
+        </div>
+      </div>
+      <!-- Zona de FC -->
+      <div style="margin-bottom:10px;">
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-bottom:3px;">
+          <span>Zona segura</span>
+          <span>FC max</span>
+        </div>
+        <div style="background:var(--bg5);border-radius:4px;height:10px;overflow:hidden;position:relative;">
+          <div style="position:absolute;left:75%;top:0;bottom:0;width:2px;background:var(--red2);z-index:1;"></div>
+          <div id="rehabZoneBar" style="height:100%;background:var(--green2);border-radius:4px;transition:width .5s,background .3s;width:45%;"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text3);margin-top:2px;">
+          <span>0%</span><span style="color:var(--green2);">55%</span><span style="color:var(--amber2);">70%</span><span style="color:var(--red2);">82%</span><span>100%</span>
+        </div>
+      </div>
+      <!-- ECG live -->
+      <div style="background:#000810;border-radius:8px;padding:4px;position:relative;overflow:hidden;">
+        <canvas id="rehabECGCanvas" height="80" style="width:100%;display:block;"></canvas>
+      </div>
+    </div>
+    <div id="rehabSesionInstrucciones" style="font-size:12px;color:var(--text2);margin-top:8px;line-height:1.7;">
+      Presiona <strong>"Iniciar sesion demo"</strong> para simular una sesion de ejercicio en tiempo real. Veras el ECG, FC, SpO2 y HRV actualizandose cada segundo, con la zona de FC visual y alertas automaticas cuando el paciente sale del rango seguro.
+    </div>
+  </div>
+
   <!-- PACIENTES EN SESIÓN -->
   <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:14px;margin-bottom:14px;">
     <div class="card">
@@ -13593,6 +13651,177 @@ switchTab = function(tab) {
     }, 200);
   }
 };
+
+
+
+// ═══════════════════════════════════════════
+// MONITOREO + REHAB — TIEMPO REAL CLASE A
+// ═══════════════════════════════════════════
+
+// ═══ MONITOREO: Mini ECGs animados ═══
+var monMiniECGFrames = {};
+function animarMiniECGs() {
+  var pacs = pacientesData.filter(function(p){ return p.monitoreo_activo || p.smartwatch_tipo; });
+  pacs.forEach(function(p, idx) {
+    var canvas = document.getElementById('monEcgMini' + idx);
+    if (!canvas) return;
+    if (monMiniECGFrames[idx]) cancelAnimationFrame(monMiniECGFrames[idx]);
+    var ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth || 200;
+    var W = canvas.width, H = 40, off = 0;
+    var fc = p._fc || 72;
+    var speed = Math.max(40, 110 - fc);
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      ctx.beginPath(); ctx.strokeStyle = '#22c55e'; ctx.lineWidth = 1;
+      for (var x = 0; x < W; x++) {
+        var ph = ((x + Math.floor(off)) % speed) / speed;
+        var y = H / 2;
+        if (ph < .04) y -= 3; else if (ph < .08) y += 5;
+        else if (ph < .14) y -= H * .35; else if (ph < .20) y += H * .4;
+        else if (ph < .26) y -= H * .15; else if (ph < .38) y -= 4;
+        y += (Math.random() - .5) * 1;
+        if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+      off += 1.5;
+      monMiniECGFrames[idx] = requestAnimationFrame(draw);
+    }
+    draw();
+  });
+}
+
+// Override: animar mini ECGs al renderizar grid
+var _renderMonGridOrig2 = renderMonPatientGrid;
+renderMonPatientGrid = function(pacs) {
+  _renderMonGridOrig2(pacs);
+  // Cancelar animaciones anteriores
+  Object.keys(monMiniECGFrames).forEach(function(k) { cancelAnimationFrame(monMiniECGFrames[k]); });
+  monMiniECGFrames = {};
+  setTimeout(animarMiniECGs, 200);
+};
+
+// Limpiar al salir de monitoreo
+var _switchTabMonClean = switchTab;
+switchTab = function(tab) {
+  if (tab !== 'monitoreo') {
+    Object.keys(monMiniECGFrames).forEach(function(k) { cancelAnimationFrame(monMiniECGFrames[k]); });
+    monMiniECGFrames = {};
+  }
+  if (tab !== 'rehab' && rehabSesionInterval) {
+    clearInterval(rehabSesionInterval);
+    rehabSesionInterval = null;
+  }
+  _switchTabMonClean(tab);
+};
+
+// ═══ REHAB: Sesión interactiva en tiempo real ═══
+var rehabSesionActiva = false;
+var rehabSesionInterval = null;
+var rehabSesionTimer = 0;
+var rehabSesionFC = 72;
+var rehabSesionEjercicio = null;
+
+function iniciarSesionRehab() {
+  if (rehabSesionActiva) { detenerSesionRehab(); return; }
+  rehabSesionActiva = true;
+  rehabSesionTimer = 0;
+  rehabSesionFC = 75;
+  var ejs = (typeof REHAB_EJERCICIOS !== 'undefined') ? REHAB_EJERCICIOS : [{n:'Caminata',icon:'\ud83d\udeb6',int:'baja',fc:'40-55%'}];
+  rehabSesionEjercicio = ejs[Math.floor(Math.random() * Math.min(8, ejs.length))];
+  var panel = document.getElementById('rehabSesionLive');
+  if (!panel) return;
+  panel.style.display = 'block';
+  panel.scrollIntoView({behavior:'smooth'});
+  var btnStart = document.getElementById('btnIniciarSesion');
+  if (btnStart) { btnStart.textContent = 'Detener sesion'; btnStart.style.background = 'rgba(239,68,68,.15)'; btnStart.style.borderColor = 'rgba(239,68,68,.3)'; btnStart.style.color = '#ef4444'; }
+  showToast('Sesion de ejercicio iniciada: ' + rehabSesionEjercicio.n, 'success');
+  // ECG + vitales loop
+  rehabSesionInterval = setInterval(function() {
+    rehabSesionTimer++;
+    // FC sube gradualmente con el ejercicio
+    var targetFC = 85 + Math.floor(rehabSesionTimer / 3) * 2 + Math.floor(Math.random() * 8);
+    rehabSesionFC = Math.min(165, Math.round(rehabSesionFC * 0.9 + targetFC * 0.1));
+    var fcMax = 165; // estimado
+    var pctFC = Math.round(rehabSesionFC / fcMax * 100);
+    var inZone = pctFC <= 75;
+    // Actualizar UI
+    setText('rehabLiveFC', rehabSesionFC);
+    setText('rehabLivePct', pctFC + '% FCM');
+    setText('rehabLiveTimer', formatTime(rehabSesionTimer));
+    setText('rehabLiveEj', rehabSesionEjercicio.icon + ' ' + rehabSesionEjercicio.n);
+    var fcEl = document.getElementById('rehabLiveFC');
+    var pctEl = document.getElementById('rehabLivePct');
+    var zoneBar = document.getElementById('rehabZoneBar');
+    if (fcEl) fcEl.style.color = inZone ? 'var(--green2)' : 'var(--red2)';
+    if (pctEl) { pctEl.style.color = inZone ? 'var(--green2)' : 'var(--red2)'; pctEl.textContent = pctFC + '% FCM ' + (inZone ? '\u2714' : '\u26a0 FUERA'); }
+    if (zoneBar) { zoneBar.style.width = Math.min(100, pctFC) + '%'; zoneBar.style.background = inZone ? '#10b981' : pctFC > 82 ? '#ef4444' : '#f59e0b'; }
+    // SpO2
+    var spo2 = 96 + Math.floor(Math.random() * 3);
+    setText('rehabLiveSPO2', spo2 + '%');
+    // HRV
+    var hrv = Math.max(15, 45 - Math.floor(rehabSesionTimer / 5));
+    setText('rehabLiveHRV', hrv + 'ms');
+    // Alerta si fuera de zona
+    var alertEl = document.getElementById('rehabLiveAlert');
+    if (alertEl) {
+      if (!inZone) {
+        alertEl.style.display = 'block';
+        alertEl.innerHTML = '<div style="display:flex;align-items:center;gap:8px;"><span style="font-size:18px;">\u26a0\ufe0f</span><div><div style="font-weight:600;">FC fuera de zona segura</div><div style="font-size:11px;">Reducir intensidad del ejercicio</div></div></div>';
+      } else {
+        alertEl.style.display = 'none';
+      }
+    }
+    // Dibujar ECG
+    dibujarECGRehab();
+  }, 1000);
+}
+
+function detenerSesionRehab() {
+  rehabSesionActiva = false;
+  if (rehabSesionInterval) { clearInterval(rehabSesionInterval); rehabSesionInterval = null; }
+  var btnStart = document.getElementById('btnIniciarSesion');
+  if (btnStart) { btnStart.textContent = 'Iniciar sesion demo'; btnStart.style.background = ''; btnStart.style.borderColor = ''; btnStart.style.color = ''; }
+  showToast('Sesion finalizada: ' + formatTime(rehabSesionTimer) + ' | FC prom: ' + rehabSesionFC + ' lpm', 'success');
+  // Ocultar panel live
+  var panel = document.getElementById('rehabSesionLive');
+  if (panel) panel.style.display = 'none';
+}
+
+function formatTime(s) {
+  var m = Math.floor(s / 60);
+  var sec = s % 60;
+  return (m < 10 ? '0' : '') + m + ':' + (sec < 10 ? '0' : '') + sec;
+}
+
+function dibujarECGRehab() {
+  var canvas = document.getElementById('rehabECGCanvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  canvas.width = canvas.offsetWidth || 400;
+  var W = canvas.width, H = 80;
+  ctx.clearRect(0, 0, W, H);
+  ctx.beginPath();
+  var fc = rehabSesionFC || 72;
+  var speed = Math.max(35, 100 - fc);
+  var inZone = (fc / 165 * 100) <= 75;
+  ctx.strokeStyle = inZone ? '#22c55e' : '#ef4444';
+  ctx.lineWidth = 1.5;
+  ctx.shadowBlur = 3;
+  ctx.shadowColor = ctx.strokeStyle;
+  for (var x = 0; x < W; x++) {
+    var ph = ((x + rehabSesionTimer * 3) % speed) / speed;
+    var y = H / 2;
+    if (ph < .04) y -= 5; else if (ph < .09) y += 8;
+    else if (ph < .14) y -= H * .4; else if (ph < .19) y += H * .45;
+    else if (ph < .25) y -= H * .18; else if (ph < .38) y -= 5;
+    else if (ph < .50) y -= 3;
+    y += (Math.random() - .5) * 2;
+    if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+}
 
 
 console.log('Cardio-IA Latam v11.4 cargado ✅');
