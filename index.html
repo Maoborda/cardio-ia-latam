@@ -10285,7 +10285,7 @@ window.alert = function(msg) {
 // ===== V11.4 PATCH SWITCHAB para heatmap y counters =====
 var _switchTabOrig = switchTab;
 switchTab = function(tab) {
-  _switchTabOrig(tab);
+  try { _switchTabOrig(tab); } catch(e) { console.error('switchTab V11.4:', e); }
   if (tab === 'dashboard') {
     setTimeout(renderActivityHeatmap, 400);
     setTimeout(function() {
@@ -11248,7 +11248,7 @@ function enviarAlertaPaciente() {
 var _switchTabOrigAnalizar = switchTab;
 switchTab = function(tab) {
   if (tab !== 'analizar' && wearableInterval) { clearInterval(wearableInterval); wearableInterval = null; }
-  _switchTabOrigAnalizar(tab);
+  try { _switchTabOrigAnalizar(tab); } catch(e) { console.error('switchTab Analizar:', e); }
 };
 
 
@@ -11260,7 +11260,7 @@ switchTab = function(tab) {
 // ── PATCH switchTab: auto-inicializar dashboard al entrar ──────────────
 var _switchTabAudit = switchTab;
 switchTab = function(tab) {
-  _switchTabAudit(tab);
+  try { _switchTabAudit(tab); } catch(e) { console.error('switchTab Audit:', e); }
   if (tab === 'dashboard') {
     setTimeout(function() {
       actualizarPulsoDia();
@@ -11999,7 +11999,7 @@ function iniciarMonitoreoLiveV2() {
 // PATCH switchTab para monitoreo
 var _switchTabMon = switchTab;
 switchTab = function(tab) {
-  _switchTabMon(tab);
+  try { _switchTabMon(tab); } catch(e) { console.error('switchTab Mon:', e); }
   if (tab === 'monitoreo') {
     setTimeout(actualizarMonitoreo, 200);
     setTimeout(iniciarMonitoreoLiveV2, 400);
@@ -12704,7 +12704,7 @@ function exportarROIPDF() {
 // ===== PATCH switchTab para init charts =====
 var _switchTabModules = switchTab;
 switchTab = function(tab) {
-  _switchTabModules(tab);
+  try { _switchTabModules(tab); } catch(e) { console.error('switchTab Modules:', e); }
   if (tab === 'pacientes') setTimeout(renderPacientesGridV2, 150);
   if (tab === 'epidemia') setTimeout(initEpiCharts, 200);
   if (tab === 'ciencia') setTimeout(initCienciaCharts, 200);
@@ -12928,8 +12928,8 @@ function prescribirEjercicio() {
 // Patch switchTab para rehab
 var _switchTabRehab = switchTab;
 switchTab = function(tab) {
-  _switchTabRehab(tab);
-  if (tab === 'rehab') setTimeout(initRehab, 200);
+  try { _switchTabRehab(tab); } catch(e) { console.error('switchTab Rehab:', e); }
+  if (tab === 'rehab') setTimeout(initRehabModule, 200);
 };
 
 
@@ -13003,7 +13003,7 @@ function prescribirPlan() {
 // Patch switchTab
 var _switchTabRehab = switchTab;
 switchTab = function(tab) {
-  _switchTabRehab(tab);
+  try { _switchTabRehab(tab); } catch(e) { console.error('switchTab Rehab:', e); }
   if (tab === 'rehab') setTimeout(initRehabModule, 200);
 };
 
