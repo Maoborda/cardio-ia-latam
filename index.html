@@ -2736,9 +2736,9 @@ body{
   <div id="monConfigPanel" style="display:none;margin-top:14px;">
     <div class="card">
       <div class="card-hd" style="margin-bottom:12px;">
-        </div>
+        
   <div class="mon-sub-section mon-sub-config" style="display:none;">
-  <div class="card"><div class="card-title">&#x2699;&#xFE0F; Umbrales de alerta personalizados</div>
+  <div class="card monConfigSection" style="display:none;"><div class="card-title">&#x2699;&#xFE0F; Umbrales de alerta personalizados</div>
         <button class="btn btn-ghost btn-sm" onclick="guardarUmbrales()">&#x1F4BE; Guardar</button>
       </div>
       <div style="font-size:11px;color:var(--text2);margin-bottom:10px;">Define cu&#xE1;ndo el sistema genera alertas autom&#xE1;ticas. Se aplican a todos los pacientes monitoreados.</div>
@@ -2767,8 +2767,7 @@ body{
   </div>
 
   <!-- ====== DISPOSITIVOS COMPATIBLES ====== -->
-  <div class="mon-sub-section mon-sub-devices" style="display:none;">
-  <div class="card" style="margin-top:14px;">
+  <div class="card monDevicesSection" style="margin-top:14px;display:none;">
     <div class="card-title" style="margin-bottom:12px;">&#x1F4F1; Dispositivos y app del paciente</div>
     <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;">
       <div style="background:var(--bg4);border-radius:10px;padding:12px;text-align:center;"><div style="font-size:24px;margin-bottom:4px;">&#x1F34E;</div><div style="font-size:11px;font-weight:600;">Apple Watch</div><div style="font-size:9px;color:var(--text3);">Series 4+</div><div style="font-size:9px;padding:2px 6px;border-radius:5px;background:rgba(16,185,129,.1);color:var(--green2);margin-top:4px;display:inline-block;">ECG + FC + SpO2</div></div>
@@ -2784,7 +2783,7 @@ body{
   </div>
 
   <!-- ====== CENTRO DE CONECTIVIDAD ====== -->
-  <div class="card" style="margin-top:14px;border-color:rgba(99,102,241,.25);background:linear-gradient(145deg,rgba(6,9,18,1),rgba(10,15,32,1));">
+  <div class="card monDevicesSection" style="margin-top:14px;border-color:rgba(99,102,241,.25);background:linear-gradient(145deg,rgba(6,9,18,1),rgba(10,15,32,1));">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
       <div>
         <div style="font-size:16px;font-weight:700;color:#f8fafc;">&#x1F517; Centro de conectividad</div>
@@ -2951,6 +2950,8 @@ body{
 </div><!-- /panel-monitoreo -->
 
 
+  </div>
+  </div>
       <div class="panel" id="panel-conectores">
 
   <!-- ====== HEADER + STATUS GLOBAL ====== -->
@@ -13948,23 +13949,26 @@ iniciarSesionRehab = function() {
 
 // ═══ MONITOREO: Sub-secciones tabs ═══
 function monSwitchSub(sub) {
-  // Toggle botones
   ['monTabLive','monTabDevices','monTabConfig'].forEach(function(id) {
     var el = document.getElementById(id);
     if (el) { el.className = 'btn btn-ghost btn-sm'; el.style.fontSize = '11px'; }
   });
-  var active = document.getElementById('monTab' + sub.charAt(0).toUpperCase() + sub.slice(1));
-  if (!active && sub === 'live') active = document.getElementById('monTabLive');
-  if (!active && sub === 'devices') active = document.getElementById('monTabDevices');
-  if (!active && sub === 'config') active = document.getElementById('monTabConfig');
-  if (active) { active.className = 'btn btn-primary btn-sm'; active.style.fontSize = '11px'; }
-  // Toggle secciones
+  var activeId = sub === 'live' ? 'monTabLive' : sub === 'devices' ? 'monTabDevices' : 'monTabConfig';
+  var activeBtn = document.getElementById(activeId);
+  if (activeBtn) { activeBtn.className = 'btn btn-primary btn-sm'; activeBtn.style.fontSize = '11px'; }
+  // Show/hide sections
   var panel = document.getElementById('panel-monitoreo');
   if (!panel) return;
-  var sections = panel.querySelectorAll('.mon-sub-section');
-  sections.forEach(function(s) { s.style.display = 'none'; });
-  var target = panel.querySelectorAll('.mon-sub-' + sub);
-  target.forEach(function(t) { t.style.display = 'block'; });
+  // Live sections (grid, ECG, alertas, MACE, costos)
+  panel.querySelectorAll('#monPatientGrid, [id^="monECG"], .mon-alert-card, .mon-mace-card, .mon-costs-card').forEach(function(el) {
+    var card = el.closest('.card') || el;
+    card.style.display = sub === 'live' ? '' : 'none';
+  });
+  // Device sections
+  panel.querySelectorAll('.monDevicesSection').forEach(function(el) { el.style.display = sub === 'devices' ? '' : 'none'; });
+  // Config sections
+  panel.querySelectorAll('.monConfigSection').forEach(function(el) { el.style.display = sub === 'config' ? '' : 'none'; });
+  // Always show KPIs and tabs
 }
 
 console.log('Cardio-IA Latam v11.4 cargado ✅');
