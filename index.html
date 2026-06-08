@@ -13606,43 +13606,7 @@ function initAyudaA() {
 // ═══ CIENCIA: asegurar charts al entrar ═══
 // Ya cubierto por switchTab override arriba
 
-// ═══ INVITACIONES: mejorar contenido ═══
-var _switchTabInvA = switchTab;
-switchTab = function(tab) {
-  _switchTabInvA(tab);
-  if (tab === 'invitaciones') {
-    setTimeout(function() {
-      var container = document.querySelector('#panel-invitaciones');
-      if (!container) return;
-      // Verificar si ya tiene contenido mejorado
-      if (container.querySelector('#invUpgraded')) return;
-      // Agregar KPIs y funcionalidad
-      var header = container.querySelector('div:first-child');
-      if (header) {
-        var kpis = document.createElement('div');
-        kpis.id = 'invUpgraded';
-        kpis.className = 'g4';
-        kpis.style.cssText = 'margin:14px 0;';
-        kpis.innerHTML = '<div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Medicos activos</div><div class="stat-val" style="color:var(--accent3);">1</div></div>' +
-          '<div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Invitaciones enviadas</div><div class="stat-val" style="color:var(--green2);">0</div></div>' +
-          '<div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Pendientes</div><div class="stat-val" style="color:var(--amber2);">0</div></div>' +
-          '<div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Roles</div><div class="stat-val" style="color:var(--purple2);">3</div><div style="font-size:9px;color:var(--text3);">Admin, Medico, Lectura</div></div>';
-        header.after(kpis);
-        // Agregar tabla de roles
-        var roles = document.createElement('div');
-        roles.className = 'card';
-        roles.style.cssText = 'margin-top:14px;';
-        roles.innerHTML = '<div class="card-title" style="margin-bottom:10px;">Roles y permisos</div>' +
-          '<div style="overflow-x:auto;"><table class="tbl" style="font-size:11px;"><thead><tr><th>Rol</th><th>Analizar ECG</th><th>Firmar</th><th>Monitoreo</th><th>Config</th><th>Invitar</th></tr></thead><tbody>' +
-          '<tr><td style="font-weight:600;">Admin</td><td style="color:var(--green2);">Si</td><td style="color:var(--green2);">Si</td><td style="color:var(--green2);">Si</td><td style="color:var(--green2);">Si</td><td style="color:var(--green2);">Si</td></tr>' +
-          '<tr><td style="font-weight:600;">Medico</td><td style="color:var(--green2);">Si</td><td style="color:var(--green2);">Si</td><td style="color:var(--green2);">Si</td><td style="color:var(--red2);">No</td><td style="color:var(--red2);">No</td></tr>' +
-          '<tr><td style="font-weight:600;">Lectura</td><td style="color:var(--red2);">No</td><td style="color:var(--red2);">No</td><td style="color:var(--green2);">Si</td><td style="color:var(--red2);">No</td><td style="color:var(--red2);">No</td></tr>' +
-          '</tbody></table></div>';
-        kpis.after(roles);
-      }
-    }, 200);
-  }
-};
+
 
 
 
@@ -13961,15 +13925,6 @@ iniciarSesionRehab = function() {
   }
   // Ejecutar después de que cargarPacientes haya corrido
   setTimeout(ensureMonitoreoData, 2000);
-  // Y también al entrar a monitoreo
-  var _origSwitchMon = switchTab;
-  switchTab = function(tab) {
-    _origSwitchMon(tab);
-    if (tab === 'monitoreo') {
-      ensureMonitoreoData();
-      setTimeout(actualizarMonitoreo, 300);
-    }
-  };
 })();
 
 // ═══ FIX REHAB: ejercicios muestran detalle + botón iniciar (no auto-start) ═══
