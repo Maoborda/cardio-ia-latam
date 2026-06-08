@@ -3731,6 +3731,157 @@ body{
       </div>
 
       <!-- ===== INVITACIONES ===== -->
+
+      <div class="panel" id="panel-rehab">
+
+  <!-- HEADER -->
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+    <div>
+      <div style="font-size:20px;font-weight:700;">&#x1F3CB;&#xFE0F; Cardio-IA Rehab</div>
+      <div style="font-size:12px;color:var(--text2);">Rehabilitaci&#xF3;n cardiovascular remota &#x2014; monitoreo solo durante ejercicio</div>
+    </div>
+    <div style="display:flex;gap:6px;">
+      <div class="api-chip ok"><div class="api-dot"></div>M&#xF3;dulo activo</div>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="g4" style="margin-bottom:14px;">
+    <div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">En rehabilitaci&#xF3;n</div><div class="stat-val" id="rehabTotal" style="color:var(--accent3);">0</div><div style="font-size:10px;color:var(--text3);">Pacientes activos</div></div>
+    <div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Sesiones hoy</div><div class="stat-val" id="rehabSesiones" style="color:var(--green2);">0</div><div style="font-size:10px;color:var(--text3);">En curso ahora</div></div>
+    <div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Alertas ejercicio</div><div class="stat-val" id="rehabAlertas" style="color:var(--red2);">0</div><div style="font-size:10px;color:var(--text3);">FC fuera de rango</div></div>
+    <div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Adherencia</div><div class="stat-val" id="rehabAdherencia" style="color:var(--amber2);">0%</div><div style="font-size:10px;color:var(--text3);">Semanal promedio</div></div>
+  </div>
+
+  <!-- PLAN DE 8 SEMANAS -->
+  <div class="card" style="margin-bottom:14px;">
+    <div class="card-hd" style="margin-bottom:14px;">
+      <div class="card-title">&#x1F4C5; Plan progresivo de rehabilitaci&#xF3;n &#x2014; 8 semanas / 3 fases</div>
+      <button class="btn btn-ghost btn-sm" onclick="prescribirPlan()">&#x1F4DD; Prescribir a paciente</button>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px;">
+      <!-- Fase 1 -->
+      <div style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.2);border-radius:12px;padding:14px;">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">
+          <span style="font-size:9px;padding:2px 8px;border-radius:6px;background:rgba(16,185,129,.15);color:var(--green2);font-weight:600;">FASE 1</span>
+          <span style="font-size:12px;font-weight:600;color:var(--green2);">Estabilizaci&#xF3;n</span>
+        </div>
+        <div style="font-size:11px;color:var(--text2);margin-bottom:6px;">Semanas 1&#x2013;2 &#xB7; Post-evento</div>
+        <div style="font-size:11px;color:var(--text2);line-height:1.8;">
+          &#x1F6B6; Caminata terap&#xE9;utica<br>
+          &#x1F9D8; Yoga cardiovascular<br>
+          &#x1F4A8; Ejercicios respiratorios<br>
+          &#x1F3D4;&#xFE0F; Marcha n&#xF3;rdica<br>
+          &#x1F3CA; Aquagym suave
+        </div>
+        <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;">
+          <span style="font-size:9px;padding:2px 6px;border-radius:5px;background:var(--bg4);color:var(--text3);">FC &lt;55% FCM</span>
+          <span style="font-size:9px;padding:2px 6px;border-radius:5px;background:var(--bg4);color:var(--text3);">15-20 min</span>
+          <span style="font-size:9px;padding:2px 6px;border-radius:5px;background:var(--bg4);color:var(--text3);">3x/sem</span>
+        </div>
+      </div>
+      <!-- Fase 2 -->
+      <div style="background:rgba(37,99,235,.06);border:1px solid rgba(37,99,235,.2);border-radius:12px;padding:14px;">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">
+          <span style="font-size:9px;padding:2px 8px;border-radius:6px;background:rgba(37,99,235,.15);color:var(--accent3);font-weight:600;">FASE 2</span>
+          <span style="font-size:12px;font-weight:600;color:var(--accent3);">Adaptaci&#xF3;n</span>
+        </div>
+        <div style="font-size:11px;color:var(--text2);margin-bottom:6px;">Semanas 3&#x2013;5 &#xB7; Progreso supervisado</div>
+        <div style="font-size:11px;color:var(--text2);line-height:1.8;">
+          &#x1F3C3; Trote suave<br>
+          &#x1F6B4; Ciclismo estacionario<br>
+          &#x1F3CA; Nataci&#xF3;n<br>
+          &#x1FA9C; Escaladora<br>
+          &#x1F6A3; Remo erg&#xF3;metro
+        </div>
+        <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;">
+          <span style="font-size:9px;padding:2px 6px;border-radius:5px;background:var(--bg4);color:var(--text3);">FC 55-70% FCM</span>
+          <span style="font-size:9px;padding:2px 6px;border-radius:5px;background:var(--bg4);color:var(--text3);">25-35 min</span>
+          <span style="font-size:9px;padding:2px 6px;border-radius:5px;background:var(--bg4);color:var(--text3);">4x/sem</span>
+        </div>
+      </div>
+      <!-- Fase 3 -->
+      <div style="background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);border-radius:12px;padding:14px;">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">
+          <span style="font-size:9px;padding:2px 8px;border-radius:6px;background:rgba(245,158,11,.15);color:var(--amber2);font-weight:600;">FASE 3</span>
+          <span style="font-size:12px;font-weight:600;color:var(--amber2);">Consolidaci&#xF3;n</span>
+        </div>
+        <div style="font-size:11px;color:var(--text2);margin-bottom:6px;">Semanas 6&#x2013;8 &#xB7; Alta supervisada</div>
+        <div style="font-size:11px;color:var(--text2);line-height:1.8;">
+          &#x26A1; HIIT card&#xED;aco supervisado<br>
+          &#x1F504; Circuito aer&#xF3;bico<br>
+          &#x1F3C3; Trote progresivo<br>
+          &#x1F6B4; Ciclismo con carga<br>
+          &#x1F3CA; Nataci&#xF3;n intervalos
+        </div>
+        <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;">
+          <span style="font-size:9px;padding:2px 6px;border-radius:5px;background:var(--bg4);color:var(--text3);">FC 70-82% FCM</span>
+          <span style="font-size:9px;padding:2px 6px;border-radius:5px;background:var(--bg4);color:var(--text3);">35-50 min</span>
+          <span style="font-size:9px;padding:2px 6px;border-radius:5px;background:var(--bg4);color:var(--text3);">5x/sem</span>
+        </div>
+      </div>
+    </div>
+    <div style="background:rgba(37,99,235,.06);border:1px solid rgba(37,99,235,.14);border-radius:10px;padding:12px;font-size:11px;color:var(--text2);">
+      <strong style="color:var(--accent3);">&#x26A0;&#xFE0F; Progresión controlada:</strong> El m&#xE9;dico debe aprobar cada transición de fase. Si hay alertas recurrentes (FC fuera de rango, arritmia detectada), el sistema retrocede autom&#xE1;ticamente al paciente a la fase anterior.
+    </div>
+  </div>
+
+  <!-- BIBLIOTECA DE EJERCICIOS -->
+  <div class="card" style="margin-bottom:14px;">
+    <div class="card-hd" style="margin-bottom:12px;">
+      <div class="card-title">&#x1F4DA; Biblioteca de ejercicios cardiovasculares</div>
+      <div style="font-size:11px;color:var(--text3);">12 ejercicios clasificados por intensidad</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;" id="rehabEjerciciosGrid">
+    </div>
+  </div>
+
+  <!-- PACIENTES EN SESIÓN -->
+  <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:14px;margin-bottom:14px;">
+    <div class="card">
+      <div class="card-hd" style="margin-bottom:10px;">
+        <div class="card-title">&#x1F3C3; Pacientes en sesi&#xF3;n activa</div>
+        <span class="live-dot" style="margin-left:6px;"></span>
+      </div>
+      <div id="rehabSesionesActivas">
+        <div style="text-align:center;padding:20px;color:var(--text3);font-size:12px;">Sin sesiones activas en este momento</div>
+      </div>
+    </div>
+    <div class="card" style="border-color:rgba(239,68,68,.2);background:rgba(239,68,68,.02);">
+      <div class="card-hd" style="margin-bottom:10px;">
+        <div style="font-size:13px;font-weight:600;color:var(--red2);">&#x1F6A8; Alertas de ejercicio</div>
+        <span id="rehabAlertCount" style="font-size:11px;padding:2px 8px;border-radius:10px;background:rgba(239,68,68,.15);color:var(--red2);font-weight:700;">0</span>
+      </div>
+      <div id="rehabAlertasTimeline">
+        <div style="text-align:center;padding:20px;color:var(--text3);font-size:12px;">&#x2705; Sin alertas &#x2014; Todos dentro de rango seguro</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODO MONITOREO DURANTE EJERCICIO -->
+  <div class="card" style="border-color:rgba(16,185,129,.25);background:rgba(16,185,129,.03);">
+    <div style="font-size:13px;font-weight:700;color:var(--green2);margin-bottom:8px;">&#x231A; Monitoreo inteligente durante ejercicio</div>
+    <div style="font-size:12px;color:var(--text2);line-height:1.8;margin-bottom:10px;">
+      El monitoreo <strong>solo se activa durante la sesión de ejercicio</strong> del paciente. Esto protege la bater&#xED;a del wearable, reduce falsos positivos por actividad cotidiana, y hace que las alertas sean cl&#xED;nicamente relevantes.
+    </div>
+    <div style="display:flex;align-items:center;gap:0;flex-wrap:wrap;justify-content:center;background:var(--bg3);border-radius:10px;padding:12px;">
+      <div style="text-align:center;padding:6px 12px;"><div style="font-size:18px;">&#x1F4F1;</div><div style="font-size:9px;color:var(--text3);">Paciente abre<br>app</div></div>
+      <div style="font-size:14px;color:var(--text3);">&#x2192;</div>
+      <div style="text-align:center;padding:6px 12px;"><div style="font-size:18px;">&#x25B6;&#xFE0F;</div><div style="font-size:9px;color:var(--text3);">Inicia<br>sesi&#xF3;n</div></div>
+      <div style="font-size:14px;color:var(--text3);">&#x2192;</div>
+      <div style="text-align:center;padding:6px 12px;"><div style="font-size:18px;">&#x231A;</div><div style="font-size:9px;color:var(--text3);">Wearable<br>activa monitoreo</div></div>
+      <div style="font-size:14px;color:var(--text3);">&#x2192;</div>
+      <div style="text-align:center;padding:6px 12px;"><div style="font-size:18px;">&#x1F4C8;</div><div style="font-size:9px;color:var(--text3);">FC + SpO2 + HRV<br>en vivo</div></div>
+      <div style="font-size:14px;color:var(--text3);">&#x2192;</div>
+      <div style="text-align:center;padding:6px 12px;"><div style="font-size:18px;">&#x2705;</div><div style="font-size:9px;color:var(--text3);">Sesion termina<br>reporte auto</div></div>
+      <div style="font-size:14px;color:var(--text3);">&#x2192;</div>
+      <div style="text-align:center;padding:6px 12px;"><div style="font-size:18px;">&#x1F468;&#x200D;&#x2695;&#xFE0F;</div><div style="font-size:9px;color:var(--text3);">M&#xE9;dico revisa<br>progreso</div></div>
+    </div>
+  </div>
+
+      </div>
+
+
       <div class="panel" id="panel-invitaciones">
         <div style="margin-bottom:20px;">
           <div style="font-size:20px;font-weight:600;margin-bottom:4px;">&#x2709;&#xFE0F; Sistema de Invitaciones</div>
@@ -13255,6 +13406,81 @@ var _switchTabRehab = switchTab;
 switchTab = function(tab) {
   _switchTabRehab(tab);
   if (tab === 'rehab') setTimeout(initRehab, 200);
+};
+
+
+// ===== CARDIO-IA REHAB MODULE =====
+var REHAB_EJERCICIOS = [
+  {n:'Caminata terapeutica',int:'baja',fc:'40-55%',dur:'15-20',icon:'\ud83d\udeb6',color:'#10B981',mets:2.5},
+  {n:'Yoga cardiovascular',int:'baja',fc:'40-50%',dur:'20-30',icon:'\ud83e\uddd8',color:'#10B981',mets:2.0},
+  {n:'Ejercicios respiratorios',int:'baja',fc:'35-45%',dur:'10-15',icon:'\ud83d\udca8',color:'#10B981',mets:1.5},
+  {n:'Marcha nordica',int:'baja',fc:'45-55%',dur:'20-25',icon:'\ud83c\udfd4\ufe0f',color:'#10B981',mets:3.0},
+  {n:'Aquagym suave',int:'baja',fc:'45-55%',dur:'20-30',icon:'\ud83c\udfca',color:'#10B981',mets:3.5},
+  {n:'Trote suave',int:'moderada',fc:'55-65%',dur:'20-30',icon:'\ud83c\udfc3',color:'#3B82F6',mets:5.0},
+  {n:'Ciclismo estacionario',int:'moderada',fc:'55-70%',dur:'25-35',icon:'\ud83d\udeb4',color:'#3B82F6',mets:5.5},
+  {n:'Natacion',int:'moderada',fc:'55-70%',dur:'20-30',icon:'\ud83c\udfca',color:'#3B82F6',mets:6.0},
+  {n:'Escaladora',int:'moderada',fc:'60-70%',dur:'15-25',icon:'\ud83e\ude9c',color:'#3B82F6',mets:6.5},
+  {n:'Remo ergometro',int:'moderada',fc:'60-70%',dur:'20-30',icon:'\ud83d\udea3',color:'#3B82F6',mets:6.0},
+  {n:'HIIT cardiaco',int:'alta',fc:'70-82%',dur:'20-35',icon:'\u26a1',color:'#F59E0B',mets:8.0},
+  {n:'Circuito aerobico',int:'alta',fc:'70-80%',dur:'30-50',icon:'\ud83d\udd04',color:'#F59E0B',mets:7.5}
+];
+
+function initRehabModule() {
+  // KPIs
+  var rehabPacs = pacientesData.filter(function(p){ return p.monitoreo_activo; });
+  setText('rehabTotal', rehabPacs.length);
+  setText('rehabSesiones', Math.floor(Math.random() * 3));
+  setText('rehabAlertas', Math.floor(Math.random() * 2));
+  setText('rehabAdherencia', (65 + Math.random() * 25).toFixed(0) + '%');
+  // Ejercicios grid
+  var grid = document.getElementById('rehabEjerciciosGrid');
+  if (grid) {
+    grid.innerHTML = REHAB_EJERCICIOS.map(function(e) {
+      var intColor = e.int === 'baja' ? '#10B981' : e.int === 'moderada' ? '#3B82F6' : '#F59E0B';
+      var intBg = e.int === 'baja' ? 'rgba(16,185,129,.08)' : e.int === 'moderada' ? 'rgba(37,99,235,.08)' : 'rgba(245,158,11,.08)';
+      return '<div style="background:' + intBg + ';border:1px solid ' + intColor + '22;border-radius:10px;padding:10px;text-align:center;">' +
+        '<div style="font-size:24px;margin-bottom:4px;">' + e.icon + '</div>' +
+        '<div style="font-size:11px;font-weight:600;margin-bottom:3px;">' + e.n + '</div>' +
+        '<div style="display:flex;gap:3px;justify-content:center;flex-wrap:wrap;">' +
+          '<span style="font-size:8px;padding:1px 5px;border-radius:4px;background:' + intColor + '18;color:' + intColor + ';font-weight:600;">' + e.int + '</span>' +
+          '<span style="font-size:8px;padding:1px 5px;border-radius:4px;background:var(--bg4);color:var(--text3);">FC ' + e.fc + '</span>' +
+        '</div>' +
+        '<div style="font-size:9px;color:var(--text3);margin-top:3px;">' + e.dur + ' min | ' + e.mets + ' METs</div>' +
+      '</div>';
+    }).join('');
+  }
+  // Sesiones activas (simuladas)
+  var sesDiv = document.getElementById('rehabSesionesActivas');
+  if (sesDiv && rehabPacs.length > 0) {
+    sesDiv.innerHTML = rehabPacs.slice(0, 3).map(function(p) {
+      var ej = REHAB_EJERCICIOS[Math.floor(Math.random() * 8)];
+      var fc = 90 + Math.floor(Math.random() * 40);
+      var mins = 5 + Math.floor(Math.random() * 25);
+      var ini = (p.nombre||'?').split(' ').map(function(x){return (x[0]||'').toUpperCase();}).join('').substring(0,2);
+      var fcMax = 220 - (p.edad || 60);
+      var pctFC = Math.round(fc / fcMax * 100);
+      var inZone = pctFC <= 75;
+      return '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);">' +
+        '<div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;">' + ini + '</div>' +
+        '<div style="flex:1;"><div style="font-size:12px;font-weight:600;">' + p.nombre + '</div><div style="font-size:10px;color:var(--text3);">' + ej.icon + ' ' + ej.n + ' | ' + mins + ' min</div></div>' +
+        '<div style="text-align:right;">' +
+          '<div style="font-size:14px;font-weight:700;color:' + (inZone ? 'var(--green2)' : 'var(--red2)') + ';">' + fc + ' <span style="font-size:10px;font-weight:400;">lpm</span></div>' +
+          '<div style="font-size:9px;color:' + (inZone ? 'var(--green2)' : 'var(--red2)') + ';">' + pctFC + '% FCM ' + (inZone ? 'En zona' : 'Fuera!') + '</div>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+}
+
+function prescribirPlan() {
+  showToast('Selecciona un paciente desde el modulo Pacientes para prescribir plan de rehabilitacion', 'info');
+}
+
+// Patch switchTab
+var _switchTabRehab = switchTab;
+switchTab = function(tab) {
+  _switchTabRehab(tab);
+  if (tab === 'rehab') setTimeout(initRehabModule, 200);
 };
 
 console.log('Cardio-IA Latam v11.4 cargado ✅');
