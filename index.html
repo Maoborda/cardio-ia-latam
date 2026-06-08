@@ -13305,6 +13305,100 @@ if (_mostrarResultUI_bio) {
 }
 
 
+
+// ===== FIX HISTORIAL: generar datos demo limpios =====
+function generarHistorialDemoLimpio() {
+  if (historialDB.length >= 10) return; // Ya tiene datos
+  var PACIENTES = pacientesData.map(function(p){ return p.nombre; });
+  var DIAGS = [
+    {d:'Normal (Ritmo Sinusal)',u:'NORMAL',c:95},
+    {d:'Normal (Ritmo Sinusal)',u:'NORMAL',c:92},
+    {d:'Fibrilacion Auricular',u:'URGENTE',c:88},
+    {d:'Fibrilacion Auricular',u:'URGENTE',c:91},
+    {d:'IAM Anterior',u:'CRITICO',c:94},
+    {d:'Bloqueo AV Tercer Grado',u:'CRITICO',c:87},
+    {d:'Bloqueo BCRD',u:'MODERADO',c:89},
+    {d:'Normal (Ritmo Sinusal)',u:'NORMAL',c:96},
+    {d:'Taquicardia Ventricular',u:'CRITICO',c:93},
+    {d:'Normal (Ritmo Sinusal)',u:'NORMAL',c:90},
+    {d:'Sindrome WPW',u:'URGENTE',c:85},
+    {d:'Normal (Ritmo Sinusal)',u:'NORMAL',c:97},
+    {d:'QT Prolongado',u:'URGENTE',c:86},
+    {d:'Bradicardia Sinusal',u:'MODERADO',c:91},
+    {d:'Normal (Ritmo Sinusal)',u:'NORMAL',c:94}
+  ];
+  var now = Date.now();
+  for (var i = 0; i < 50; i++) {
+    var diag = DIAGS[i % DIAGS.length];
+    var pac = PACIENTES[i % PACIENTES.length] || 'Paciente Demo';
+    var fecha = new Date(now - (i * 3600000 * (2 + Math.random() * 10)));
+    historialDB.push({
+      id: 'demo_' + i,
+      paciente_nombre: pac,
+      paciente: pac,
+      diagnostico: diag.d,
+      urgencia: diag.u,
+      confianza: diag.c + Math.random() * 5,
+      fecha: fecha.toISOString(),
+      firmado: Math.random() > 0.4,
+      fuente: ['archivo','maquina','wearable','fhir'][i%4],
+      fc: 60 + Math.floor(Math.random() * 40),
+      qt: 380 + Math.floor(Math.random() * 60)
+    });
+  }
+  guardarHistorialLocal();
+}
+
+// Ejecutar al cargar si historial está vacío o corrupto
+setTimeout(function() {
+  var corrupto = historialDB.length > 0 && historialDB.some(function(h) {
+    return (!h.paciente_nombre && !h.paciente) || !h.diagnostico;
+  });
+  if (historialDB.length === 0 || corrupto) {
+    historialDB = [];
+    generarHistorialDemoLimpio();
+  }
+}, 800);
+
+
+// ===== REHAB: datos demo enriquecidos =====
+var _initRehabOrig = initRehabModule;
+initRehabModule = function() {
+  _initRehabOrig();
+  // Mejorar KPIs con datos demo
+  var pacs = pacientesData.length;
+  setText('rehabTotal', Math.max(2, Math.floor(pacs * 0.4)));
+  setText('rehabSesiones', 1 + Math.floor(Math.random() * 3));
+  setText('rehabAlertas', Math.floor(Math.random() * 2));
+  setText('rehabAdherencia', (72 + Math.floor(Math.random() * 20)) + '%');
+  // Generar sesiones demo si no hay
+  var sesDiv = document.getElementById('rehabSesionesActivas');
+  if (sesDiv && pacientesData.length > 0) {
+    var EJERCICIOS = REHAB_EJERCICIOS || [{n:'Caminata',icon:'\ud83d\udeb6',int:'baja'}];
+    sesDiv.innerHTML = pacientesData.slice(0,3).map(function(p) {
+      var ej = EJERCICIOS[Math.floor(Math.random() * Math.min(8, EJERCICIOS.length))];
+      var fc = 85 + Math.floor(Math.random() * 45);
+      var mins = 8 + Math.floor(Math.random() * 22);
+      var fcMax = 220 - (p.edad || 55);
+      var pctFC = Math.round(fc / fcMax * 100);
+      var inZone = pctFC <= 72;
+      var ini = (p.nombre||'?').split(' ').map(function(x){return (x[0]||'').toUpperCase();}).join('').substring(0,2);
+      return '<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04);">' +
+        '<div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;">' + ini + '</div>' +
+        '<div style="flex:1;">' +
+          '<div style="font-size:13px;font-weight:600;">' + p.nombre + '</div>' +
+          '<div style="font-size:11px;color:var(--text3);">' + (ej.icon||'') + ' ' + (ej.n||'Ejercicio') + ' | ' + mins + ' min | Fase ' + (1 + Math.floor(Math.random()*3)) + '</div>' +
+        '</div>' +
+        '<div style="text-align:right;">' +
+          '<div style="font-size:16px;font-weight:700;color:' + (inZone ? 'var(--green2)' : 'var(--red2)') + ';">' + fc + ' <span style="font-size:10px;">lpm</span></div>' +
+          '<div style="font-size:10px;color:' + (inZone ? 'var(--green2)' : 'var(--red2)') + ';">' + pctFC + '% FCM ' + (inZone ? '\u2714 En zona' : '\u26a0 Fuera') + '</div>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+};
+
+
 console.log('Cardio-IA Latam v11.4 cargado ✅');
 
 
