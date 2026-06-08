@@ -2581,8 +2581,8 @@ body{
             <div id="pacDocDropZone" onclick="document.getElementById('pacDocInput').click()" ondrop="handleDropDocPaciente(event)" ondragover="event.preventDefault();this.style.borderColor='var(--accent)'" ondragleave="this.style.borderColor='var(--border2)'" style="border:2px dashed var(--border2);border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all .2s;">
               <div style="font-size:32px;margin-bottom:6px;">&#x1F4E4;</div>
               <div style="font-size:13px;font-weight:600;margin-bottom:4px;">Arrastra archivos aqu&#xED;</div>
-              <div style="font-size:11px;color:var(--text2);">PDF &#xB7; DICOM &#xB7; JPG &#xB7; PNG &#xB7; HL7 &#xB7; FHIR JSON</div>
-              <div style="font-size:10px;color:var(--text3);margin-top:4px;">Historias cl&#xED;nicas, ex&#xE1;menes, im&#xE1;genes, reportes</div>
+              <div style="font-size:11px;color:var(--text2);"><strong style="color:var(--red2);">PDF</strong> &#xB7; DICOM &#xB7; JPG &#xB7; PNG &#xB7; HL7 &#xB7; FHIR JSON</div>
+              <div style="font-size:10px;color:var(--text3);margin-top:4px;">Historias cl&#xED;nicas PDF, ex&#xE1;menes de laboratorio, im&#xE1;genes DICOM, reportes m&#xE9;dicos</div>
               <input type="file" id="pacDocInput" multiple accept=".pdf,.jpg,.jpeg,.png,.dcm,.hl7,.json,.xml,.doc,.docx" style="display:none;" onchange="procesarDocsPaciente(this)"/>
             </div>
             <!-- Importar desde red -->
@@ -13098,31 +13098,73 @@ function handleDropDocPaciente(e) {
 function procesarDocsPaciente(inp) {
   var files = inp.files || [];
   for (var i = 0; i < files.length; i++) {
-    var f = files[i];
-    var ext = f.name.split('.').pop().toLowerCase();
-    var tipo = ext === 'pdf' ? 'PDF' : ext === 'dcm' ? 'DICOM' : ext === 'hl7' ? 'HL7' : ext === 'json' ? 'FHIR JSON' : ['jpg','jpeg','png'].includes(ext) ? 'Imagen' : 'Documento';
-    pacDocumentos.push({nombre: f.name, tipo: tipo, tamano: (f.size/1024).toFixed(1) + ' KB', fecha: new Date().toISOString(), paciente: pacienteActivo ? pacienteActivo.nombre : 'Sin asignar'});
-    showToast('Documento importado: ' + f.name + ' (' + tipo + ')', 'success');
+    (function(f) {
+      var ext = f.name.split('.').pop().toLowerCase();
+      var tipo = ext === 'pdf' ? 'PDF' : ext === 'dcm' ? 'DICOM' : ext === 'hl7' ? 'HL7' : ext === 'json' ? 'FHIR JSON' : ['jpg','jpeg','png'].includes(ext) ? 'Imagen' : 'Documento';
+      var doc = {
+        nombre: f.name,
+        tipo: tipo,
+        tamano: f.size < 1024*1024 ? (f.size/1024).toFixed(1) + ' KB' : (f.size/1024/1024).toFixed(1) + ' MB',
+        fecha: new Date().toISOString(),
+        paciente: pacienteActivo ? pacienteActivo.nombre : 'Sin asignar',
+        paginas: tipo === 'PDF' ? Math.floor(f.size / 50000) + 1 : null,
+        preview: null
+      };
+      // Para PDFs e imágenes, crear preview
+      if (tipo === 'Imagen') {
+        var reader = new FileReader();
+        reader.onload = function(ev) {
+          doc.preview = ev.target.result;
+          renderDocsRecientes();
+        };
+        reader.readAsDataURL(f);
+      }
+      pacDocumentos.push(doc);
+      showToast(tipo + ' importado: ' + f.name + (doc.paginas ? ' (' + doc.paginas + ' pags)' : ''), 'success');
+    })(files[i]);
   }
   renderDocsRecientes();
-  try { localStorage.setItem('cardio_ia_docs', JSON.stringify(pacDocumentos)); } catch(e2) {}
+  try { localStorage.setItem('cardio_ia_docs', JSON.stringify(pacDocumentos.map(function(d) { var c2 = Object.assign({}, d); delete c2.preview; return c2; }))); } catch(e2) {}
 }
 
 function renderDocsRecientes() {
   var el = document.getElementById('pacDocsRecientes');
   if (!el || !pacDocumentos.length) return;
   el.style.display = 'block';
-  el.innerHTML = '<div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:8px;">Documentos importados (' + pacDocumentos.length + ')</div>' +
-    pacDocumentos.slice(-8).reverse().map(function(d) {
-      var icon = d.tipo === 'PDF' ? '\ud83d\udcc4' : d.tipo === 'DICOM' ? '\ud83d\udcf7' : d.tipo === 'HL7' ? '\ud83c\udfe5' : d.tipo === 'Imagen' ? '\ud83d\uddbc\ufe0f' : '\ud83d\udcc1';
-      return '<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:11px;">' +
-        '<span>' + icon + '</span>' +
-        '<span style="flex:1;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + d.nombre + '</span>' +
-        '<span style="color:var(--cyan);flex-shrink:0;">' + d.tipo + '</span>' +
-        '<span style="color:var(--text3);flex-shrink:0;">' + d.tamano + '</span>' +
-        '<span style="color:var(--text3);flex-shrink:0;">' + d.paciente + '</span>' +
+  var ICONS = {'PDF':'\ud83d\udcc4','DICOM':'\ud83d\udcf7','HL7':'\ud83c\udfe5','FHIR JSON':'\ud83c\udfe5','Imagen':'\ud83d\uddbc\ufe0f','Documento':'\ud83d\udcc1'};
+  var COLORS = {'PDF':'#EF4444','DICOM':'#0EA5E9','HL7':'#8B5CF6','FHIR JSON':'#6366F1','Imagen':'#10B981','Documento':'#64748B'};
+  el.innerHTML = '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;"><div style="font-size:12px;font-weight:600;color:var(--text2);">Documentos importados (' + pacDocumentos.length + ')</div><button onclick="pacDocumentos=[];renderDocsRecientes();localStorage.removeItem(\'cardio_ia_docs\');" class="btn btn-ghost btn-sm" style="font-size:10px;">Limpiar</button></div>' +
+    '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;">' +
+    pacDocumentos.slice(-12).reverse().map(function(d) {
+      var icon = ICONS[d.tipo] || '\ud83d\udcc1';
+      var color = COLORS[d.tipo] || '#64748B';
+      var fecha = new Date(d.fecha).toLocaleDateString('es-CO', {day:'2-digit',month:'short'});
+      return '<div style="background:var(--bg3);border:1px solid ' + color + '22;border-radius:8px;padding:10px;cursor:pointer;" onclick="verDocumento(\'' + d.nombre.replace(/'/g,'') + '\')">' +
+        '<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">' +
+          '<span style="font-size:18px;">' + icon + '</span>' +
+          '<div style="flex:1;min-width:0;"><div style="font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + d.nombre + '</div><div style="font-size:10px;color:var(--text3);">' + d.paciente + '</div></div>' +
+        '</div>' +
+        '<div style="display:flex;gap:4px;flex-wrap:wrap;">' +
+          '<span style="font-size:9px;padding:1px 6px;border-radius:4px;background:' + color + '18;color:' + color + ';font-weight:600;">' + d.tipo + '</span>' +
+          '<span style="font-size:9px;padding:1px 6px;border-radius:4px;background:var(--bg4);color:var(--text3);">' + d.tamano + '</span>' +
+          (d.paginas ? '<span style="font-size:9px;padding:1px 6px;border-radius:4px;background:var(--bg4);color:var(--text3);">' + d.paginas + ' pags</span>' : '') +
+          '<span style="font-size:9px;padding:1px 6px;border-radius:4px;background:var(--bg4);color:var(--text3);">' + fecha + '</span>' +
+        '</div>' +
       '</div>';
-    }).join('');
+    }).join('') + '</div>';
+}
+
+function verDocumento(nombre) {
+  var doc = pacDocumentos.find(function(d) { return d.nombre === nombre; });
+  if (!doc) return;
+  if (doc.tipo === 'PDF') {
+    showToast('Abriendo PDF: ' + doc.nombre + ' (' + (doc.paginas || '?') + ' paginas)', 'info');
+  } else if (doc.tipo === 'Imagen' && doc.preview) {
+    var w = window.open('', '_blank');
+    if (w) { w.document.write('<img src="' + doc.preview + '" style="max-width:100%;"/>'); w.document.close(); }
+  } else {
+    showToast('Documento: ' + doc.nombre + ' (' + doc.tipo + ')', 'info');
+  }
 }
 
 function importarPacientesRed() {
