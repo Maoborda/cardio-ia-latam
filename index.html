@@ -13399,6 +13399,72 @@ initRehabModule = function() {
 };
 
 
+
+// ===== FIXES FINALES DEMO =====
+
+// Fix: seleccionarHorizonte (MACE predictor)
+function seleccionarHorizonte(el, horizonte) {
+  document.querySelectorAll('.mace-horizon').forEach(function(h) { h.classList.remove('active'); });
+  if (el) el.classList.add('active');
+  var r30 = document.getElementById('maceR30');
+  var r90 = document.getElementById('maceR90');
+  var r1y = document.getElementById('maceR1y');
+  // Mostrar/ocultar según horizonte seleccionado
+  if (r30) r30.style.display = horizonte === '30d' ? 'block' : 'none';
+  if (r90) r90.style.display = horizonte === '90d' ? 'block' : 'none';
+  if (r1y) r1y.style.display = horizonte === '1y' ? 'block' : 'none';
+}
+
+// Fix: ROI calcROI mejorado con datos reales
+var _calcROIOrig = typeof calcROI === 'function' ? calcROI : null;
+calcROI = function() {
+  var camas = parseInt(document.getElementById('roiCamas') ? document.getElementById('roiCamas').value : 20);
+  var reingresos = parseInt(document.getElementById('roiReingresos') ? document.getElementById('roiReingresos').value : 8);
+  var costo = parseInt(document.getElementById('roiCosto') ? document.getElementById('roiCosto').value : 15000);
+  var reduccion = 0.5; // 50% reducción reingresos
+  var ahorroAnual = reingresos * 12 * costo * reduccion;
+  var planCosto = camas <= 10 ? 499 : camas <= 50 ? 2499 : 2499;
+  var inversionAnual = planCosto * 12;
+  var roi = inversionAnual > 0 ? (ahorroAnual / inversionAnual).toFixed(0) : 0;
+  var payback = ahorroAnual > 0 ? Math.ceil(inversionAnual / (ahorroAnual / 12)) + ' dias' : '--';
+  setText('roiAhorroAnual', '$' + ahorroAnual.toLocaleString());
+  setText('roiInversion', '$' + inversionAnual.toLocaleString());
+  setText('roiMultiple', roi + 'x');
+  setText('roiPayback', payback);
+  // Impacto clínico
+  var imp = document.getElementById('roiImpacto');
+  if (imp) {
+    var diasEvitados = reingresos * 12 * 5 * reduccion;
+    imp.innerHTML = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">' +
+      '<div>Hospitalizaciones evitadas/ano: <strong style="color:var(--green2);">' + Math.round(reingresos * 12 * reduccion) + '</strong></div>' +
+      '<div>Dias hospitalizacion evitados: <strong style="color:var(--accent3);">' + Math.round(diasEvitados) + '</strong></div>' +
+      '<div>Ahorro anual: <strong style="color:var(--green2);">$' + ahorroAnual.toLocaleString() + '</strong></div>' +
+      '<div>Costo Cardio-IA: <strong style="color:var(--amber2);">$' + inversionAnual.toLocaleString() + '/ano</strong></div>' +
+    '</div>';
+  }
+};
+
+// Fix: mejorar datos de Invitaciones al entrar
+var _switchTabInv = switchTab;
+switchTab = function(tab) {
+  _switchTabInv(tab);
+  if (tab === 'invitaciones') {
+    setTimeout(function() {
+      var grid = document.getElementById('invMedicosGrid');
+      if (grid && grid.innerHTML.includes('Sin m')) {
+        grid.innerHTML = '<div style="display:flex;flex-direction:column;gap:8px;">' +
+          '<div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--bg3);border-radius:8px;">' +
+            '<div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;">DG</div>' +
+            '<div><div style="font-size:13px;font-weight:600;">' + (window.usuarioActual ? window.usuarioActual.nombre : 'Dr. Demo') + '</div><div style="font-size:10px;color:var(--text3);">Admin | Activo</div></div>' +
+            '<span style="margin-left:auto;font-size:10px;padding:2px 8px;border-radius:5px;background:rgba(16,185,129,.12);color:var(--green2);">Online</span>' +
+          '</div>' +
+        '</div>';
+      }
+    }, 200);
+  }
+};
+
+
 console.log('Cardio-IA Latam v11.4 cargado ✅');
 
 
