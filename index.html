@@ -2659,6 +2659,67 @@ body{
     </div>
   </div>
 
+    <!-- BARRA DE CONECTIVIDAD EN TIEMPO REAL -->
+    <div class="card" style="margin-bottom:14px;border-color:rgba(99,102,241,.25);background:linear-gradient(145deg,rgba(6,9,18,.95),rgba(15,23,42,.95));">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+        <div>
+          <div style="font-size:14px;font-weight:700;">&#x1F4E1; Transmisi&#xF3;n de datos en tiempo real</div>
+          <div style="font-size:11px;color:var(--text3);">Dispositivos conectados al dashboard m&#xE9;dico</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span class="live-dot"></span>
+          <span style="font-size:11px;color:var(--green2);font-weight:600;" id="monDevicesOnline">0 online</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:12px;">
+        <div onclick="monSelectDevice('smartwatch')" style="background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.25);border-radius:10px;padding:10px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='none'">
+          <div style="font-size:24px;margin-bottom:4px;">&#x231A;</div>
+          <div style="font-size:10px;font-weight:600;">Smartwatch</div>
+          <div style="font-size:9px;color:var(--green2);margin-top:2px;" id="monDevSmartwatchStatus">0 conectados</div>
+        </div>
+        <div onclick="monSelectDevice('tablet')" style="background:rgba(37,99,235,.08);border:1px solid rgba(37,99,235,.25);border-radius:10px;padding:10px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='none'">
+          <div style="font-size:24px;margin-bottom:4px;">&#x1F4F1;</div>
+          <div style="font-size:10px;font-weight:600;">Tablet</div>
+          <div style="font-size:9px;color:var(--accent3);margin-top:2px;">App paciente</div>
+        </div>
+        <div onclick="monSelectDevice('celular')" style="background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.25);border-radius:10px;padding:10px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='none'">
+          <div style="font-size:24px;margin-bottom:4px;">&#x1F4F2;</div>
+          <div style="font-size:10px;font-weight:600;">Celular</div>
+          <div style="font-size:9px;color:var(--purple2);margin-top:2px;">iOS + Android</div>
+        </div>
+        <div onclick="monSelectDevice('pc')" style="background:rgba(14,165,233,.08);border:1px solid rgba(14,165,233,.25);border-radius:10px;padding:10px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='none'">
+          <div style="font-size:24px;margin-bottom:4px;">&#x1F4BB;</div>
+          <div style="font-size:10px;font-weight:600;">PC / Mac</div>
+          <div style="font-size:9px;color:var(--cyan);margin-top:2px;">Dashboard web</div>
+        </div>
+        <div onclick="monSelectDevice('ecg')" style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:10px;padding:10px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='none'">
+          <div style="font-size:24px;margin-bottom:4px;">&#x1FAC0;</div>
+          <div style="font-size:10px;font-weight:600;">M&#xE1;quina ECG</div>
+          <div style="font-size:9px;color:var(--amber2);margin-top:2px;">12 marcas</div>
+        </div>
+        <div onclick="monSelectDevice('cloud')" style="background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.25);border-radius:10px;padding:10px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='none'">
+          <div style="font-size:24px;margin-bottom:4px;">&#x2601;&#xFE0F;</div>
+          <div style="font-size:10px;font-weight:600;">Cloud Run</div>
+          <div style="font-size:9px;color:var(--green2);margin-top:2px;">API activa</div>
+        </div>
+      </div>
+      <div style="background:var(--bg3);border-radius:10px;padding:10px;display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap;font-size:11px;">
+        <span style="color:var(--green2);">&#x231A; Wearable</span>
+        <span style="color:var(--text3);margin:0 6px;">&#x2192;</span>
+        <span style="color:var(--purple2);">&#x1F4F2; App Paciente</span>
+        <span style="color:var(--text3);margin:0 6px;">&#x2192;</span>
+        <span style="color:var(--cyan);">Bluetooth LE / WiFi</span>
+        <span style="color:var(--text3);margin:0 6px;">&#x2192;</span>
+        <span style="color:var(--accent3);">&#x2601;&#xFE0F; Cloud Run API</span>
+        <span style="color:var(--text3);margin:0 6px;">&#x2192;</span>
+        <span style="color:var(--amber2);">&#x1F9E0; IA + MACE</span>
+        <span style="color:var(--text3);margin:0 6px;">&#x2192;</span>
+        <span style="color:var(--green2);">&#x1F4BB; Dashboard</span>
+        <span style="color:var(--text3);margin:0 6px;">&#x2192;</span>
+        <span style="color:var(--red2);">&#x1F6A8; Alerta &lt;10s</span>
+      </div>
+    </div>
+
   <!-- ====== GRID PRINCIPAL: Pacientes + Timeline Alertas ====== -->
   <div style="display:grid;grid-template-columns:1.6fr 1fr;gap:14px;margin-bottom:14px;">
 
@@ -14037,6 +14098,28 @@ switchTab = function(tab) {
   }
 };
 
+
+
+// ═══ MONITOREO: Botones de dispositivo ═══
+function monSelectDevice(tipo) {
+  var msgs = {
+    smartwatch: 'Smartwatch: Apple Watch Series 9, Samsung Galaxy Watch 6, Wear OS Pixel Watch 2. Transmiten ECG + FC + SpO2 + HRV via Bluetooth LE a la app del paciente.',
+    tablet: 'Tablet: App del paciente para iOS (iPad) y Android. Muestra vitales en tiempo real, alertas y permite iniciar sesiones de rehabilitacion.',
+    celular: 'Celular: App del paciente para iPhone y Android. Hub central que recibe datos del wearable via Bluetooth y los envia a Cloud Run via WiFi/4G.',
+    pc: 'PC/Mac: Dashboard medico web (esta pantalla). Acceso completo a monitoreo, diagnosticos, historial y configuracion. Responsive para cualquier navegador.',
+    ecg: 'Maquina ECG: 12 marcas certificadas (GE, Philips, Nihon Kohden, Schiller, Mortara, Edan...). Conexion via Gateway Agent USB/WiFi o API REST directa.',
+    cloud: 'Google Cloud Run: API REST 24/7 con auto-scaling. Recibe datos de todos los dispositivos, ejecuta IA + Predictor MACE, y distribuye alertas via WebSocket en <10 segundos.'
+  };
+  showToast(msgs[tipo] || 'Dispositivo: ' + tipo, 'info', 5000);
+}
+
+// Actualizar contador de dispositivos online
+function updateMonDeviceCount() {
+  var online = pacientesData.filter(function(p) { return p.monitoreo_activo && p.smartwatch_tipo; }).length;
+  setText('monDevicesOnline', online + ' dispositivos online');
+  setText('monDevSmartwatchStatus', online + ' conectados');
+}
+setTimeout(updateMonDeviceCount, 2500);
 
 console.log('Cardio-IA Latam v11.4 cargado ✅');
 
