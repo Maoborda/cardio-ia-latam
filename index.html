@@ -2571,12 +2571,6 @@ body{
         </div>
 
         
-    <!-- TABS de monitoreo -->
-    <div style="display:flex;gap:6px;margin-bottom:14px;">
-      <button class="btn btn-primary btn-sm" id="monTabLive" onclick="monSwitchSub('live')" style="font-size:11px;">&#x1F4C8; Pacientes en vivo</button>
-      <button class="btn btn-ghost btn-sm" id="monTabDevices" onclick="monSwitchSub('devices')" style="font-size:11px;">&#x1F4F1; Dispositivos y conectividad</button>
-      <button class="btn btn-ghost btn-sm" id="monTabConfig" onclick="monSwitchSub('config')" style="font-size:11px;">&#x2699;&#xFE0F; Configuraci&#xF3;n</button>
-    </div>
 
 <!-- Zona de importaci&#xF3;n de documentos -->
         <div class="card" style="margin-bottom:14px;border-color:rgba(37,99,235,.2);background:rgba(37,99,235,.02);">
@@ -2738,7 +2732,7 @@ body{
       <div class="card-hd" style="margin-bottom:12px;">
         
   <div class="mon-sub-section mon-sub-config" style="display:none;">
-  <div class="card monConfigSection" style="display:none;"><div class="card-title">&#x2699;&#xFE0F; Umbrales de alerta personalizados</div>
+  <div class="card" style="margin-top:14px;"><div class="card-title">&#x2699;&#xFE0F; Umbrales de alerta personalizados</div>
         <button class="btn btn-ghost btn-sm" onclick="guardarUmbrales()">&#x1F4BE; Guardar</button>
       </div>
       <div style="font-size:11px;color:var(--text2);margin-bottom:10px;">Define cu&#xE1;ndo el sistema genera alertas autom&#xE1;ticas. Se aplican a todos los pacientes monitoreados.</div>
@@ -2767,7 +2761,7 @@ body{
   </div>
 
   <!-- ====== DISPOSITIVOS COMPATIBLES ====== -->
-  <div class="card monDevicesSection" style="margin-top:14px;display:none;">
+  <div class="card" style="margin-top:14px;">
     <div class="card-title" style="margin-bottom:12px;">&#x1F4F1; Dispositivos y app del paciente</div>
     <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;">
       <div style="background:var(--bg4);border-radius:10px;padding:12px;text-align:center;"><div style="font-size:24px;margin-bottom:4px;">&#x1F34E;</div><div style="font-size:11px;font-weight:600;">Apple Watch</div><div style="font-size:9px;color:var(--text3);">Series 4+</div><div style="font-size:9px;padding:2px 6px;border-radius:5px;background:rgba(16,185,129,.1);color:var(--green2);margin-top:4px;display:inline-block;">ECG + FC + SpO2</div></div>
@@ -2783,7 +2777,7 @@ body{
   </div>
 
   <!-- ====== CENTRO DE CONECTIVIDAD ====== -->
-  <div class="card monDevicesSection" style="margin-top:14px;border-color:rgba(99,102,241,.25);background:linear-gradient(145deg,rgba(6,9,18,1),rgba(10,15,32,1));">
+  <div class="card" style="margin-top:14px;border-color:rgba(99,102,241,.25);background:linear-gradient(145deg,rgba(6,9,18,1),rgba(10,15,32,1));">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
       <div>
         <div style="font-size:16px;font-weight:700;color:#f8fafc;">&#x1F517; Centro de conectividad</div>
