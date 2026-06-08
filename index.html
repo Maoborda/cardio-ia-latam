@@ -1961,6 +1961,112 @@ body{
 
 </div><!-- end panel-perfil -->
 
+<!-- ===== ORGANIZACIÓN ===== -->
+      <div class="panel" id="panel-organizacion">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+          <div><div style="font-size:20px;font-weight:700;">&#x1F3E2; Organizaci&#xF3;n</div><div style="font-size:12px;color:var(--text2);">Configuraci&#xF3;n de cuenta, certificaciones y Cloud Run</div></div>
+          <button class="btn btn-ghost btn-sm" onclick="exportarCertificadoPDF()">&#x1F4C4; Exportar PDF</button>
+        </div>
+
+        <!-- KPIs -->
+        <div class="g4" style="margin-bottom:14px;">
+          <div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Plan activo</div><div class="stat-val" id="orgPlanNombre" style="color:var(--accent3);font-size:18px;">Demo</div></div>
+          <div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">M&#xE9;dicos</div><div class="stat-val" id="orgMedicos" style="color:var(--green2);">1</div></div>
+          <div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">ECGs este mes</div><div class="stat-val" id="orgECGsMes" style="color:var(--cyan);">0</div></div>
+          <div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Cloud Run</div><div class="stat-val" style="color:var(--green2);font-size:16px;">&#x2705; Activo</div></div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+          <!-- Datos de la organización -->
+          <div class="card">
+            <div class="card-title" style="margin-bottom:10px;">Datos de la organizaci&#xF3;n</div>
+            <div style="display:grid;gap:8px;">
+              <div><label style="font-size:10px;color:var(--text3);display:block;margin-bottom:2px;">Nombre</label><input class="form-input" id="orgNombre" placeholder="Nombre de la cl&#xED;nica" style="font-size:12px;"/></div>
+              <div><label style="font-size:10px;color:var(--text3);display:block;margin-bottom:2px;">NIT / RUC / RFC</label><input class="form-input" id="orgNIT" placeholder="Identificaci&#xF3;n fiscal" style="font-size:12px;"/></div>
+              <div><label style="font-size:10px;color:var(--text3);display:block;margin-bottom:2px;">Pa&#xED;s</label>
+                <select class="form-select" id="orgPais" style="font-size:12px;">
+                  <option value="CO">Colombia</option><option value="MX">M&#xE9;xico</option><option value="BR">Brasil</option>
+                  <option value="AR">Argentina</option><option value="CL">Chile</option><option value="PE">Per&#xFA;</option>
+                  <option value="CR">Costa Rica</option><option value="PA">Panam&#xE1;</option>
+                </select>
+              </div>
+              <div><label style="font-size:10px;color:var(--text3);display:block;margin-bottom:2px;">Direcci&#xF3;n</label><input class="form-input" id="orgDireccion" placeholder="Direcci&#xF3;n" style="font-size:12px;"/></div>
+              <button class="btn btn-primary btn-sm" onclick="guardarOrganizacion()" style="margin-top:4px;">Guardar</button>
+            </div>
+          </div>
+
+          <!-- Cloud Run + API -->
+          <div class="card">
+            <div class="card-title" style="margin-bottom:10px;">&#x2601;&#xFE0F; Google Cloud Run</div>
+            <div style="background:var(--bg4);border-radius:8px;padding:10px;margin-bottom:8px;">
+              <div style="font-size:10px;color:var(--text3);margin-bottom:4px;">API Endpoint</div>
+              <div style="font-size:11px;font-family:'DM Mono',monospace;color:var(--green2);word-break:break-all;">https://cardio-ia-latam-120778240410.us-central1.run.app</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px;">
+              <div style="background:var(--bg4);border-radius:6px;padding:8px;text-align:center;"><div style="font-size:14px;font-weight:700;color:var(--green2);">99.9%</div><div style="font-size:9px;color:var(--text3);">Uptime</div></div>
+              <div style="background:var(--bg4);border-radius:6px;padding:8px;text-align:center;"><div style="font-size:14px;font-weight:700;color:var(--cyan);">&lt;100ms</div><div style="font-size:9px;color:var(--text3);">Latencia</div></div>
+            </div>
+            <button class="btn btn-ghost btn-sm" onclick="probarCloudRun()" style="width:100%;">&#x1F50D; Probar conexi&#xF3;n</button>
+          </div>
+        </div>
+
+        <!-- Certificaciones por país -->
+        <div class="card" style="margin-top:14px;">
+          <div class="card-title" style="margin-bottom:12px;">&#x1F3C5; Certificaciones por pa&#xED;s</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+            <div style="background:var(--bg4);border-radius:8px;padding:10px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;"><span style="font-size:12px;font-weight:600;">Colombia</span><span style="font-size:12px;font-weight:700;color:var(--green2);">85%</span></div>
+              <div style="background:var(--bg5);border-radius:4px;height:6px;overflow:hidden;"><div style="width:85%;height:100%;background:var(--green2);border-radius:4px;"></div></div>
+              <div style="font-size:9px;color:var(--text3);margin-top:4px;">INVIMA | Ley 1581 | Ley 2015</div>
+            </div>
+            <div style="background:var(--bg4);border-radius:8px;padding:10px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;"><span style="font-size:12px;font-weight:600;">M&#xE9;xico</span><span style="font-size:12px;font-weight:700;color:var(--accent3);">70%</span></div>
+              <div style="background:var(--bg5);border-radius:4px;height:6px;overflow:hidden;"><div style="width:70%;height:100%;background:var(--accent3);border-radius:4px;"></div></div>
+              <div style="font-size:9px;color:var(--text3);margin-top:4px;">COFEPRIS | LFPDPPP | NOM-024</div>
+            </div>
+            <div style="background:var(--bg4);border-radius:8px;padding:10px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;"><span style="font-size:12px;font-weight:600;">Brasil</span><span style="font-size:12px;font-weight:700;color:var(--amber2);">65%</span></div>
+              <div style="background:var(--bg5);border-radius:4px;height:6px;overflow:hidden;"><div style="width:65%;height:100%;background:var(--amber2);border-radius:4px;"></div></div>
+              <div style="font-size:9px;color:var(--text3);margin-top:4px;">ANVISA | LGPD | CFM 2.314</div>
+            </div>
+            <div style="background:var(--bg4);border-radius:8px;padding:10px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;"><span style="font-size:12px;font-weight:600;">Argentina</span><span style="font-size:12px;font-weight:700;color:var(--red2);">60%</span></div>
+              <div style="background:var(--bg5);border-radius:4px;height:6px;overflow:hidden;"><div style="width:60%;height:100%;background:var(--red2);border-radius:4px;"></div></div>
+              <div style="font-size:9px;color:var(--text3);margin-top:4px;">ANMAT | Ley 25.326</div>
+            </div>
+            <div style="background:var(--bg4);border-radius:8px;padding:10px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;"><span style="font-size:12px;font-weight:600;">Chile</span><span style="font-size:12px;font-weight:700;color:var(--cyan);">55%</span></div>
+              <div style="background:var(--bg5);border-radius:4px;height:6px;overflow:hidden;"><div style="width:55%;height:100%;background:var(--cyan);border-radius:4px;"></div></div>
+              <div style="font-size:9px;color:var(--text3);margin-top:4px;">ISP | Ley 19.628 | Ley 20.584</div>
+            </div>
+            <div style="background:var(--bg4);border-radius:8px;padding:10px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;"><span style="font-size:12px;font-weight:600;">Per&#xFA;</span><span style="font-size:12px;font-weight:700;color:var(--purple2);">55%</span></div>
+              <div style="background:var(--bg5);border-radius:4px;height:6px;overflow:hidden;"><div style="width:55%;height:100%;background:var(--purple2);border-radius:4px;"></div></div>
+              <div style="font-size:9px;color:var(--text3);margin-top:4px;">DIGEMID | Ley 29733 | DS 009</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Estándares internacionales -->
+        <div class="card" style="margin-top:14px;">
+          <div class="card-title" style="margin-bottom:8px;">&#x1F512; Est&#xE1;ndares internacionales</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;">
+            <span style="padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;background:rgba(16,185,129,.1);color:var(--green2);">HIPAA</span>
+            <span style="padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;background:rgba(16,185,129,.1);color:var(--green2);">GDPR</span>
+            <span style="padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;background:rgba(16,185,129,.1);color:var(--green2);">IEC 62304</span>
+            <span style="padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;background:rgba(16,185,129,.1);color:var(--green2);">HL7 FHIR R4</span>
+            <span style="padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;background:rgba(16,185,129,.1);color:var(--green2);">DICOM</span>
+            <span style="padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;background:rgba(16,185,129,.1);color:var(--green2);">AES-256</span>
+            <span style="padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;background:rgba(16,185,129,.1);color:var(--green2);">TLS 1.3</span>
+            <span style="padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;background:rgba(16,185,129,.1);color:var(--green2);">SaMD Clase II</span>
+            <span style="padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;background:rgba(245,158,11,.1);color:var(--amber2);">ISO 13485 (en proceso)</span>
+            <span style="padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;background:rgba(245,158,11,.1);color:var(--amber2);">ISO 14971 (en proceso)</span>
+            <span style="padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;background:rgba(245,158,11,.1);color:var(--amber2);">FDA 510(k) (futuro)</span>
+          </div>
+        </div>
+
+      </div><!-- end panel-organizacion -->
+
 <!-- ===== ANALIZAR ECG ===== -->
       <div class="panel" id="panel-analizar">
 
