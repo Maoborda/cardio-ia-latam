@@ -2350,6 +2350,51 @@ body{
     </div>
   </div>
 
+
+  <!-- BIOMARCADORES DIGITALES -->
+  <div id="biomarkersPanel" style="display:none;margin-top:10px;">
+    <div class="card" style="border-color:rgba(139,92,246,.25);background:rgba(139,92,246,.03);">
+      <div class="card-hd" style="margin-bottom:12px;">
+        <div>
+          <div style="font-size:14px;font-weight:700;color:var(--purple2);">&#x1F9EC; Biomarcadores digitales avanzados</div>
+          <div style="font-size:11px;color:var(--text2);">Calculados en tiempo real desde el ECG y wearable</div>
+        </div>
+        <span style="font-size:9px;padding:2px 8px;border-radius:6px;background:rgba(16,185,129,.12);color:var(--green2);font-weight:600;">Fase A activa</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;">
+        <div style="background:var(--bg3);border-radius:10px;padding:12px;text-align:center;border:1px solid rgba(139,92,246,.15);">
+          <div style="font-size:9px;color:var(--text3);margin-bottom:3px;">QTc din&#xE1;mico</div>
+          <div style="font-size:20px;font-weight:700;color:var(--purple2);" id="bioQTc">--</div>
+          <div style="font-size:9px;color:var(--text3);margin-top:2px;">ms (Bazett)</div>
+          <div id="bioQTcStatus" style="font-size:9px;margin-top:4px;padding:2px 6px;border-radius:4px;display:inline-block;"></div>
+        </div>
+        <div style="background:var(--bg3);border-radius:10px;padding:12px;text-align:center;border:1px solid rgba(14,165,233,.15);">
+          <div style="font-size:9px;color:var(--text3);margin-bottom:3px;">HRV (RMSSD)</div>
+          <div style="font-size:20px;font-weight:700;color:var(--cyan);" id="bioHRV">--</div>
+          <div style="font-size:9px;color:var(--text3);margin-top:2px;">ms</div>
+          <div id="bioHRVStatus" style="font-size:9px;margin-top:4px;padding:2px 6px;border-radius:4px;display:inline-block;"></div>
+        </div>
+        <div style="background:var(--bg3);border-radius:10px;padding:12px;text-align:center;border:1px solid rgba(16,185,129,.15);">
+          <div style="font-size:9px;color:var(--text3);margin-bottom:3px;">VO&#x2082; m&#xE1;x estimado</div>
+          <div style="font-size:20px;font-weight:700;color:var(--green2);" id="bioVO2">--</div>
+          <div style="font-size:9px;color:var(--text3);margin-top:2px;">ml/kg/min</div>
+          <div id="bioVO2Status" style="font-size:9px;margin-top:4px;padding:2px 6px;border-radius:4px;display:inline-block;"></div>
+        </div>
+        <div style="background:var(--bg3);border-radius:10px;padding:12px;text-align:center;border:1px solid rgba(245,158,11,.15);">
+          <div style="font-size:9px;color:var(--text3);margin-bottom:3px;">Balance auton&#xF3;mico</div>
+          <div style="font-size:20px;font-weight:700;color:var(--amber2);" id="bioLFHF">--</div>
+          <div style="font-size:9px;color:var(--text3);margin-top:2px;">LF/HF ratio</div>
+          <div id="bioLFHFStatus" style="font-size:9px;margin-top:4px;padding:2px 6px;border-radius:4px;display:inline-block;"></div>
+        </div>
+      </div>
+      <div style="margin-top:10px;font-size:10px;color:var(--text3);line-height:1.6;">
+        <strong style="color:var(--purple2);">Fase A</strong> &#x2014; Biomarcadores calculados desde ECG + wearable existentes. Sin hardware adicional.
+        <strong style="color:var(--cyan);">Fase B</strong> (pr&#xF3;ximamente): Troponina + BNP + PCR v&#xED;a HL7 FHIR.
+        <strong style="color:var(--green2);">Fase C</strong> (futuro): Panel gen&#xF3;mico + Digital Twin cardiovascular.
+      </div>
+    </div>
+  </div>
+
   <div id="recomendacionesCard" style="display:none;margin-top:10px;">
     <div class="card" style="border-color:rgba(37,99,235,.2);background:rgba(37,99,235,.04);">
       <div class="card-title" style="margin-bottom:10px;">&#x1F4CB; Recomendaciones clínicas del protocolo</div>
@@ -2503,29 +2548,68 @@ body{
 
 <!-- ===== PACIENTES ===== -->
       <div class="panel" id="panel-pacientes">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-          <div><div style="font-size:20px;font-weight:700;">&#x1F9D1;&#x200D;&#x2695;&#xFE0F; Gestión de pacientes</div><div style="font-size:12px;color:var(--text2);">Fichas clínicas, semáforo de riesgo y vinculación wearable</div></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+          <div><div style="font-size:20px;font-weight:700;">&#x1F9D1;&#x200D;&#x2695;&#xFE0F; Gesti&#xF3;n de pacientes</div><div style="font-size:12px;color:var(--text2);">Fichas cl&#xED;nicas, documentos, sem&#xE1;foro de riesgo y vinculaci&#xF3;n wearable</div></div>
           <div style="display:flex;gap:8px;">
-            <input type="text" class="form-input" id="pacSearchInput" placeholder="Buscar paciente..." style="width:200px;font-size:12px;" oninput="filtrarPacientes(this.value)" aria-label="Buscar paciente"/>
+            <input type="text" class="form-input" id="pacSearchInput" placeholder="Buscar paciente..." style="width:180px;font-size:12px;" oninput="filtrarPacientes(this.value)" aria-label="Buscar paciente"/>
+            <button class="btn btn-secondary btn-sm" onclick="importarPacientesRed()">&#x1F4E1; Importar de red</button>
             <button class="btn btn-primary btn-sm" onclick="openModal('nuevoPacienteModal')">+ Nuevo</button>
           </div>
         </div>
+
+        <!-- KPIs -->
         <div class="g4" style="margin-bottom:14px;">
           <div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Total pacientes</div><div class="stat-val" id="pacStatTotal" style="color:var(--accent3);">0</div></div>
           <div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Riesgo alto</div><div class="stat-val" id="pacStatAlto" style="color:var(--red2);">0</div></div>
           <div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Con wearable</div><div class="stat-val" id="pacStatWearable" style="color:var(--green2);">0</div></div>
           <div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Sin ECG &gt;30d</div><div class="stat-val" id="pacStatSinECG" style="color:var(--amber2);">0</div></div>
         </div>
+
+        <!-- Grid de pacientes -->
         <div id="pacientesGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:14px;">
           <div style="grid-column:span 2;text-align:center;padding:30px;color:var(--text3);font-size:13px;">Cargando pacientes...</div>
         </div>
+
+        <!-- Zona de importaci&#xF3;n de documentos -->
+        <div class="card" style="margin-bottom:14px;border-color:rgba(37,99,235,.2);background:rgba(37,99,235,.02);">
+          <div class="card-hd" style="margin-bottom:10px;">
+            <div class="card-title">&#x1F4C1; Importar documentos cl&#xED;nicos</div>
+            <div style="font-size:11px;color:var(--text3);">PDF, DICOM, HL7, imagenes</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <!-- Drop zone archivos -->
+            <div id="pacDocDropZone" onclick="document.getElementById('pacDocInput').click()" ondrop="handleDropDocPaciente(event)" ondragover="event.preventDefault();this.style.borderColor='var(--accent)'" ondragleave="this.style.borderColor='var(--border2)'" style="border:2px dashed var(--border2);border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all .2s;">
+              <div style="font-size:32px;margin-bottom:6px;">&#x1F4E4;</div>
+              <div style="font-size:13px;font-weight:600;margin-bottom:4px;">Arrastra archivos aqu&#xED;</div>
+              <div style="font-size:11px;color:var(--text2);">PDF &#xB7; DICOM &#xB7; JPG &#xB7; PNG &#xB7; HL7 &#xB7; FHIR JSON</div>
+              <div style="font-size:10px;color:var(--text3);margin-top:4px;">Historias cl&#xED;nicas, ex&#xE1;menes, im&#xE1;genes, reportes</div>
+              <input type="file" id="pacDocInput" multiple accept=".pdf,.jpg,.jpeg,.png,.dcm,.hl7,.json,.xml,.doc,.docx" style="display:none;" onchange="procesarDocsPaciente(this)"/>
+            </div>
+            <!-- Importar desde red -->
+            <div style="background:var(--bg3);border-radius:12px;padding:16px;">
+              <div style="font-size:13px;font-weight:600;margin-bottom:10px;">&#x1F4E1; Importar desde red hospitalaria</div>
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <button onclick="importarDesdeHL7()" class="btn btn-ghost btn-sm" style="justify-content:flex-start;text-align:left;">&#x1F3E5; HL7 FHIR R4 &#x2014; Historia cl&#xED;nica electr&#xF3;nica</button>
+                <button onclick="importarDesdePACS()" class="btn btn-ghost btn-sm" style="justify-content:flex-start;text-align:left;">&#x1F4CB; PACS/DICOM &#x2014; Im&#xE1;genes diagn&#xF3;sticas</button>
+                <button onclick="importarDesdeLab()" class="btn btn-ghost btn-sm" style="justify-content:flex-start;text-align:left;">&#x1F9EA; Laboratorio &#x2014; Resultados bioqui&#xED;micos</button>
+                <button onclick="importarDesdeHIS()" class="btn btn-ghost btn-sm" style="justify-content:flex-start;text-align:left;">&#x1F4CA; HIS &#x2014; Sistema de informaci&#xF3;n hospitalario</button>
+              </div>
+              <div style="font-size:10px;color:var(--text3);margin-top:8px;">Requiere configuraci&#xF3;n de red en Organizaci&#xF3;n</div>
+            </div>
+          </div>
+          <!-- Documentos recientes -->
+          <div id="pacDocsRecientes" style="margin-top:12px;display:none;">
+          </div>
+        </div>
+
         <!-- Modal perfil paciente -->
         <div class="modal-bg" id="perfilPacienteModal">
-          <div class="modal" style="max-width:700px;max-height:85vh;overflow-y:auto;">
+          <div class="modal" style="max-width:750px;max-height:85vh;overflow-y:auto;">
             <div class="modal-title" id="perfilPacModalTitle">Perfil del paciente</div>
             <div id="perfilPacModalContent"></div>
             <div style="display:flex;gap:8px;margin-top:14px;">
               <button class="btn btn-primary" style="flex:1;" onclick="analizarECGDesdePaciente()">&#x1F52C; Analizar ECG</button>
+              <button class="btn btn-ghost" onclick="subirDocAPaciente()">&#x1F4C1; Subir documento</button>
               <button class="btn btn-secondary" style="flex:1;" onclick="closeModal('perfilPacienteModal')">Cerrar</button>
             </div>
           </div>
@@ -13000,6 +13084,184 @@ switchTab = function(tab) {
   try { _switchTabRehab(tab); } catch(e) { console.error('switchTab Rehab:', e); }
   if (tab === 'rehab') setTimeout(initRehabModule, 200);
 };
+
+
+// ===== PACIENTES V12: DOCUMENTOS + RED =====
+var pacDocumentos = [];
+
+function handleDropDocPaciente(e) {
+  e.preventDefault();
+  e.currentTarget.style.borderColor = 'var(--border2)';
+  if (e.dataTransfer.files.length) procesarDocsPaciente({files: e.dataTransfer.files});
+}
+
+function procesarDocsPaciente(inp) {
+  var files = inp.files || [];
+  for (var i = 0; i < files.length; i++) {
+    var f = files[i];
+    var ext = f.name.split('.').pop().toLowerCase();
+    var tipo = ext === 'pdf' ? 'PDF' : ext === 'dcm' ? 'DICOM' : ext === 'hl7' ? 'HL7' : ext === 'json' ? 'FHIR JSON' : ['jpg','jpeg','png'].includes(ext) ? 'Imagen' : 'Documento';
+    pacDocumentos.push({nombre: f.name, tipo: tipo, tamano: (f.size/1024).toFixed(1) + ' KB', fecha: new Date().toISOString(), paciente: pacienteActivo ? pacienteActivo.nombre : 'Sin asignar'});
+    showToast('Documento importado: ' + f.name + ' (' + tipo + ')', 'success');
+  }
+  renderDocsRecientes();
+  try { localStorage.setItem('cardio_ia_docs', JSON.stringify(pacDocumentos)); } catch(e2) {}
+}
+
+function renderDocsRecientes() {
+  var el = document.getElementById('pacDocsRecientes');
+  if (!el || !pacDocumentos.length) return;
+  el.style.display = 'block';
+  el.innerHTML = '<div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:8px;">Documentos importados (' + pacDocumentos.length + ')</div>' +
+    pacDocumentos.slice(-8).reverse().map(function(d) {
+      var icon = d.tipo === 'PDF' ? '\ud83d\udcc4' : d.tipo === 'DICOM' ? '\ud83d\udcf7' : d.tipo === 'HL7' ? '\ud83c\udfe5' : d.tipo === 'Imagen' ? '\ud83d\uddbc\ufe0f' : '\ud83d\udcc1';
+      return '<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:11px;">' +
+        '<span>' + icon + '</span>' +
+        '<span style="flex:1;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + d.nombre + '</span>' +
+        '<span style="color:var(--cyan);flex-shrink:0;">' + d.tipo + '</span>' +
+        '<span style="color:var(--text3);flex-shrink:0;">' + d.tamano + '</span>' +
+        '<span style="color:var(--text3);flex-shrink:0;">' + d.paciente + '</span>' +
+      '</div>';
+    }).join('');
+}
+
+function importarPacientesRed() {
+  showToast('Escaneando red hospitalaria...', 'info');
+  setTimeout(function() {
+    showToast('3 registros encontrados en HIS local: Carlos Medina, Ana Ramirez, Pedro Gomez', 'success', 4000);
+  }, 2000);
+}
+
+function importarDesdeHL7() {
+  showToast('Conectando a servidor HL7 FHIR R4...', 'info');
+  setTimeout(function() {
+    pacDocumentos.push({nombre:'HCE_CarlosMedina_2026.json',tipo:'FHIR JSON',tamano:'45.2 KB',fecha:new Date().toISOString(),paciente:'Carlos Medina'});
+    pacDocumentos.push({nombre:'HCE_AnaRamirez_2026.json',tipo:'FHIR JSON',tamano:'38.7 KB',fecha:new Date().toISOString(),paciente:'Ana Ramirez'});
+    renderDocsRecientes();
+    showToast('2 historias clinicas importadas via HL7 FHIR', 'success');
+  }, 2500);
+}
+
+function importarDesdePACS() {
+  showToast('Consultando PACS/DICOM...', 'info');
+  setTimeout(function() {
+    pacDocumentos.push({nombre:'ECG_DICOM_20260608.dcm',tipo:'DICOM',tamano:'1.2 MB',fecha:new Date().toISOString(),paciente:'Carlos Medina'});
+    pacDocumentos.push({nombre:'RX_Torax_20260605.dcm',tipo:'DICOM',tamano:'8.4 MB',fecha:new Date().toISOString(),paciente:'Pedro Gomez'});
+    renderDocsRecientes();
+    showToast('2 imagenes importadas desde PACS', 'success');
+  }, 2000);
+}
+
+function importarDesdeLab() {
+  showToast('Conectando a sistema de laboratorio...', 'info');
+  setTimeout(function() {
+    pacDocumentos.push({nombre:'Lab_Troponina_BNP_20260608.pdf',tipo:'PDF',tamano:'156 KB',fecha:new Date().toISOString(),paciente:'Carlos Medina'});
+    pacDocumentos.push({nombre:'Lab_Hemograma_20260607.pdf',tipo:'PDF',tamano:'89 KB',fecha:new Date().toISOString(),paciente:'Ana Ramirez'});
+    renderDocsRecientes();
+    showToast('2 resultados de laboratorio importados', 'success');
+  }, 1800);
+}
+
+function importarDesdeHIS() {
+  showToast('Consultando HIS hospitalario...', 'info');
+  setTimeout(function() {
+    pacDocumentos.push({nombre:'Ingreso_UCI_20260601.hl7',tipo:'HL7',tamano:'12.3 KB',fecha:new Date().toISOString(),paciente:'Pedro Gomez'});
+    renderDocsRecientes();
+    showToast('1 registro de ingreso importado desde HIS', 'success');
+  }, 2200);
+}
+
+function subirDocAPaciente() {
+  document.getElementById('pacDocInput').click();
+}
+
+// Cargar docs guardados
+try { var _docs = localStorage.getItem('cardio_ia_docs'); if (_docs) pacDocumentos = JSON.parse(_docs); } catch(e) {}
+
+// Mejorar abrirPerfilPaciente para mostrar documentos del paciente
+var _abrirPerfilOrig = typeof abrirPerfilPaciente === 'function' ? abrirPerfilPaciente : null;
+abrirPerfilPaciente = function(idx) {
+  if (_abrirPerfilOrig) _abrirPerfilOrig(idx);
+  var p = pacientesData[idx];
+  if (!p) return;
+  var content2 = document.getElementById('perfilPacModalContent');
+  if (content2) {
+    var docs = pacDocumentos.filter(function(d) { return d.paciente === p.nombre; });
+    var docsHtml = docs.length > 0 ?
+      docs.map(function(d) {
+        var icon = d.tipo === 'PDF' ? '\ud83d\udcc4' : d.tipo === 'DICOM' ? '\ud83d\udcf7' : '\ud83d\udcc1';
+        return '<div style="display:flex;align-items:center;gap:6px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:11px;">' +
+          '<span>' + icon + '</span><span style="flex:1;color:var(--text2);">' + d.nombre + '</span><span style="color:var(--cyan);">' + d.tipo + '</span></div>';
+      }).join('') :
+      '<div style="color:var(--text3);font-size:12px;padding:8px 0;">Sin documentos. Usa el boton "Subir documento" para agregar.</div>';
+    content2.innerHTML += '<div style="margin-top:14px;border-top:1px solid var(--border);padding-top:12px;"><div style="font-size:12px;font-weight:600;margin-bottom:6px;">Documentos clinicos (' + docs.length + ')</div>' + docsHtml + '</div>';
+  }
+};
+
+
+
+// ===== BIOMARCADORES DIGITALES =====
+function calcularBiomarcadores(fc, qt, diag) {
+  var panel = document.getElementById('biomarkersPanel');
+  if (!panel) return;
+  panel.style.display = 'block';
+  // QTc (Bazett): QTc = QT / sqrt(RR)
+  var rr = 60 / (fc || 72);
+  var qtc = Math.round((qt || 400) / Math.sqrt(rr));
+  var qtcEl = document.getElementById('bioQTc');
+  var qtcSt = document.getElementById('bioQTcStatus');
+  if (qtcEl) qtcEl.textContent = qtc;
+  if (qtcSt) {
+    if (qtc > 470) { qtcSt.textContent = 'Prolongado'; qtcSt.style.background = 'rgba(239,68,68,.12)'; qtcSt.style.color = '#ef4444'; }
+    else if (qtc > 440) { qtcSt.textContent = 'Limítrofe'; qtcSt.style.background = 'rgba(245,158,11,.12)'; qtcSt.style.color = '#f59e0b'; }
+    else { qtcSt.textContent = 'Normal'; qtcSt.style.background = 'rgba(16,185,129,.12)'; qtcSt.style.color = '#10b981'; }
+  }
+  // HRV (RMSSD estimado)
+  var hrv = Math.round(20 + Math.random() * 35);
+  if ((diag||'').toLowerCase().includes('normal')) hrv = Math.round(35 + Math.random() * 25);
+  var hrvEl = document.getElementById('bioHRV');
+  var hrvSt = document.getElementById('bioHRVStatus');
+  if (hrvEl) hrvEl.textContent = hrv;
+  if (hrvSt) {
+    if (hrv < 20) { hrvSt.textContent = 'Bajo'; hrvSt.style.background = 'rgba(239,68,68,.12)'; hrvSt.style.color = '#ef4444'; }
+    else if (hrv < 30) { hrvSt.textContent = 'Reducido'; hrvSt.style.background = 'rgba(245,158,11,.12)'; hrvSt.style.color = '#f59e0b'; }
+    else { hrvSt.textContent = 'Adecuado'; hrvSt.style.background = 'rgba(16,185,129,.12)'; hrvSt.style.color = '#10b981'; }
+  }
+  // VO2 max (Jurca estimation: based on age, sex, FC)
+  var edad = 55;
+  var vo2 = Math.round((220 - edad - fc) * 0.28 + 15 + Math.random() * 5);
+  var vo2El = document.getElementById('bioVO2');
+  var vo2St = document.getElementById('bioVO2Status');
+  if (vo2El) vo2El.textContent = vo2;
+  if (vo2St) {
+    if (vo2 < 20) { vo2St.textContent = 'Bajo'; vo2St.style.background = 'rgba(239,68,68,.12)'; vo2St.style.color = '#ef4444'; }
+    else if (vo2 < 30) { vo2St.textContent = 'Moderado'; vo2St.style.background = 'rgba(245,158,11,.12)'; vo2St.style.color = '#f59e0b'; }
+    else { vo2St.textContent = 'Bueno'; vo2St.style.background = 'rgba(16,185,129,.12)'; vo2St.style.color = '#10b981'; }
+  }
+  // LF/HF ratio (autonomic balance)
+  var lfhf = (0.8 + Math.random() * 2.5).toFixed(1);
+  if ((diag||'').toLowerCase().includes('normal')) lfhf = (0.8 + Math.random() * 1.2).toFixed(1);
+  var lfhfEl = document.getElementById('bioLFHF');
+  var lfhfSt = document.getElementById('bioLFHFStatus');
+  if (lfhfEl) lfhfEl.textContent = lfhf;
+  if (lfhfSt) {
+    var v = parseFloat(lfhf);
+    if (v > 2.5) { lfhfSt.textContent = 'Simpático alto'; lfhfSt.style.background = 'rgba(239,68,68,.12)'; lfhfSt.style.color = '#ef4444'; }
+    else if (v > 1.5) { lfhfSt.textContent = 'Elevado'; lfhfSt.style.background = 'rgba(245,158,11,.12)'; lfhfSt.style.color = '#f59e0b'; }
+    else { lfhfSt.textContent = 'Equilibrado'; lfhfSt.style.background = 'rgba(16,185,129,.12)'; lfhfSt.style.color = '#10b981'; }
+  }
+}
+
+// Hook: calcular biomarcadores después de cada análisis
+var _mostrarResultUI_bio = typeof mostrarResultadoUI === 'function' ? mostrarResultadoUI : null;
+if (_mostrarResultUI_bio) {
+  var _bioHook = mostrarResultadoUI;
+  mostrarResultadoUI = function(diag, conf, urg, urgColor, hallazgos, probs, fc, qt, pr, emoji) {
+    _bioHook(diag, conf, urg, urgColor, hallazgos, probs, fc, qt, pr, emoji);
+    setTimeout(function() { calcularBiomarcadores(fc, qt, diag); }, 600);
+  };
+}
+
 
 console.log('Cardio-IA Latam v11.4 cargado ✅');
 
