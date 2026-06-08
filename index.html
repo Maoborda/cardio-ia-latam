@@ -13971,6 +13971,71 @@ function monSwitchSub(sub) {
   // Always show KPIs and tabs
 }
 
+
+// ═══ FIX MONITOREO: pacientes demo con wearable ═══
+(function fixMonitoreoDemo() {
+  setTimeout(function() {
+    var WATCHES = ['Apple Watch Series 9','Samsung Galaxy Watch 6','Wear OS Pixel Watch','KardiaMobile 6L','Garmin Venu 3'];
+    var changed = false;
+    pacientesData.forEach(function(p, i) {
+      if (!p.smartwatch_tipo && i < 4) {
+        p.smartwatch_tipo = WATCHES[i % WATCHES.length];
+        p.monitoreo_activo = true;
+        p._fc = 65 + Math.floor(Math.random() * 30);
+        p._spo2 = 95 + Math.floor(Math.random() * 4);
+        p._hrv = 25 + Math.floor(Math.random() * 20);
+        changed = true;
+      }
+    });
+    if (changed) {
+      try { localStorage.setItem('cardio_ia_pacientes', JSON.stringify(pacientesData)); } catch(e) {}
+      // Re-render si estamos en monitoreo
+      if (document.getElementById('panel-monitoreo') && document.getElementById('panel-monitoreo').classList.contains('active')) {
+        actualizarMonitoreo();
+      }
+    }
+  }, 1200);
+})();
+
+// ═══ FIX REHAB: ejercicios muestran detalle + botón iniciar (no auto-start) ═══
+var _initRehabFix = initRehabModule;
+initRehabModule = function() {
+  _initRehabFix();
+  var grid = document.getElementById('rehabEjerciciosGrid');
+  if (!grid) return;
+  var ejs = (typeof REHAB_EJERCICIOS !== 'undefined') ? REHAB_EJERCICIOS : [];
+  grid.innerHTML = ejs.map(function(e, idx) {
+    var intColor = e.int === 'baja' ? '#10B981' : e.int === 'moderada' ? '#3B82F6' : '#F59E0B';
+    var intBg = e.int === 'baja' ? 'rgba(16,185,129,.08)' : e.int === 'moderada' ? 'rgba(37,99,235,.08)' : 'rgba(245,158,11,.08)';
+    return '<div style="background:' + intBg + ';border:1px solid ' + intColor + '22;border-radius:10px;padding:10px;text-align:center;">' +
+      '<div style="font-size:24px;margin-bottom:4px;">' + e.icon + '</div>' +
+      '<div style="font-size:11px;font-weight:600;margin-bottom:3px;">' + e.n + '</div>' +
+      '<div style="display:flex;gap:3px;justify-content:center;flex-wrap:wrap;margin-bottom:6px;">' +
+        '<span style="font-size:8px;padding:1px 5px;border-radius:4px;background:' + intColor + '18;color:' + intColor + ';font-weight:600;">' + e.int + '</span>' +
+        '<span style="font-size:8px;padding:1px 5px;border-radius:4px;background:var(--bg4);color:var(--text3);">FC ' + e.fc + '</span>' +
+      '</div>' +
+      '<div style="font-size:9px;color:var(--text3);margin-bottom:6px;">' + e.dur + ' min | ' + e.mets + ' METs</div>' +
+      '<button onclick="iniciarSesionConEjercicio(' + idx + ')" class="btn btn-ghost btn-sm" style="font-size:10px;width:100%;border-color:' + intColor + '44;color:' + intColor + ';">Iniciar monitoreo</button>' +
+    '</div>';
+  }).join('');
+};
+
+// ═══ FIX MONITOREO: tabs visibles y datos al entrar ═══
+var _switchTabMonFix2 = switchTab;
+switchTab = function(tab) {
+  _switchTabMonFix2(tab);
+  if (tab === 'monitoreo') {
+    setTimeout(function() {
+      // Asegurar que los tabs estén visibles
+      var tabLive = document.getElementById('monTabLive');
+      if (tabLive) tabLive.style.display = '';
+      // Forzar actualización
+      actualizarMonitoreo();
+    }, 300);
+  }
+};
+
+
 console.log('Cardio-IA Latam v11.4 cargado ✅');
 
 
