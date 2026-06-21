@@ -1511,28 +1511,37 @@ body{
       <div id="contadorAnalisis" style="font-size:11px;color:var(--text3);">&#x1F4CA; 0 an&#xE1;lisis realizados</div>
     </div>
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
-      <div onclick="cargarDemo('iam')" style="padding:12px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:10px;cursor:pointer;text-align:center;transition:all .15s;">
-        <div style="font-size:24px;margin-bottom:6px;">&#x1F6A8;</div>
-        <div style="font-size:12px;font-weight:600;color:var(--red2);">IAM Activo</div>
-        <div style="font-size:10px;color:var(--text3);">Infarto agudo</div>
-      </div>
-      <div onclick="cargarDemo('afib')" style="padding:12px;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:10px;cursor:pointer;text-align:center;transition:all .15s;">
-        <div style="font-size:24px;margin-bottom:6px;">&#x1F49B;</div>
-        <div style="font-size:12px;font-weight:600;color:var(--amber2);">Fibrilaci&#xF3;n A.</div>
-        <div style="font-size:10px;color:var(--text3);">Arritmia</div>
-      </div>
-      <div onclick="cargarDemo('bloqueo')" style="padding:12px;background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.2);border-radius:10px;cursor:pointer;text-align:center;transition:all .15s;">
-        <div style="font-size:24px;margin-bottom:6px;">&#x26A0;&#xFE0F;</div>
-        <div style="font-size:12px;font-weight:600;color:var(--purple2);">Bloqueo BCRD</div>
-        <div style="font-size:10px;color:var(--text3);">Conducción</div>
-      </div>
-      <div onclick="cargarDemo('normal')" style="padding:12px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:10px;cursor:pointer;text-align:center;transition:all .15s;">
-        <div style="font-size:24px;margin-bottom:6px;">&#x2705;</div>
-        <div style="font-size:12px;font-weight:600;color:var(--green2);">Normal</div>
-        <div style="font-size:10px;color:var(--text3);">Ritmo sinusal</div>
-      </div>
-    </div>
+  <div onclick="analizarEjemploReal('iam')" style="padding:12px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:10px;cursor:pointer;text-align:center;transition:all .15s;position:relative;">
+    <span style="position:absolute;top:6px;right:6px;background:rgba(16,185,129,.2);color:var(--green2);font-size:9px;font-weight:700;padding:1px 6px;border-radius:10px;">REAL</span>
+    <div style="font-size:24px;margin-bottom:6px;">&#x1F6A8;</div>
+    <div style="font-size:12px;font-weight:600;color:var(--red2);">IAM Anterior</div>
+    <div style="font-size:10px;color:var(--text3);">Infarto agudo</div>
   </div>
+  <div onclick="analizarEjemploReal('bcrd')" style="padding:12px;background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.2);border-radius:10px;cursor:pointer;text-align:center;transition:all .15s;position:relative;">
+    <span style="position:absolute;top:6px;right:6px;background:rgba(16,185,129,.2);color:var(--green2);font-size:9px;font-weight:700;padding:1px 6px;border-radius:10px;">REAL</span>
+    <div style="font-size:24px;margin-bottom:6px;">&#x26A1;</div>
+    <div style="font-size:12px;font-weight:600;color:var(--purple2);">Bloqueo BCRD</div>
+    <div style="font-size:10px;color:var(--text3);">Conducción</div>
+  </div>
+  <div onclick="analizarEjemploReal('hvi')" style="padding:12px;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:10px;cursor:pointer;text-align:center;transition:all .15s;position:relative;">
+    <span style="position:absolute;top:6px;right:6px;background:rgba(16,185,129,.2);color:var(--green2);font-size:9px;font-weight:700;padding:1px 6px;border-radius:10px;">REAL</span>
+    <div style="font-size:24px;margin-bottom:6px;">&#x1FAC0;</div>
+    <div style="font-size:12px;font-weight:600;color:var(--amber2);">Hipertrofia VI</div>
+    <div style="font-size:10px;color:var(--text3);">HVI</div>
+  </div>
+  <div onclick="analizarEjemploReal('normal')" style="padding:12px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:10px;cursor:pointer;text-align:center;transition:all .15s;position:relative;">
+    <span style="position:absolute;top:6px;right:6px;background:rgba(16,185,129,.2);color:var(--green2);font-size:9px;font-weight:700;padding:1px 6px;border-radius:10px;">REAL</span>
+    <div style="font-size:24px;margin-bottom:6px;">&#x2705;</div>
+    <div style="font-size:12px;font-weight:600;color:var(--green2);">Normal</div>
+    <div style="font-size:10px;color:var(--text3);">Ritmo sinusal</div>
+  </div>
+  <div onclick="cargarDemo('afib')" style="padding:12px;background:var(--bg4);border:1px solid var(--border2);border-radius:10px;cursor:pointer;text-align:center;transition:all .15s;position:relative;opacity:.65;">
+    <span style="position:absolute;top:6px;right:6px;background:var(--bg5);color:var(--text3);font-size:9px;font-weight:700;padding:1px 6px;border-radius:10px;">DEMO</span>
+    <div style="font-size:24px;margin-bottom:6px;">&#x1F49B;</div>
+    <div style="font-size:12px;font-weight:600;color:var(--text2);">Fibrilación A.</div>
+    <div style="font-size:10px;color:var(--text3);">Roadmap 24</div>
+  </div>
+</div>
 
   <!-- UPLOAD O ANALISIS -->
   <div class="g2">
