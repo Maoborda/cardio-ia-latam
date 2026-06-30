@@ -5950,7 +5950,7 @@ function mostrarResultadoReal(d, caso) {
   var dc = document.getElementById('diagConfianza');
   if (dc) dc.innerHTML = 'Confianza IA: ' + d.confianza.toFixed(1) + '% &#xB7; <span style="color:var(--green2);font-weight:600;">Etiqueta PTB-XL: ' + (d.etiqueta_real||[]).join(', ') + ' &#x2713;</span> &#xB7; <span style="color:var(--accent3);">Modelo real 18 clases</span>';
   // Ocultar biomarcadores NaN (no aplican a casos reales sin wearable)
-  try { var bio=document.getElementById('biomarkersPanel'); if(bio) bio.style.display='none'; } catch(e){} try { var bp=document.getElementById('dist24ClasesWrap'); } catch(e){}
+  try { var bio=document.getElementById('biomarkersPanel'); if(bio) bio.style.display='none'; } catch(e){}
   // Limpiar fileInfo (quitar spinner)
   var fi=document.getElementById('fileInfo'); if(fi) fi.innerHTML='\u2705 Caso real analizado: <strong>'+(d.caso_nombre||ECG_SIGNALS_REAL[caso]||caso)+'</strong>';
   try { if(typeof guardarEnHistorialAuto==='function') guardarEnHistorialAuto(ultimoResultado); } catch(e){}
@@ -13581,6 +13581,9 @@ function calcularBiomarcadores(fc, qt, diag) {
   var panel = document.getElementById('biomarkersPanel');
   if (!panel) return;
   panel.style.display = 'block';
+  // Sanitizar entradas: si no son numericas (ej. casos reales con '-'), usar valores fisiologicos por defecto
+  fc = parseFloat(fc); if (!isFinite(fc) || fc <= 0) fc = 72;
+  qt = parseFloat(qt); if (!isFinite(qt) || qt <= 0) qt = 400;
   // QTc (Bazett): QTc = QT / sqrt(RR)
   var rr = 60 / (fc || 72);
   var qtc = Math.round((qt || 400) / Math.sqrt(rr));
