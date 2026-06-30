@@ -5908,30 +5908,26 @@ var ECG_SIGNALS_REAL = {
 };
 function analizarEjemploReal(caso) {
   var preview = document.getElementById('resultadoPreview');
-  if (preview) {
-    preview.style.display = 'block';
-    preview.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;gap:16px;">' +
-      '<div style="width:56px;height:56px;border-radius:50%;border:4px solid rgba(37,99,235,.2);border-top-color:var(--accent);animation:spin 1s linear infinite;"></div>' +
-      '<div style="font-size:14px;font-weight:600;color:var(--text);">Analizando con modelo real (18 clases)...</div>' +
-      '<div style="font-size:12px;color:var(--text2);">ECG real de PTB-XL</div>' +
-      '<div style="font-size:11px;color:var(--accent3);">ECGResNet &#xB7; AUC macro 0.923</div>' +
-      '</div>';
-  }
+  if (preview) preview.style.display = 'block';
   var fi = document.getElementById('fileInfo');
-  if (fi) { fi.style.display = 'block'; fi.innerHTML = '&#x23F3; Analizando caso real: <strong>' + (ECG_SIGNALS_REAL[caso]||caso) + '</strong>'; }
+  if (fi) { fi.style.display = 'block'; fi.innerHTML = '&#x23F3; Analizando con modelo real (18 clases): <strong>' + (ECG_SIGNALS_REAL[caso]||caso) + '</strong>'; }
+  var btn = document.getElementById('btnAnalizar');
+  if (btn) { btn.disabled = true; }
   fetch(API_MODELO_REAL + '/predict-ejemplo', {
     method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({caso:caso})
   })
   .then(function(r){ return r.json(); })
   .then(function(d){
-    if (d.error) { if(fi) fi.innerHTML='&#x26A0;&#xFE0F; Error: '+d.error; return; }
+    if (d.error) { if(fi) fi.innerHTML='&#x26A0;&#xFE0F; Error: '+d.error; if(btn) btn.disabled=false; return; }
     mostrarResultadoReal(d, caso);
+    if(btn) btn.disabled=false;
   })
-  .catch(function(e){ if(fi) fi.innerHTML='&#x26A0;&#xFE0F; Error de conexion: '+e.message; });
+  .catch(function(e){ if(fi) fi.innerHTML='&#x26A0;&#xFE0F; Error de conexion: '+e.message; if(btn) btn.disabled=false; });
 }
 function mostrarResultadoReal(d, caso) {
-  var probs = (d.todos_los_hallazgos||[]).slice(0,8).map(function(h){
-    return { nombre:h.nombre, prob:h.probabilidad,
+  var hallazgos = (d.todos_los_hallazgos||[]);
+  var probs = hallazgos.slice(0,8).map(function(h){
+    return { nombre:(h.nombre||h.clase||'-'), prob:(typeof h.probabilidad==='number'?h.probabilidad:0),
       color: h.semaforo==='amarillo' ? '#f59e0b' : (h.positivo ? '#22c55e' : '#64748b') };
   });
   var revisar = d.requiere_revision;
@@ -5942,16 +5938,25 @@ function mostrarResultadoReal(d, caso) {
   ultimoResultado = {
     diagnostico:d.diagnostico_principal, confianza:d.confianza,
     paciente: document.getElementById('pacNombre') ? (document.getElementById('pacNombre').value||'Ejemplo PTB-XL') : 'Ejemplo PTB-XL',
-    fecha:new Date().toISOString(), firmado:false, hallazgos:probs, es_real:true
+    fecha:new Date().toISOString(), firmado:false, hallazgos:probs, es_real:true,
+    etiqueta_real:(d.etiqueta_real||[])
   };
-  mostrarResultadoUI(d.diagnostico_principal, d.confianza, urg, urgColor, probs, probs, '-', '-', '-', emoji);
+  var hallazgosChips = hallazgos.filter(function(h){return h.positivo;}).slice(0,8).map(function(h){
+    return { texto:(h.nombre||h.clase||'-')+' '+(typeof h.probabilidad==='number'?h.probabilidad.toFixed(0):'0')+'%',
+      color: h.semaforo==='amarillo' ? '#f59e0b' : '#22c55e' };
+  });
+  mostrarResultadoUI(d.diagnostico_principal, d.confianza, urg, urgColor, hallazgosChips, probs, '-', '-', '-', emoji);
   try { if (typeof generarECGDemo==='function'){ var sig=generarECGDemo(caso==='bcrd'?'bloqueo':caso); ecgDataActual=sig; if(typeof dibujarECGGrafica==='function') dibujarECGGrafica(sig); } } catch(e){}
   var dc = document.getElementById('diagConfianza');
   if (dc) dc.innerHTML = 'Confianza IA: ' + d.confianza.toFixed(1) + '% &#xB7; <span style="color:var(--green2);font-weight:600;">Etiqueta PTB-XL: ' + (d.etiqueta_real||[]).join(', ') + ' &#x2713;</span> &#xB7; <span style="color:var(--accent3);">Modelo real 18 clases</span>';
+  // Ocultar biomarcadores NaN (no aplican a casos reales sin wearable)
+  try { var bio=document.getElementById('biomarkersPanel'); if(bio) bio.style.display='none'; } catch(e){} try { var bp=document.getElementById('dist24ClasesWrap'); } catch(e){}
+  // Limpiar fileInfo (quitar spinner)
+  var fi=document.getElementById('fileInfo'); if(fi) fi.innerHTML='\u2705 Caso real analizado: <strong>'+(d.caso_nombre||ECG_SIGNALS_REAL[caso]||caso)+'</strong>';
   try { if(typeof guardarEnHistorialAuto==='function') guardarEnHistorialAuto(ultimoResultado); } catch(e){}
   try { if(typeof incrementarContador==='function') incrementarContador(); } catch(e){}
-  try { if(typeof showToast==='function') showToast('\u2705 Analisis real completado: ' + d.diagnostico_principal, 'success'); } catch(e){}
-  try { if(typeof agregarLog==='function') agregarLog('Caso real analizado: ' + d.diagnostico_principal + ' (PTB-XL: '+(d.etiqueta_real||[]).join(',')+')'); } catch(e){}
+  try { if(typeof showToast==='function') showToast('\u2705 Analisis real: ' + d.diagnostico_principal, 'success'); } catch(e){}
+  try { if(typeof agregarLog==='function') agregarLog('Caso real: ' + d.diagnostico_principal + ' (PTB-XL: '+(d.etiqueta_real||[]).join(',')+')'); } catch(e){}
 }
 
 function cargarDemo(tipo) {
