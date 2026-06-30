@@ -1560,7 +1560,7 @@ body{
     </div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
       <div style="background:var(--bg3);border-radius:12px;padding:16px;text-align:center;"><div style="font-size:28px;margin-bottom:8px;">&#x26A1;</div><div style="font-size:13px;font-weight:600;margin-bottom:4px;">2 segundos</div><div style="font-size:11px;color:var(--text2);">Diagnóstico IA</div></div>
-      <div style="background:var(--bg3);border-radius:12px;padding:16px;text-align:center;"><div style="font-size:28px;margin-bottom:8px;">&#x1F9EC;</div><div style="font-size:13px;font-weight:600;margin-bottom:4px;">24 patologías</div><div style="font-size:11px;color:var(--text2);">Detección automática</div></div>
+      <div style="background:var(--bg3);border-radius:12px;padding:16px;text-align:center;"><div style="font-size:28px;margin-bottom:8px;">&#x1F9EC;</div><div style="font-size:13px;font-weight:600;margin-bottom:4px;">24 patologías</div><div style="font-size:11px;color:var(--text2);">18 activas · 6 en desarrollo</div></div>
       <div style="background:var(--bg3);border-radius:12px;padding:16px;text-align:center;"><div style="font-size:28px;margin-bottom:8px;">&#x1F4CA;</div><div style="font-size:13px;font-weight:600;margin-bottom:4px;">AUC-ROC 0.94</div><div style="font-size:11px;color:var(--text2);">Precisión clínica</div></div>
     </div>
   </div>
@@ -2372,15 +2372,15 @@ body{
       </div>
       <div id="contadorAnalisis" style="font-size:11px;color:var(--text3);">&#x1F4CA; 0 análisis realizados</div>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:7px;" id="demoCasosGrid">
-      <div class="demo-caso-card" onclick="cargarDemo('iam')" style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);" id="demo-iam"><div style="font-size:22px;margin-bottom:3px;">&#x1F6A8;</div><div style="font-size:11px;font-weight:700;color:var(--red2);">IAM Activo</div><div style="font-size:9px;color:var(--text3);">Infarto agudo</div><div style="margin-top:4px;font-size:9px;padding:1px 5px;border-radius:6px;background:rgba(239,68,68,.15);color:var(--red2);display:inline-block;font-weight:700;">CRÍTICO</div></div>
-      <div class="demo-caso-card" onclick="cargarDemo('afib')" style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);" id="demo-afib"><div style="font-size:22px;margin-bottom:3px;">&#x1F49B;</div><div style="font-size:11px;font-weight:700;color:var(--amber2);">Fibrilación A.</div><div style="font-size:9px;color:var(--text3);">Arritmia</div><div style="margin-top:4px;font-size:9px;padding:1px 5px;border-radius:6px;background:rgba(245,158,11,.15);color:var(--amber2);display:inline-block;font-weight:700;">URGENTE</div></div>
-      <div class="demo-caso-card" onclick="cargarDemo('tv')" style="background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15);" id="demo-tv"><div style="font-size:22px;margin-bottom:3px;">&#x26A1;</div><div style="font-size:11px;font-weight:700;color:var(--red2);">Taq. Ventricular</div><div style="font-size:9px;color:var(--text3);">TV sostenida</div><div style="margin-top:4px;font-size:9px;padding:1px 5px;border-radius:6px;background:rgba(239,68,68,.15);color:var(--red2);display:inline-block;font-weight:700;">CRÍTICO</div></div>
-      <div class="demo-caso-card" onclick="cargarDemo('bloqueo')" style="background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.2);" id="demo-bloqueo"><div style="font-size:22px;margin-bottom:3px;">&#x26A0;&#xFE0F;</div><div style="font-size:11px;font-weight:700;color:var(--purple2);">Bloqueo BCRD</div><div style="font-size:9px;color:var(--text3);">Conducción</div><div style="margin-top:4px;font-size:9px;padding:1px 5px;border-radius:6px;background:rgba(139,92,246,.15);color:var(--purple2);display:inline-block;font-weight:700;">MODERADO</div></div>
-      <div class="demo-caso-card" onclick="cargarDemo('wpw')" style="background:rgba(14,165,233,.08);border:1px solid rgba(14,165,233,.2);" id="demo-wpw"><div style="font-size:22px;margin-bottom:3px;">&#x26A1;&#xFE0F;</div><div style="font-size:11px;font-weight:700;color:var(--cyan);">S. WPW</div><div style="font-size:9px;color:var(--text3);">Pre-excitación</div><div style="margin-top:4px;font-size:9px;padding:1px 5px;border-radius:6px;background:rgba(14,165,233,.15);color:var(--cyan);display:inline-block;font-weight:700;">URGENTE</div></div>
-      <div class="demo-caso-card" onclick="cargarDemo('qt')" style="background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.2);" id="demo-qt"><div style="font-size:22px;margin-bottom:3px;">&#x23F1;&#xFE0F;</div><div style="font-size:11px;font-weight:700;color:#fb923c;">QT Prolongado</div><div style="font-size:9px;color:var(--text3);">Riesgo TV/FV</div><div style="margin-top:4px;font-size:9px;padding:1px 5px;border-radius:6px;background:rgba(249,115,22,.15);color:#fb923c;display:inline-block;font-weight:700;">MODERADO</div></div>
-      <div class="demo-caso-card" onclick="cargarDemo('bav3')" style="background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.15);" id="demo-bav3"><div style="font-size:22px;margin-bottom:3px;">&#x1F494;</div><div style="font-size:11px;font-weight:700;color:var(--purple2);">BAV III</div><div style="font-size:9px;color:var(--text3);">Bloqueo completo</div><div style="margin-top:4px;font-size:9px;padding:1px 5px;border-radius:6px;background:rgba(139,92,246,.15);color:var(--purple2);display:inline-block;font-weight:700;">CRÍTICO</div></div>
-      <div class="demo-caso-card" onclick="cargarDemo('normal')" style="background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);" id="demo-normal"><div style="font-size:22px;margin-bottom:3px;">&#x2705;</div><div style="font-size:11px;font-weight:700;color:var(--green2);">Normal</div><div style="font-size:9px;color:var(--text3);">Ritmo sinusal</div><div style="margin-top:4px;font-size:9px;padding:1px 5px;border-radius:6px;background:rgba(16,185,129,.15);color:var(--green2);display:inline-block;font-weight:700;">NORMAL</div></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(95px,1fr));gap:7px;" id="demoCasosGrid">
+      <div class="demo-caso-card" onclick="analizarEjemploReal('iam')" style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);" id="demo-iam"><span style="position:absolute;top:5px;right:5px;font-size:8px;font-weight:700;padding:1px 6px;border-radius:8px;background:rgba(16,185,129,.2);color:var(--green2);letter-spacing:.03em;">REAL</span><div style="font-size:22px;margin-bottom:3px;">&#x1F6A8;</div><div style="font-size:11px;font-weight:700;color:var(--red2);">IAM Anterior</div><div style="font-size:9px;color:var(--text3);">Infarto agudo</div><div style="margin-top:4px;font-size:9px;padding:1px 5px;border-radius:6px;background:rgba(239,68,68,.15);color:var(--red2);display:inline-block;font-weight:700;">CRÍTICO</div></div>
+      <div class="demo-caso-card" onclick="cargarDemo('afib')" style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);" id="demo-afib"><span style="position:absolute;top:5px;right:5px;font-size:8px;font-weight:700;padding:1px 6px;border-radius:8px;background:rgba(148,163,184,.18);color:var(--text3);letter-spacing:.03em;">DEMO</span><div style="font-size:22px;margin-bottom:3px;">&#x1F49B;</div><div style="font-size:11px;font-weight:700;color:var(--amber2);">Fibrilación A.</div><div style="font-size:9px;color:var(--text3);">Arritmia</div><div style="margin-top:4px;font-size:9px;padding:1px 5px;border-radius:6px;background:rgba(245,158,11,.15);color:var(--amber2);display:inline-block;font-weight:700;">URGENTE</div></div>
+      <div class="demo-caso-card" onclick="cargarDemo('tv')" style="background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15);" id="demo-tv"><span style="position:absolute;top:5px;right:5px;font-size:8px;font-weight:700;padding:1px 6px;border-radius:8px;background:rgba(148,163,184,.18);color:var(--text3);letter-spacing:.03em;">DEMO</span><div style="font-size:22px;margin-bottom:3px;">&#x26A1;</div><div style="font-size:11px;font-weight:700;color:var(--red2);">Taq. Ventricular</div><div style="font-size:9px;color:var(--text3);">TV sostenida</div><div style="margin-top:4px;font-size:9px;padding:1px 5px;border-radius:6px;background:rgba(239,68,68,.15);color:var(--red2);display:inline-block;font-weight:700;">CRÍTICO</div></div>
+      <div class="demo-caso-card" onclick="analizarEjemploReal('bcrd')" style="background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.2);" id="demo-bloqueo"><span style="position:absolute;top:5px;right:5px;font-size:8px;font-weight:700;padding:1px 6px;border-radius:8px;background:rgba(16,185,129,.2);color:var(--green2);letter-spacing:.03em;">REAL</span><div style="font-size:22px;margin-bottom:3px;">&#x26A0;&#xFE0F;</div><div style="font-size:11px;font-weight:700;color:var(--purple2);">Bloqueo BCRD</div><div style="font-size:9px;color:var(--text3);">Conducción</div><div style="margin-top:4px;font-size:9px;padding:1px 5px;border-radius:6px;background:rgba(139,92,246,.15);color:var(--purple2);display:inline-block;font-weight:700;">MODERADO</div></div>
+      <div class="demo-caso-card" onclick="cargarDemo('wpw')" style="background:rgba(14,165,233,.08);border:1px solid rgba(14,165,233,.2);" id="demo-wpw"><span style="position:absolute;top:5px;right:5px;font-size:8px;font-weight:700;padding:1px 6px;border-radius:8px;background:rgba(148,163,184,.18);color:var(--text3);letter-spacing:.03em;">DEMO</span><div style="font-size:22px;margin-bottom:3px;">&#x26A1;&#xFE0F;</div><div style="font-size:11px;font-weight:700;color:var(--cyan);">S. WPW</div><div style="font-size:9px;color:var(--text3);">Pre-excitación</div><div style="margin-top:4px;font-size:9px;padding:1px 5px;border-radius:6px;background:rgba(14,165,233,.15);color:var(--cyan);display:inline-block;font-weight:700;">URGENTE</div></div>
+      <div class="demo-caso-card" onclick="cargarDemo('qt')" style="background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.2);" id="demo-qt"><span style="position:absolute;top:5px;right:5px;font-size:8px;font-weight:700;padding:1px 6px;border-radius:8px;background:rgba(148,163,184,.18);color:var(--text3);letter-spacing:.03em;">DEMO</span><div style="font-size:22px;margin-bottom:3px;">&#x23F1;&#xFE0F;</div><div style="font-size:11px;font-weight:700;color:#fb923c;">QT Prolongado</div><div style="font-size:9px;color:var(--text3);">Riesgo TV/FV</div><div style="margin-top:4px;font-size:9px;padding:1px 5px;border-radius:6px;background:rgba(249,115,22,.15);color:#fb923c;display:inline-block;font-weight:700;">MODERADO</div></div>
+      <div class="demo-caso-card" onclick="cargarDemo('bav3')" style="background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.15);" id="demo-bav3"><span style="position:absolute;top:5px;right:5px;font-size:8px;font-weight:700;padding:1px 6px;border-radius:8px;background:rgba(148,163,184,.18);color:var(--text3);letter-spacing:.03em;">DEMO</span><div style="font-size:22px;margin-bottom:3px;">&#x1F494;</div><div style="font-size:11px;font-weight:700;color:var(--purple2);">BAV III</div><div style="font-size:9px;color:var(--text3);">Bloqueo completo</div><div style="margin-top:4px;font-size:9px;padding:1px 5px;border-radius:6px;background:rgba(139,92,246,.15);color:var(--purple2);display:inline-block;font-weight:700;">CRÍTICO</div></div>
+      <div class="demo-caso-card" onclick="analizarEjemploReal('normal')" style="background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);" id="demo-normal"><span style="position:absolute;top:5px;right:5px;font-size:8px;font-weight:700;padding:1px 6px;border-radius:8px;background:rgba(16,185,129,.2);color:var(--green2);letter-spacing:.03em;">REAL</span><div style="font-size:22px;margin-bottom:3px;">&#x2705;</div><div style="font-size:11px;font-weight:700;color:var(--green2);">Normal</div><div style="font-size:9px;color:var(--text3);">Ritmo sinusal</div><div style="margin-top:4px;font-size:9px;padding:1px 5px;border-radius:6px;background:rgba(16,185,129,.15);color:var(--green2);display:inline-block;font-weight:700;">NORMAL</div></div><div class="demo-caso-card" onclick="analizarEjemploReal('hvi')" style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);" id="demo-hvi"><span style="position:absolute;top:5px;right:5px;font-size:8px;font-weight:700;padding:1px 6px;border-radius:8px;background:rgba(16,185,129,.2);color:var(--green2);letter-spacing:.03em;">REAL</span><div style="font-size:22px;margin-bottom:3px;">&#x1FAC0;</div><div style="font-size:11px;font-weight:700;color:var(--amber2);">Hipertrofia VI</div><div style="font-size:9px;color:var(--text3);">HVI</div><div style="margin-top:4px;font-size:9px;padding:1px 5px;border-radius:6px;background:rgba(245,158,11,.15);color:var(--amber2);display:inline-block;font-weight:700;">MODERADO</div></div>
     </div>
   </div>
 
@@ -4192,7 +4192,7 @@ body{
           <div class="api-chip ok"><div class="api-dot"></div>Modelo v11.4 activo</div>
         </div>
         <div class="g4" style="margin-bottom:14px;">
-          <div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">AUC-ROC</div><div class="stat-val" style="color:var(--green2);">0.9408</div><div style="font-size:10px;color:var(--text3);">Área bajo la curva</div></div>
+          <div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">AUC-ROC</div><div class="stat-val" style="color:var(--green2);">0.923</div><div style="font-size:10px;color:var(--text3);">Área bajo la curva</div></div>
           <div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Sensibilidad</div><div class="stat-val" style="color:var(--accent3);">92.1%</div><div style="font-size:10px;color:var(--text3);">True Positive Rate</div></div>
           <div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">Especificidad</div><div class="stat-val" style="color:var(--cyan);">94.7%</div><div style="font-size:10px;color:var(--text3);">True Negative Rate</div></div>
           <div class="stat-card"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">F1-Score</div><div class="stat-val" style="color:var(--purple2);">0.918</div><div style="font-size:10px;color:var(--text3);">Precisión armónica</div></div>
@@ -4209,7 +4209,7 @@ body{
             <div style="background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.2);border-radius:8px;padding:10px;text-align:center;"><div style="font-size:11px;font-weight:700;color:var(--purple2);">Conv1D</div><div style="font-size:9px;color:var(--text3);margin-top:2px;">128 filtros<br>ResBlock</div></div>
             <div style="background:rgba(14,165,233,.08);border:1px solid rgba(14,165,233,.2);border-radius:8px;padding:10px;text-align:center;"><div style="font-size:11px;font-weight:700;color:var(--cyan);">LSTM</div><div style="font-size:9px;color:var(--text3);margin-top:2px;">Bidireccional<br>128 units</div></div>
             <div style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:8px;padding:10px;text-align:center;"><div style="font-size:11px;font-weight:700;color:var(--amber2);">Dense</div><div style="font-size:9px;color:var(--text3);margin-top:2px;">256 neuronas<br>Dropout 0.3</div></div>
-            <div style="background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:8px;padding:10px;text-align:center;"><div style="font-size:11px;font-weight:700;color:var(--green2);">Softmax</div><div style="font-size:9px;color:var(--text3);margin-top:2px;">24 clases<br>Probabilidad</div></div>
+            <div style="background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:8px;padding:10px;text-align:center;"><div style="font-size:11px;font-weight:700;color:var(--green2);">Softmax</div><div style="font-size:9px;color:var(--text3);margin-top:2px;">18 activas<br>Probabilidad</div></div>
           </div>
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
             <div style="background:var(--bg4);border-radius:8px;padding:10px;"><div style="font-size:10px;color:var(--text3);margin-bottom:3px;">Dataset</div><div style="font-size:12px;font-weight:600;">PTB-XL · 21,799 ECGs</div></div>
@@ -4218,7 +4218,7 @@ body{
           </div>
         </div>
         <div class="card">
-          <div class="card-title" style="margin-bottom:10px;">Rendimiento por clase (24 patologías)</div>
+          <div class="card-title" style="margin-bottom:10px;">Rendimiento por clase (18 activas · 24 meta)</div>
           <div style="overflow-x:auto;"><table class="tbl" style="font-size:11px;">
             <thead><tr><th>Patología</th><th>Sensibilidad</th><th>Especificidad</th><th>F1</th><th>AUC</th></tr></thead>
             <tbody id="cienciaTablaBody">
@@ -4269,7 +4269,7 @@ body{
 
         <!-- Patologias grid -->
         <div class="card">
-          <div class="card-title" style="margin-bottom:14px;">&#x1F9EC; 24 patolog&#xED;as detectadas por el modelo CNN</div>
+          <div class="card-title" style="margin-bottom:14px;">&#x1F9EC; 24 patolog&#xED;as objetivo &#xB7; <span style="color:var(--green2);">18 activas</span> &#xB7; <span style="color:var(--text3);">6 en desarrollo</span></div>
           <div class="g3" style="gap:8px;margin-bottom:4px;">
             <div style="background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.15);border-radius:10px;padding:14px;">
               <div style="font-size:12px;font-weight:700;color:var(--red2);margin-bottom:8px;">&#x1F6A8; Emergencias cr&#xED;ticas</div>
@@ -4322,7 +4322,7 @@ body{
           </div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
             <div style="background:var(--bg4);border-radius:10px;padding:12px;"><div style="font-size:10px;color:var(--text3);margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em;">Versi&#xF3;n</div><div style="font-size:14px;color:var(--green2);font-family:'DM Mono',monospace;font-weight:600;">v11.4 SaMD</div></div>
-            <div style="background:var(--bg4);border-radius:10px;padding:12px;"><div style="font-size:10px;color:var(--text3);margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em;">Modelo IA</div><div style="font-size:13px;">CNN 24 clases &#xB7; AUC 0.94</div></div>
+            <div style="background:var(--bg4);border-radius:10px;padding:12px;"><div style="font-size:10px;color:var(--text3);margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em;">Modelo IA</div><div style="font-size:13px;">ECGResNet 18 clases &#xB7; AUC 0.923</div></div>
             <div style="background:var(--bg4);border-radius:10px;padding:12px;"><div style="font-size:10px;color:var(--text3);margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em;">Dataset</div><div style="font-size:13px;">PTB-XL &#xB7; 21,799 ECGs</div></div>
             <div style="background:var(--bg4);border-radius:10px;padding:12px;"><div style="font-size:10px;color:var(--text3);margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em;">Seguridad</div><div style="font-size:13px;">JWT &#xB7; AES-256 &#xB7; Blockchain</div></div>
             <div style="background:var(--bg4);border-radius:10px;padding:12px;grid-column:span 2;"><div style="font-size:10px;color:var(--text3);margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em;">API Endpoint</div><div style="font-size:11px;font-family:'DM Mono',monospace;color:var(--accent3);" id="ayudaApiUrl">&#x2014;</div></div>
@@ -5900,6 +5900,60 @@ var DEMOS = {
   }
 };
 
+// ===== ANALISIS REAL CON MODELO 18 CLASES (PTB-XL) =====
+var API_MODELO_REAL = 'https://cardio-ia-api-120778240410.us-central1.run.app';
+var ECG_SIGNALS_REAL = {
+  iam:'Infarto Agudo Miocardico Anterior', bcrd:'Bloqueo Completo Rama Derecha',
+  hvi:'Hipertrofia Ventricular Izquierda', normal:'Normal (Ritmo Sinusal)'
+};
+function analizarEjemploReal(caso) {
+  var preview = document.getElementById('resultadoPreview');
+  if (preview) {
+    preview.style.display = 'block';
+    preview.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;gap:16px;">' +
+      '<div style="width:56px;height:56px;border-radius:50%;border:4px solid rgba(37,99,235,.2);border-top-color:var(--accent);animation:spin 1s linear infinite;"></div>' +
+      '<div style="font-size:14px;font-weight:600;color:var(--text);">Analizando con modelo real (18 clases)...</div>' +
+      '<div style="font-size:12px;color:var(--text2);">ECG real de PTB-XL</div>' +
+      '<div style="font-size:11px;color:var(--accent3);">ECGResNet &#xB7; AUC macro 0.923</div>' +
+      '</div>';
+  }
+  var fi = document.getElementById('fileInfo');
+  if (fi) { fi.style.display = 'block'; fi.innerHTML = '&#x23F3; Analizando caso real: <strong>' + (ECG_SIGNALS_REAL[caso]||caso) + '</strong>'; }
+  fetch(API_MODELO_REAL + '/predict-ejemplo', {
+    method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({caso:caso})
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(d){
+    if (d.error) { if(fi) fi.innerHTML='&#x26A0;&#xFE0F; Error: '+d.error; return; }
+    mostrarResultadoReal(d, caso);
+  })
+  .catch(function(e){ if(fi) fi.innerHTML='&#x26A0;&#xFE0F; Error de conexion: '+e.message; });
+}
+function mostrarResultadoReal(d, caso) {
+  var probs = (d.todos_los_hallazgos||[]).slice(0,8).map(function(h){
+    return { nombre:h.nombre, prob:h.probabilidad,
+      color: h.semaforo==='amarillo' ? '#f59e0b' : (h.positivo ? '#22c55e' : '#64748b') };
+  });
+  var revisar = d.requiere_revision;
+  var urg = revisar ? 'REVISAR' : 'ANALIZADO';
+  var urgColor = revisar ? '#f59e0b' : '#22c55e';
+  var esNorm = (d.diagnostico_principal||'').indexOf('Normal') === 0;
+  var emoji = esNorm ? '&#x2705;' : (revisar ? '&#x26A0;&#xFE0F;' : '&#x1FAC0;');
+  ultimoResultado = {
+    diagnostico:d.diagnostico_principal, confianza:d.confianza,
+    paciente: document.getElementById('pacNombre') ? (document.getElementById('pacNombre').value||'Ejemplo PTB-XL') : 'Ejemplo PTB-XL',
+    fecha:new Date().toISOString(), firmado:false, hallazgos:probs, es_real:true
+  };
+  mostrarResultadoUI(d.diagnostico_principal, d.confianza, urg, urgColor, probs, probs, '-', '-', '-', emoji);
+  try { if (typeof generarECGDemo==='function'){ var sig=generarECGDemo(caso==='bcrd'?'bloqueo':caso); ecgDataActual=sig; if(typeof dibujarECGGrafica==='function') dibujarECGGrafica(sig); } } catch(e){}
+  var dc = document.getElementById('diagConfianza');
+  if (dc) dc.innerHTML = 'Confianza IA: ' + d.confianza.toFixed(1) + '% &#xB7; <span style="color:var(--green2);font-weight:600;">Etiqueta PTB-XL: ' + (d.etiqueta_real||[]).join(', ') + ' &#x2713;</span> &#xB7; <span style="color:var(--accent3);">Modelo real 18 clases</span>';
+  try { if(typeof guardarEnHistorialAuto==='function') guardarEnHistorialAuto(ultimoResultado); } catch(e){}
+  try { if(typeof incrementarContador==='function') incrementarContador(); } catch(e){}
+  try { if(typeof showToast==='function') showToast('\u2705 Analisis real completado: ' + d.diagnostico_principal, 'success'); } catch(e){}
+  try { if(typeof agregarLog==='function') agregarLog('Caso real analizado: ' + d.diagnostico_principal + ' (PTB-XL: '+(d.etiqueta_real||[]).join(',')+')'); } catch(e){}
+}
+
 function cargarDemo(tipo) {
   var demo = DEMOS[tipo];
   if (!demo) return;
@@ -5911,7 +5965,7 @@ function cargarDemo(tipo) {
       '<div style="width:56px;height:56px;border-radius:50%;border:4px solid rgba(37,99,235,.2);border-top-color:var(--accent);animation:spin 1s linear infinite;"></div>' +
       '<div style="font-size:14px;font-weight:600;color:var(--text);">Analizando ECG con IA...</div>' +
       '<div style="font-size:12px;color:var(--text2);">Procesando ' + demo.nombre + '</div>' +
-      '<div style="font-size:11px;color:var(--accent3);">AUC-ROC 0.9408 · Modelo validado cl&#xED;nicamente</div>' +
+      '<div style="font-size:11px;color:var(--accent3);">AUC-ROC 0.923 · Validado sobre PTB-XL</div>' +
       '</div>';
   }
   var fi = document.getElementById('fileInfo');
@@ -8248,7 +8302,7 @@ function mostrarResultado(r) {
     '<div class="card"><div class="card-title">Top 5 probabilidades</div><div class="chart-wrap chart-h200"><canvas id="topChart"></canvas></div></div>' +
     '<div class="card"><div class="card-title">Nivel de riesgo</div><div id="riesgoVisual"></div></div>' +
     '</div>' +
-    '<div class="card" style="margin-top:14px;"><div class="card-title">Distribucion 24 clases</div>' + barras + (r.requiere_revision ? '<div class="alert-box">&#x26A0;&#xFE0F; Confianza baja - se recomienda revision por cardiologo</div>' : '') + '</div>';
+    '<div class="card" style="margin-top:14px;"><div class="card-title">Distribucion 18 clases</div>' + barras + (r.requiere_revision ? '<div class="alert-box">&#x26A0;&#xFE0F; Confianza baja - se recomienda revision por cardiologo</div>' : '') + '</div>';
   initFirmaResumen(r);
 
   // Actualizar nueva UI V9.x
@@ -9284,7 +9338,7 @@ var TRANSLATIONS = {
     res_riesgo_bajo: 'RIESGO BAJO',
     res_riesgo_moderado: 'RIESGO MODERADO',
     res_riesgo_critico: 'RIESGO CRITICO',
-    res_dist: 'Distribucion 24 clases',
+    res_dist: 'Distribucion 18 clases',
     res_revision: 'Revision adicional recomendada',
     res_confianza_ok: 'Confianza suficiente para revision medica',
     // Pacientes
@@ -9405,7 +9459,7 @@ var TRANSLATIONS = {
     roi_5anios: '&#x1F4CA; Ver proyeccion 5 anios',
     // Ayuda
     ayuda_inicio: 'Inicio rapido',
-    ayuda_patologias: 'Patologias detectadas (24 clases)',
+    ayuda_patologias: 'Patologias detectadas (18 activas de 24)',
     ayuda_info: 'Informacion del sistema',
     // Login
     login_titulo: 'Cardio-IA Latam',
@@ -10548,7 +10602,7 @@ cargarDemo = function(tipo) {
       '<div class="analysis-steps" id="analysisSteps">' +
         '<div class="analysis-step active" id="step1"><div class="step-dot">1</div><div>Cargando señal ECG</div></div>' +
         '<div class="analysis-step" id="step2"><div class="step-dot">2</div><div>Preprocesando datos</div></div>' +
-        '<div class="analysis-step" id="step3"><div class="step-dot">3</div><div>Red neuronal CNN — 24 clases</div></div>' +
+        '<div class="analysis-step" id="step3"><div class="step-dot">3</div><div>Red neuronal ECGResNet — 18 clases</div></div>' +
         '<div class="analysis-step" id="step4"><div class="step-dot">4</div><div>Generando diagnóstico clínico</div></div>' +
       '</div>' +
     '</div>';
@@ -13160,7 +13214,7 @@ function renderizar24Clases(tipo) {
   });
   var maxP = 0;
   CATS.forEach(function(cat) { cat.items.forEach(function(i) { if (i.p > maxP) maxP = i.p; }); });
-  el.innerHTML = '<div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:14px;">Distribuci\u00f3n de probabilidad \u2014 24 clases CNN</div>' +
+  el.innerHTML = '<div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:14px;">Distribuci\u00f3n de probabilidad \u2014 18 clases</div>' +
     CATS.map(function(cat) {
       return '<div style="background:' + cat.bg + ';border:1px solid ' + cat.color + '22;border-radius:10px;padding:12px;margin-bottom:10px;">' +
         '<div style="font-size:11px;font-weight:700;color:' + cat.color + ';margin-bottom:8px;">' + cat.name + '</div>' +
