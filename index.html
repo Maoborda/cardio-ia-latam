@@ -5758,20 +5758,37 @@ function mostrarRecomendaciones(tipo) {
 // Guardar en historial automaticamente al mostrar resultado
 function guardarEnHistorialAuto(res) {
   try {
+    var nombrePac = res.paciente_nombre || res.paciente || (document.getElementById('pacNombre') ? document.getElementById('pacNombre').value : '') || 'Sin nombre';
     var entrada = {
       id: Date.now(),
       fecha: new Date().toISOString(),
-      paciente: res.paciente || (document.getElementById('pacNombre') ? document.getElementById('pacNombre').value : '') || 'Sin nombre',
-      paciente_nombre: res.paciente_nombre || res.paciente || '',
+      paciente: nombrePac,
+      paciente_nombre: nombrePac,
+      identificacion: res.identificacion || '',
       diagnostico: res.diagnostico || '',
       confianza: res.confianza || 0,
+      hallazgos: res.hallazgos || [],
       medico: usuarioActual ? (usuarioActual.nombre || '') : '',
       firmado: false,
-      notas: ''
+      notas: '',
+      es_real: res.es_real || false
     };
     historialDB = historialDB || [];
     historialDB.unshift(entrada);
-    agregarLog('Diagnostico guardado: ' + entrada.diagnostico);
+    // Actualizar el ultimo_diagnostico del paciente en pacientesData (para su expediente)
+    try {
+      if (typeof pacientesData !== 'undefined' && nombrePac && nombrePac !== 'Sin nombre') {
+        var pac = pacientesData.find(function(x){ return x.nombre === nombrePac; });
+        if (pac) {
+          pac.ultimo_diagnostico = entrada.diagnostico;
+          pac.ultima_fecha_ecg = entrada.fecha;
+          try { localStorage.setItem('cardio_ia_pacientes', JSON.stringify(pacientesData)); } catch(e){}
+        }
+      }
+    } catch(e){}
+    // Persistir historial
+    try { localStorage.setItem('cardio_ia_historial', JSON.stringify(historialDB)); } catch(e){}
+    agregarLog('Diagnostico guardado en expediente: ' + entrada.diagnostico + ' (' + nombrePac + ')');
   } catch(e) {}
 }
 
@@ -6192,6 +6209,12 @@ function limpiarResultadoAnterior() {
     if (status) status.style.display = 'none';
     var bio = document.getElementById('biomarkersPanel');
     if (bio) bio.style.display = 'none';
+    // Borrar contenido del diagnóstico anterior para que no reaparezca como "analizado"
+    var dt = document.getElementById('diagTexto'); if (dt) dt.textContent = '-';
+    var dc = document.getElementById('diagConfianza'); if (dc) dc.innerHTML = '';
+    var hl = document.getElementById('hallazgosList'); if (hl) hl.innerHTML = '';
+    var hc = document.getElementById('hallazgosCard'); if (hc) hc.style.display = 'none';
+    ultimoResultado = null;
   } catch(e){}
 }
 
