@@ -5820,6 +5820,10 @@ function seleccionarPacienteAnalizar(nombre) {
   if (!nombre) {
     pacienteActivo = null;
     if (info) info.style.display = 'none';
+    // Limpiar campos al deseleccionar
+    var c1=document.getElementById('pacNombre'); if(c1) c1.value='';
+    var c2=document.getElementById('pacId'); if(c2) c2.value='';
+    var c3=document.getElementById('pacEdad'); if(c3) c3.value='';
     return;
   }
   var p = pacientesData.find(function(x){ return x.nombre === nombre; });
@@ -5828,15 +5832,18 @@ function seleccionarPacienteAnalizar(nombre) {
   guardarPacienteActivoLocal();
   if (info) info.style.display = 'block';
   cargarMiniHistorial(nombre);
-  // Autocompletar campos
+  // Autocompletar campos (usar nombres de campo reales: id_documento, sexo 'M'/'F')
   var fn = document.getElementById('pacNombre');
   var fi = document.getElementById('pacId');
   var fe = document.getElementById('pacEdad');
   var fs = document.getElementById('pacSexo');
   if (fn) fn.value = p.nombre || '';
-  if (fi) fi.value = p.identificacion || '';
+  if (fi) fi.value = p.identificacion || p.id_documento || '';
   if (fe) fe.value = p.edad || '';
-  if (fs && p.sexo) fs.value = p.sexo === 'Femenino' ? 'F' : 'M';
+  if (fs) {
+    var sx = (p.sexo === 'F' || p.sexo === 'Femenino') ? 'F' : 'M';
+    fs.value = sx;
+  }
 }
 
 // Casos demo precargados
@@ -5954,7 +5961,7 @@ function mostrarResultadoReal(d, caso) {
   var emoji = esNorm ? '&#x2705;' : (revisar ? '&#x26A0;&#xFE0F;' : '&#x1FAC0;');
   ultimoResultado = {
     diagnostico:d.diagnostico_principal, confianza:d.confianza,
-    paciente: document.getElementById('pacNombre') ? (document.getElementById('pacNombre').value||'Ejemplo PTB-XL') : 'Ejemplo PTB-XL',
+    paciente: (typeof pacienteActivo !== 'undefined' && pacienteActivo && pacienteActivo.nombre) ? pacienteActivo.nombre : (document.getElementById('pacNombre') ? (document.getElementById('pacNombre').value||'Ejemplo PTB-XL') : 'Ejemplo PTB-XL'),
     fecha:new Date().toISOString(), firmado:false, hallazgos:probs, es_real:true,
     etiqueta_real:(d.etiqueta_real||[])
   };
