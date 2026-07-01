@@ -2209,6 +2209,7 @@ body{
           </div>
         </div>
         <button class="btn btn-primary btn-full" id="btnAnalizar" onclick="analizarECG()" style="margin-top:14px;font-size:14px;padding:13px;" disabled>&#x1F52C; Analizar ECG con IA</button>
+        <button class="btn btn-ghost btn-full" id="btnNuevoAnalisis" onclick="limpiarAnalisisECG()" style="margin-top:8px;font-size:13px;padding:10px;">&#x1F504; Nuevo análisis (limpiar)</button>
         <div id="analizarStatus" style="display:none;margin-top:8px;text-align:center;font-size:12px;color:var(--text2);"></div>
       </div>
     </div>
@@ -5962,7 +5963,19 @@ function mostrarResultadoReal(d, caso) {
   // Limpiar fileInfo (quitar spinner)
   var fi=document.getElementById('fileInfo');
   if(fi) fi.innerHTML = esArchivo ? '\u2705 ECG analizado: <strong>'+d.diagnostico_principal+'</strong>' : '\u2705 Caso real analizado: <strong>'+(d.caso_nombre||ECG_SIGNALS_REAL[caso]||caso)+'</strong>';
-  try { if(typeof guardarEnHistorialAuto==='function') guardarEnHistorialAuto(ultimoResultado); } catch(e){}
+  // Guardar en el expediente del paciente (si hay uno seleccionado)
+  try {
+    if (typeof pacienteActivo !== 'undefined' && pacienteActivo && pacienteActivo.nombre) {
+      ultimoResultado.paciente = pacienteActivo.nombre;
+      ultimoResultado.paciente_nombre = pacienteActivo.nombre;
+      ultimoResultado.identificacion = pacienteActivo.identificacion || '';
+    }
+    if(typeof guardarEnHistorialAuto==='function') guardarEnHistorialAuto(ultimoResultado);
+    if (typeof pacienteActivo !== 'undefined' && pacienteActivo && pacienteActivo.nombre) {
+      if (dc) dc.innerHTML += ' &#xB7; <span style="color:var(--green2);">&#x1F4C1; Guardado en expediente de ' + pacienteActivo.nombre + '</span>';
+      if(typeof showToast==='function') showToast('\u2705 Guardado en el expediente de ' + pacienteActivo.nombre, 'success');
+    }
+  } catch(e){}
   try { if(typeof incrementarContador==='function') incrementarContador(); } catch(e){}
   try { if(typeof showToast==='function') showToast('\u2705 Analisis real: ' + d.diagnostico_principal, 'success'); } catch(e){}
   try { if(typeof agregarLog==='function') agregarLog('Caso real: ' + d.diagnostico_principal + ' (PTB-XL: '+(d.etiqueta_real||[]).join(',')+')'); } catch(e){}
@@ -6170,8 +6183,36 @@ function toggleZoomECG() {
   }, 100);
 }
 
+// Limpia solo el resultado mostrado (al cargar archivo nuevo, sin borrar el archivo)
+function limpiarResultadoAnterior() {
+  try {
+    var preview = document.getElementById('resultadoPreview');
+    if (preview) preview.style.display = 'none';
+    var status = document.getElementById('analizarStatus');
+    if (status) status.style.display = 'none';
+    var bio = document.getElementById('biomarkersPanel');
+    if (bio) bio.style.display = 'none';
+  } catch(e){}
+}
+
+// Limpieza total: borra archivo, gráfica, resultado y datos del paciente (botón "Nuevo análisis")
+function limpiarAnalisisECG() {
+  try {
+    ecgDataActual = null; ecgDataMatrix = null; ecgEs12Derivaciones = false; ultimoResultado = null;
+    limpiarResultadoAnterior();
+    var fi = document.getElementById('fileInfo'); if (fi) { fi.style.display = 'none'; fi.innerHTML = ''; }
+    var card = document.getElementById('ecgGraficaCard'); if (card) card.style.display = 'none';
+    var inp = document.getElementById('ecgFile'); if (inp) inp.value = '';
+    var btn = document.getElementById('btnAnalizar');
+    if (btn) { btn.disabled = true; btn.innerHTML = '&#x1F52C; Analizar ECG con IA'; }
+    if (typeof showToast === 'function') showToast('Listo para un nuevo análisis', 'info');
+  } catch(e){}
+}
+
 function procesarArchivoLocal(input) {
   if (!input.files[0]) return;
+  // Limpiar resultado anterior (sin analizar) al cargar un archivo nuevo
+  limpiarResultadoAnterior();
   var file = input.files[0];
   var reader = new FileReader();
   reader.onload = function(e) {
