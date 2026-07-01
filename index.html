@@ -5998,6 +5998,10 @@ function mostrarResultadoReal(d, caso) {
     if (typeof pacienteActivo !== 'undefined' && pacienteActivo && pacienteActivo.nombre) {
       if (dc) dc.innerHTML += ' &#xB7; <span style="color:var(--green2);">&#x1F4C1; Guardado en expediente de ' + pacienteActivo.nombre + '</span>';
       if(typeof showToast==='function') showToast('\u2705 Guardado en el expediente de ' + pacienteActivo.nombre, 'success');
+      // Refrescar la lista de ECGs del paciente inmediatamente
+      try { if(typeof cargarMiniHistorial==='function') cargarMiniHistorial(pacienteActivo.nombre); } catch(e){}
+      // Refrescar módulo pacientes si está renderizado
+      try { if(typeof renderPacientes==='function') renderPacientes(); } catch(e){}
     }
   } catch(e){}
   try { if(typeof incrementarContador==='function') incrementarContador(); } catch(e){}
