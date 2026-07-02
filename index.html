@@ -6804,7 +6804,7 @@ function cerrarSesion() {
 
 // ===== NOTIFICACIONES BADGE =====
 function actualizarBadgeAlertas() {
-  fetch(API + '/alertas', {headers: H})
+  fetch(API_DATOS + '/alertas', {headers: H})
     .then(function(r){return r.json();})
     .then(function(data){
       var alertas = (data.alertas||[]).filter(function(a){return !a.leida;});
@@ -7342,7 +7342,7 @@ function actualizarLogoHeader() {
 
 function cargarStatsOrg() {
   // Medicos desde API
-  fetch(API + '/medicos', {headers: H})
+  fetch(API_DATOS + '/medicos', {headers: H})
     .then(function(r){return r.json();})
     .then(function(data){
       var meds = data.medicos || [];
@@ -7357,7 +7357,7 @@ function cargarStatsOrg() {
   var pacs = JSON.parse(localStorage.getItem('cardio_ia_pacientes')||'[]');
   setText('orgStatPacientes', pacs.length);
   // ECGs
-  fetch(API + '/historial?limit=1000', {headers: H})
+  fetch(API_DATOS + '/historial?limit=1000', {headers: H})
     .then(function(r){return r.json();})
     .then(function(data){ setText('orgStatECGs', (data.historial||[]).length); })
     .catch(function(){});
@@ -7389,7 +7389,7 @@ function cargarEstadisticasMes() {
   var sel = document.getElementById('perfilMesSelect');
   var mes = sel ? parseInt(sel.value) : new Date().getMonth();
   var anio = new Date().getFullYear();
-  fetch(API + '/historial?limit=500', {headers: H})
+  fetch(API_DATOS + '/historial?limit=500', {headers: H})
     .then(function(r){return r.json();})
     .then(function(data){
       var hist = data.historial || [];
@@ -7957,7 +7957,8 @@ document.addEventListener('click', function(e) {
 
 
 // ===== CONFIGURACION =====
-var API = 'https://cardio-ia-api-120778240410.us-central1.run.app';
+var API = 'https://cardio-ia-api-120778240410.us-central1.run.app';        // Modelo (Flask): diagnosticos ECG
+var API_DATOS = 'https://cardio-ia-latam-120778240410.us-central1.run.app'; // Datos (FastAPI): pacientes, historial, medicos, alertas
 var H = {'ngrok-skip-browser-warning':'true'};
 var GOOGLE_CLIENT_ID = '120778240410-9c64ofcrbfsjeou7jiqfi7163u3bbhk9.apps.googleusercontent.com';
 var usuarioActual = null;
@@ -8086,7 +8087,7 @@ function handleGoogleLogin(response) {
 }
 
 function verificarMedico(usuario) {
-  fetch(API + '/medico/verificar', {
+  fetch(API_DATOS + '/medico/verificar', {
     method: 'POST',
     headers: Object.assign({}, H, {'Content-Type': 'application/json'}),
     body: JSON.stringify(usuario)
@@ -8128,7 +8129,7 @@ function guardarPerfil() {
     alert('Completa los campos obligatorios (*)');
     return;
   }
-  fetch(API + '/medico/registrar', {
+  fetch(API_DATOS + '/medico/registrar', {
     method: 'POST',
     headers: Object.assign({}, H, {'Content-Type': 'application/json'}),
     body: JSON.stringify(medico)
@@ -8584,7 +8585,7 @@ function leerEnVoz() {
 
 // ===== HISTORIAL =====
 function cargarHistorial() {
-  fetch(API + '/historial?limit=50', {headers: H})
+  fetch(API_DATOS + '/historial?limit=50', {headers: H})
     .then(function(r) { return r.json(); })
     .then(function(data) {
       historialDB = data.historial || [];
@@ -9097,7 +9098,7 @@ function cargarPacientes() {
   var local = cargarPacientesLocal();
   if (!local) {
     // Solo si no hay datos locales, intentar la API
-    fetch(API + '/pacientes', {headers: H})
+    fetch(API_DATOS + '/pacientes', {headers: H})
       .then(function(r){return r.json();})
       .then(function(data){
         // Solo cargar de API si no tenemos datos locales
@@ -9199,7 +9200,7 @@ function guardarPaciente() {
     alert('Completa nombre e identificacion');
     return;
   }
-  fetch(API + '/paciente/registrar', {
+  fetch(API_DATOS + '/paciente/registrar', {
     method: 'POST',
     headers: Object.assign({}, H, {'Content-Type': 'application/json'}),
     body: JSON.stringify(data)
@@ -9293,7 +9294,7 @@ function darBajaPaciente(id, nombre) {
 
 // ===== ALERTAS =====
 function cargarAlertas() {
-  fetch(API + '/alertas?limit=10', {headers: H})
+  fetch(API_DATOS + '/alertas?limit=10', {headers: H})
     .then(function(r){return r.json();})
     .then(function(data){
       var alertas = data.alertas || [];
@@ -9368,7 +9369,7 @@ function registrarOrg() {
     terminos_aceptados: true,
     habeas_data_aceptado: true
   };
-  fetch(API + '/organizacion/registrar', {
+  fetch(API_DATOS + '/organizacion/registrar', {
     method: 'POST',
     headers: Object.assign({}, H, {'Content-Type': 'application/json'}),
     body: JSON.stringify(data)
@@ -10111,7 +10112,7 @@ function switchDashTab(tab) {
 
 function cargarDatosDirector() {
   // Stats globales desde historial
-  fetch(API + '/historial?limit=500', {headers: H})
+  fetch(API_DATOS + '/historial?limit=500', {headers: H})
     .then(function(r){return r.json();})
     .then(function(data){
       var hist = data.historial || [];
@@ -10157,11 +10158,11 @@ function cargarDatosDirector() {
     .catch(function(){});
 
   // Pacientes y alertas
-  fetch(API + '/pacientes', {headers: H})
+  fetch(API_DATOS + '/pacientes', {headers: H})
     .then(function(r){return r.json();})
     .then(function(d){ setText('dirStatPacientes', (d.pacientes||[]).length); })
     .catch(function(){});
-  fetch(API + '/alertas', {headers: H})
+  fetch(API_DATOS + '/alertas', {headers: H})
     .then(function(r){return r.json();})
     .then(function(d){ setText('dirStatAlertas', (d.alertas||[]).length); })
     .catch(function(){});
@@ -10394,7 +10395,7 @@ function crearInvitacion() {
   document.getElementById('invEmail').value = '';
   if (document.getElementById('invNombre')) document.getElementById('invNombre').value = '';
   if (document.getElementById('invEspecialidad')) document.getElementById('invEspecialidad').value = '';
-  fetch(API+'/invitacion/crear',{method:'POST',headers:Object.assign({},H,{'Content-Type':'application/json'}),body:JSON.stringify({email:email,rol:rol,token:token})}).catch(function(){});
+  fetch(API_DATOS+'/invitacion/crear',{method:'POST',headers:Object.assign({},H,{'Content-Type':'application/json'}),body:JSON.stringify({email:email,rol:rol,token:token})}).catch(function(){});
   agregarLog('Invitacion para: '+email+' | '+rol);
 }
 
@@ -10408,7 +10409,7 @@ function renderInvitaciones() {
 }
 
 function cargarMedicosOrg() {
-  fetch(API+'/medicos',{headers:H})
+  fetch(API_DATOS+'/medicos',{headers:H})
     .then(function(r){return r.json();})
     .then(function(data){
       var c=document.getElementById('medicosOrg');
