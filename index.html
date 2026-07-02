@@ -4307,7 +4307,7 @@ body{
         <div class="card">
           <div class="card-title" style="margin-bottom:14px;">&#x2753; Preguntas frecuentes</div>
           <div id="faqContainer">
-            <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>&#x1F4C1; &#xBF;Qu&#xE9; formatos de ECG acepta el sistema?</span><span class="faq-arrow">&#x25BC;</span></div><div class="faq-a"><div class="faq-a-inner">Acepta <strong>CSV y TXT</strong> (valores num&#xE9;ricos por l&#xED;nea), as&#xED; como <strong>HL7, EDF, EDF+, XML y DICOM ECG</strong>. Tambi&#xE9;n puedes usar los <strong>8 casos demo cl&#xED;nicos</strong> sin subir archivos, incluyendo IAM, FA, TV, WPW, QT largo, BAV III, Bloqueo BCRD y Normal.</div></div></div>
+            <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>&#x1F4C1; &#xBF;Qu&#xE9; formatos de ECG acepta el sistema?</span><span class="faq-arrow">&#x25BC;</span></div><div class="faq-a"><div class="faq-a-inner">Acepta <strong>CSV, TXT y EDF/EDF+</strong> (formatos activos y validados hoy). Otros formatos como <strong>HL7, XML y DICOM ECG</strong> est&#xE1;n en desarrollo. Tambi&#xE9;n puedes usar los <strong>8 casos demo cl&#xED;nicos</strong> sin subir archivos, incluyendo IAM, FA, TV, WPW, QT largo, BAV III, Bloqueo BCRD y Normal.</div></div></div>
             <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>&#x270D;&#xFE0F; &#xBF;La firma digital tiene validez legal?</span><span class="faq-arrow">&#x25BC;</span></div><div class="faq-a"><div class="faq-a-inner">S&#xED;. Usa <strong>PKI</strong> con hash SHA-256 en blockchain inmutable. El PDF generado es v&#xE1;lido para <strong>Historia Cl&#xED;nica Electr&#xF3;nica</strong> bajo SaMD Clase II, HIPAA y Ley 1581.</div></div></div>
             <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>&#x231A; &#xBF;C&#xF3;mo funciona el monitoreo remoto?</span><span class="faq-arrow">&#x25BC;</span></div><div class="faq-a"><div class="faq-a-inner">Compatible con <strong>Apple Watch Series 4+, Wear OS, Samsung Galaxy Watch 4+ y KardiaMobile</strong>. Env&#xED;an ECG, FC y SpO2 en tiempo real. Las alertas cr&#xED;ticas aparecen inmediatamente en el dashboard.</div></div></div>
             <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>&#x1F512; &#xBF;Los datos de pacientes son seguros?</span><span class="faq-arrow">&#x25BC;</span></div><div class="faq-a"><div class="faq-a-inner">Almacenamiento con <strong>AES-256</strong>, tr&#xE1;nsito con <strong>TLS 1.3</strong>. Cumplimos <strong>HIPAA, GDPR, Ley 1581</strong> y <strong>HL7 FHIR R4</strong>. Los datos nunca se comparten ni se usan para entrenar modelos sin consentimiento.</div></div></div>
@@ -11819,8 +11819,9 @@ function renderizarMACE(resultado) {
 function mostrarFuenteECGChip() {
   var chip = document.getElementById('fuenteECGChip');
   var badge = document.getElementById('fuenteECGBadge');
+  var _lblManual = 'Archivo ' + (ecgFormatoDetectado && FORMATOS_ACTIVOS.indexOf(ecgFormatoDetectado) !== -1 ? ecgFormatoDetectado : 'CSV');
   var FUENTES = {
-    manual: {ico:'📁', label:'Archivo CSV', color:'rgba(37,99,235,.12)', tc:'var(--accent3)'},
+    manual: {ico:'📁', label:_lblManual, color:'rgba(37,99,235,.12)', tc:'var(--accent3)'},
     maquina: {ico:'🖥️', label:'Máquina ECG', color:'rgba(139,92,246,.12)', tc:'var(--purple2)'},
     wearable: {ico:'⌚', label:'Apple Watch', color:'rgba(16,185,129,.12)', tc:'var(--green2)'},
     fhir: {ico:'🏥', label:'HL7 FHIR', color:'rgba(14,165,233,.12)', tc:'var(--cyan)'}
