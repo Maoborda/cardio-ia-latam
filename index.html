@@ -4602,14 +4602,85 @@ function verPerfilPaciente(nombre) {
   bA.onclick = function(){ activarPacienteYAnalizar(nombre); closeModal("perfilPacienteModal"); };
   var bH = document.createElement("button"); bH.className="btn btn-secondary"; bH.style.flex="1"; bH.innerHTML="&#x1F4CB; Historial";
   bH.onclick = function(){ verHistorialPaciente(nombre); closeModal("perfilPacienteModal"); };
+  var bE = document.createElement("button"); bE.className="btn btn-ghost"; bE.style.flex="1"; bE.innerHTML="&#x270F;&#xFE0F; Editar";
+  bE.onclick = function(){ editarPaciente(p); };
   var bQ = document.createElement("button"); bQ.className="btn btn-ghost"; bQ.style.flex="1"; bQ.innerHTML="&#x1F4F1; QR";
   bQ.onclick = function(){ generarQRPaciente(nombre); };
+  var bD = document.createElement("button"); bD.className="btn btn-ghost"; bD.style.flex="1"; bD.style.color="var(--red2)"; bD.innerHTML="&#x1F5D1;&#xFE0F; Borrar";
+  bD.onclick = function(){ borrarPaciente(p); };
   var bC = document.createElement("button"); bC.className="btn btn-ghost btn-full"; bC.style.marginTop="8px"; bC.textContent="Cerrar";
   bC.onclick = function(){ closeModal("perfilPacienteModal"); };
-  btns.appendChild(bA); btns.appendChild(bH); btns.appendChild(bQ);
+  btns.appendChild(bA); btns.appendChild(bH); btns.appendChild(bE); btns.appendChild(bQ); btns.appendChild(bD);
   cont.appendChild(btns); cont.appendChild(bC);
 
   openModal("perfilPacienteModal");
+}
+
+// ===== EDITAR PACIENTE (backend v6: PUT /paciente/{id}) =====
+function editarPaciente(p) {
+  if (!p || !p.id) { alert("Paciente sin ID valido"); return; }
+  var campos = [
+    ["nombre","Nombre",p.nombre], ["identificacion","Identificacion",p.identificacion],
+    ["edad","Edad",p.edad], ["telefono","Telefono",p.telefono],
+    ["email","Email",p.email], ["direccion","Direccion",p.direccion],
+    ["alergias","Alergias",p.alergias], ["comorbilidades","Comorbilidades",p.comorbilidades],
+    ["medicamentos_actuales","Medicamentos",p.medicamentos_actuales]
+  ];
+  var html = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">';
+  campos.forEach(function(c){
+    html += '<div><label style="font-size:11px;color:var(--text3);display:block;margin-bottom:3px;">'+c[1]+'</label>'+
+            '<input id="edit_'+c[0]+'" value="'+(c[2]!=null?String(c[2]).replace(/"/g,"&quot;"):"")+'" '+
+            'style="width:100%;padding:8px;border-radius:8px;border:1px solid var(--border2);background:var(--bg3);color:var(--text);font-family:inherit;font-size:13px;"></div>';
+  });
+  html += '</div>';
+  var cont = document.getElementById("perfilPacienteContent");
+  var prev = cont.innerHTML;
+  cont.innerHTML = '<div style="font-size:15px;font-weight:700;margin-bottom:12px;">&#x270F;&#xFE0F; Editar paciente</div>' + html +
+    '<div style="display:flex;gap:8px;margin-top:14px;">'+
+    '<button class="btn btn-primary" style="flex:1;" id="btnGuardarEdit">&#x1F4BE; Guardar cambios</button>'+
+    '<button class="btn btn-secondary" style="flex:1;" id="btnCancelarEdit">Cancelar</button></div>';
+  document.getElementById("btnCancelarEdit").onclick = function(){ cont.innerHTML = prev; verPerfilPaciente(p.nombre); };
+  document.getElementById("btnGuardarEdit").onclick = function(){
+    var btn = this; btn.disabled = true; btn.innerHTML = "&#x23F3; Guardando...";
+    var data = {};
+    campos.forEach(function(c){
+      var el = document.getElementById("edit_"+c[0]);
+      if (el) data[c[0]] = c[0]==="edad" ? (parseInt(el.value)||null) : el.value;
+    });
+    fetch(API_DATOS + "/paciente/" + p.id, {
+      method: "PUT",
+      headers: Object.assign({}, H, {"Content-Type":"application/json"}),
+      body: JSON.stringify(data)
+    }).then(function(r){return r.json();}).then(function(res){
+      if (res.ok) {
+        if (typeof showToast==="function") showToast("Paciente actualizado","success");
+        closeModal("perfilPacienteModal");
+        if (typeof cargarPacientes==="function") cargarPacientes();
+      } else {
+        alert("Error al actualizar: " + (res.error||"desconocido"));
+        btn.disabled = false; btn.innerHTML = "&#x1F4BE; Guardar cambios";
+      }
+    }).catch(function(e){
+      alert("Error de conexion: " + e);
+      btn.disabled = false; btn.innerHTML = "&#x1F4BE; Guardar cambios";
+    });
+  };
+}
+
+// ===== BORRAR PACIENTE (backend v6: DELETE /paciente/{id}) =====
+function borrarPaciente(p) {
+  if (!p || !p.id) { alert("Paciente sin ID valido"); return; }
+  if (!confirm("¿Borrar a " + (p.nombre||"este paciente") + "?\n\nSe archivara (borrado logico). Su historial se conserva.")) return;
+  fetch(API_DATOS + "/paciente/" + p.id, { method: "DELETE", headers: H })
+    .then(function(r){return r.json();}).then(function(res){
+      if (res.ok) {
+        if (typeof showToast==="function") showToast("Paciente archivado","success");
+        closeModal("perfilPacienteModal");
+        if (typeof cargarPacientes==="function") cargarPacientes();
+      } else {
+        alert("Error al borrar: " + (res.error||"desconocido"));
+      }
+    }).catch(function(e){ alert("Error de conexion: " + e); });
 }
 
 function verHistorialPaciente(nombre) {
