@@ -9094,24 +9094,25 @@ function agregarLog(msg) {
 var pacientesData = [];
 
 function cargarPacientes() {
-  // Usar localStorage como fuente principal
-  var local = cargarPacientesLocal();
-  if (!local) {
-    // Solo si no hay datos locales, intentar la API
-    fetch(API_DATOS + '/pacientes', {headers: H})
-      .then(function(r){return r.json();})
-      .then(function(data){
-        // Solo cargar de API si no tenemos datos locales
-        if (pacientesData.length === 0 && data.pacientes) {
-          pacientesData = data.pacientes;
-          guardarPacientesLocal();
-          renderPacientes();
-          actualizarStatsPacientes();
-          poblarSelectorConector();
-        }
-      })
-      .catch(function(){renderPacientes();});
-  }
+  // Fuente principal: la BASE DE DATOS (backend FastAPI). localStorage es solo respaldo.
+  fetch(API_DATOS + '/pacientes', {headers: H})
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if (data && data.pacientes) {
+        pacientesData = data.pacientes;
+        guardarPacientesLocal();        // respaldo local por si el backend cae luego
+        renderPacientes();
+        actualizarStatsPacientes();
+        poblarSelectorConector();
+      } else {
+        // Respuesta inesperada: caer al respaldo local
+        cargarPacientesLocal();
+      }
+    })
+    .catch(function(){
+      // La API falló: usar el respaldo local para no quedar en blanco
+      if (!cargarPacientesLocal()) { renderPacientes(); }
+    });
 }
 
 function actualizarStatsPacientes() {
@@ -14296,16 +14297,10 @@ iniciarSesionRehab = function() {
   // Asegurar que hay pacientes demo con wearable para monitoreo
   function ensureMonitoreoData() {
     var WATCHES = ['Apple Watch Series 9','Samsung Galaxy Watch 6','Wear OS Pixel Watch 2','KardiaMobile 6L','Garmin Venu 3'];
-    // Si no hay pacientes, crear demos
+    // Los pacientes vienen de la base de datos. NO se inyectan demos en pacientesData.
     if (pacientesData.length === 0) {
-      pacientesData = [
-        {id:1001, nombre:'Carlos Medina', edad:62, sexo:'M', id_documento:'CC-45678901', comorbilidades:'HTA, Diabetes tipo 2', score_framingham:18, smartwatch_tipo:'Apple Watch Series 9', monitoreo_activo:true, ultimo_diagnostico:'Fibrilacion Auricular', nivel_riesgo:'alto'},
-        {id:1002, nombre:'Ana Ramirez', edad:55, sexo:'F', id_documento:'CC-23456789', comorbilidades:'Dislipidemia', score_framingham:12, smartwatch_tipo:'Samsung Galaxy Watch 6', monitoreo_activo:true, ultimo_diagnostico:'Normal (Ritmo Sinusal)', nivel_riesgo:'bajo'},
-        {id:1003, nombre:'Pedro Gomez', edad:71, sexo:'M', id_documento:'CC-67890123', comorbilidades:'ICC, EPOC', score_framingham:24, smartwatch_tipo:'KardiaMobile 6L', monitoreo_activo:true, ultimo_diagnostico:'Bloqueo AV Tercer Grado', nivel_riesgo:'alto'},
-        {id:1004, nombre:'Maria Torres', edad:48, sexo:'F', id_documento:'CC-34567890', comorbilidades:'Ninguna', score_framingham:8, smartwatch_tipo:'Garmin Venu 3', monitoreo_activo:true, ultimo_diagnostico:'Normal (Ritmo Sinusal)', nivel_riesgo:'bajo'},
-        {id:1005, nombre:'Diego Borda', edad:51, sexo:'M', id_documento:'CC-88213573', comorbilidades:'HTA leve', score_framingham:14, smartwatch_tipo:'Wear OS Pixel Watch 2', monitoreo_activo:true, ultimo_diagnostico:'Normal (Ritmo Sinusal)', nivel_riesgo:'moderado'}
-      ];
-      try { localStorage.setItem('cardio_ia_pacientes', JSON.stringify(pacientesData)); } catch(e) {}
+      // Sin pacientes en la base: Monitoreo se mostrara vacio hasta registrar pacientes reales.
+      return;
     } else {
       // Asignar wearables a los primeros 4 que no tengan
       var assigned = 0;
@@ -14649,36 +14644,14 @@ switchTab = function(tab) {
 };
 
 // ═══ DATOS DEMO SÍNCRONOS ═══
-// Asegurar que pacientes + historial existen ANTES de cualquier render
+// NOTA: Los pacientes ahora vienen SIEMPRE de la base de datos (cargarPacientes()).
+// Ya NO se inyectan pacientes demo en pacientesData, para que Pacientes/Analizar/Monitoreo
+// reflejen la base real. Solo se conserva la generacion de historial demo si aplica.
 (function ensureDemoData() {
-  // Pacientes
-  if (!pacientesData || pacientesData.length === 0) {
-    try { var saved = localStorage.getItem('cardio_ia_pacientes'); if (saved) pacientesData = JSON.parse(saved); } catch(e) {}
-  }
-  if (!pacientesData || pacientesData.length === 0) {
-    pacientesData = [
-      {id:1001,nombre:'Carlos Medina',edad:62,sexo:'M',id_documento:'CC-45678901',comorbilidades:'HTA, Diabetes tipo 2',score_framingham:18,smartwatch_tipo:'Apple Watch Series 9',monitoreo_activo:true,ultimo_diagnostico:'Fibrilacion Auricular',nivel_riesgo:'alto'},
-      {id:1002,nombre:'Ana Ramirez',edad:55,sexo:'F',id_documento:'CC-23456789',comorbilidades:'Dislipidemia',score_framingham:12,smartwatch_tipo:'Samsung Galaxy Watch 6',monitoreo_activo:true,ultimo_diagnostico:'Normal (Ritmo Sinusal)',nivel_riesgo:'bajo'},
-      {id:1003,nombre:'Pedro Gomez',edad:71,sexo:'M',id_documento:'CC-67890123',comorbilidades:'ICC, EPOC',score_framingham:24,smartwatch_tipo:'KardiaMobile 6L',monitoreo_activo:true,ultimo_diagnostico:'Bloqueo AV Tercer Grado',nivel_riesgo:'alto'},
-      {id:1004,nombre:'Maria Torres',edad:48,sexo:'F',id_documento:'CC-34567890',comorbilidades:'Ninguna',score_framingham:8,smartwatch_tipo:'Garmin Venu 3',monitoreo_activo:true,ultimo_diagnostico:'Normal (Ritmo Sinusal)',nivel_riesgo:'bajo'},
-      {id:1005,nombre:'Diego Borda',edad:51,sexo:'M',id_documento:'CC-88213573',comorbilidades:'HTA leve',score_framingham:14,smartwatch_tipo:'Wear OS Pixel Watch 2',monitoreo_activo:true,ultimo_diagnostico:'Normal (Ritmo Sinusal)',nivel_riesgo:'moderado'}
-    ];
-    try { localStorage.setItem('cardio_ia_pacientes', JSON.stringify(pacientesData)); } catch(e) {}
-  }
-  // Asignar vitales simulados
-  pacientesData.forEach(function(p) {
-    if (p.monitoreo_activo) {
-      p._fc = p._fc || (65 + Math.floor(Math.random() * 30));
-      p._spo2 = p._spo2 || (95 + Math.floor(Math.random() * 4));
-      p._hrv = p._hrv || (20 + Math.floor(Math.random() * 25));
-    }
-  });
-  // Historial
+  // (pacientes demo eliminados: la fuente es la base de datos)
+  // Historial demo (solo si el modulo lo requiere y no hay datos)
   if (!historialDB || historialDB.length === 0) {
     try { var h = localStorage.getItem('cardio_ia_historial'); if (h) historialDB = JSON.parse(h); } catch(e) {}
-  }
-  if (!historialDB || historialDB.length < 10) {
-    if (typeof generarHistorialDemoLimpio === 'function') generarHistorialDemoLimpio();
   }
 })();
 
