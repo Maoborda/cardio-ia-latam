@@ -2756,37 +2756,7 @@ body{
 
         
 
-<!-- Zona de importaci&#xF3;n de documentos -->
-        <div class="card" style="margin-bottom:14px;border-color:rgba(37,99,235,.2);background:rgba(37,99,235,.02);">
-          <div class="card-hd" style="margin-bottom:10px;">
-            <div class="card-title">&#x1F4C1; Importar documentos cl&#xED;nicos</div>
-            <div style="font-size:11px;color:var(--text3);">PDF, DICOM, HL7, imagenes</div>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-            <!-- Drop zone archivos -->
-            <div id="pacDocDropZone" onclick="document.getElementById('pacDocInput').click()" ondrop="handleDropDocPaciente(event)" ondragover="event.preventDefault();this.style.borderColor='var(--accent)'" ondragleave="this.style.borderColor='var(--border2)'" style="border:2px dashed var(--border2);border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all .2s;">
-              <div style="font-size:32px;margin-bottom:6px;">&#x1F4E4;</div>
-              <div style="font-size:13px;font-weight:600;margin-bottom:4px;">Arrastra archivos aqu&#xED;</div>
-              <div style="font-size:11px;color:var(--text2);"><strong style="color:var(--red2);">PDF</strong> &#xB7; DICOM &#xB7; JPG &#xB7; PNG &#xB7; HL7 &#xB7; FHIR JSON</div>
-              <div style="font-size:10px;color:var(--text3);margin-top:4px;">Historias cl&#xED;nicas PDF, ex&#xE1;menes de laboratorio, im&#xE1;genes DICOM, reportes m&#xE9;dicos</div>
-              <input type="file" id="pacDocInput" multiple accept=".pdf,.jpg,.jpeg,.png,.dcm,.hl7,.json,.xml,.doc,.docx" style="display:none;" onchange="procesarDocsPaciente(this)"/>
-            </div>
-            <!-- Importar desde red -->
-            <div style="background:var(--bg3);border-radius:12px;padding:16px;">
-              <div style="font-size:13px;font-weight:600;margin-bottom:10px;">&#x1F4E1; Importar desde red hospitalaria</div>
-              <div style="display:flex;flex-direction:column;gap:8px;">
-                <button onclick="importarDesdeHL7()" class="btn btn-ghost btn-sm" style="justify-content:flex-start;text-align:left;">&#x1F3E5; HL7 FHIR R4 &#x2014; Historia cl&#xED;nica electr&#xF3;nica</button>
-                <button onclick="importarDesdePACS()" class="btn btn-ghost btn-sm" style="justify-content:flex-start;text-align:left;">&#x1F4CB; PACS/DICOM &#x2014; Im&#xE1;genes diagn&#xF3;sticas</button>
-                <button onclick="importarDesdeLab()" class="btn btn-ghost btn-sm" style="justify-content:flex-start;text-align:left;">&#x1F9EA; Laboratorio &#x2014; Resultados bioqui&#xED;micos</button>
-                <button onclick="importarDesdeHIS()" class="btn btn-ghost btn-sm" style="justify-content:flex-start;text-align:left;">&#x1F4CA; HIS &#x2014; Sistema de informaci&#xF3;n hospitalario</button>
-              </div>
-              <div style="font-size:10px;color:var(--text3);margin-top:8px;">Requiere configuraci&#xF3;n de red en Organizaci&#xF3;n</div>
-            </div>
-          </div>
-          <!-- Documentos recientes -->
-          <div id="pacDocsRecientes" style="margin-top:12px;display:none;">
-          </div>
-        </div>
+<!-- Importador global removido: los documentos ahora se suben dentro del expediente de cada paciente (boton "Subir documento" en el modal de perfil), para que queden vinculados al paciente correcto. -->
 
         <!-- Modal perfil paciente -->
         <div class="modal-bg" id="perfilPacienteModal">
@@ -9209,15 +9179,12 @@ function guardarPaciente() {
   .then(function(res){
     if (res.ok) {
       closeModal('nuevoPacienteModal');
-      switchTab('pacientes');
       _guardandoPaciente = false;
-      // Calcular y guardar nivel de riesgo
-      var nuevoPac = Object.assign({}, data, {id: res.id, nivel_riesgo: 'bajo', monitoreo_activo: data.smartwatch_tipo ? true : false});
-      pacientesData.unshift(nuevoPac);
-      renderPacientes();
-      actualizarStatsPacientes();
+      // Recargar desde la base para tener el paciente con su id real y datos completos
+      if (typeof cargarPacientes === 'function') { cargarPacientes(); }
+      switchTab('pacientes');   // quedarse en el modulo Pacientes (no saltar a perfil/dashboard)
       agregarLog('Paciente registrado: ' + data.nombre + ' ID: ' + data.identificacion);
-      activarPaciente(nuevoPac);
+      if (typeof showToast === 'function') showToast('Paciente ' + data.nombre + ' guardado', 'success');
     } else {
       alert('Error al guardar: ' + (res.error || 'desconocido'));
     }
