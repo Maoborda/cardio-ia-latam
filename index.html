@@ -717,6 +717,7 @@ body{
   font-size:11px;font-weight:600;
 }
 .b-ok{background:rgba(16,185,129,.12);color:var(--green2);border:1px solid rgba(16,185,129,.2);}
+.b-plan{background:rgba(245,158,11,.12);color:var(--amber2);border:1px solid rgba(245,158,11,.2);}
 .b-warn{background:rgba(239,68,68,.12);color:var(--red2);border:1px solid rgba(239,68,68,.2);}
 .b-indet{background:rgba(245,158,11,.12);color:var(--amber2);border:1px solid rgba(245,158,11,.2);}
 .b-info{background:rgba(59,130,246,.12);color:var(--accent3);border:1px solid rgba(59,130,246,.2);}
@@ -2188,7 +2189,7 @@ body{
             <div id="dropZoneAnalizar" class="drop-zone" ondrop="handleDrop(event)" ondragover="event.preventDefault()" ondragenter="this.classList.add('dragging')" ondragleave="this.classList.remove('dragging')" onclick="document.getElementById('ecgFile').click()" style="border:2px dashed var(--border2);border-radius:12px;padding:20px;text-align:center;cursor:pointer;transition:all .2s;">
               <div style="font-size:32px;margin-bottom:8px;">&#x1F4C4;</div>
               <div style="font-size:13px;font-weight:600;margin-bottom:4px;">Arrastra tu archivo ECG</div>
-              <div style="font-size:11px;color:var(--text2);">CSV · TXT · EDF · HL7 · XML · M&#xE1;x 10MB</div>
+              <div style="font-size:11px;color:var(--text2);"><strong style="color:var(--green2);">CSV · EDF</strong> activos · más formatos en desarrollo · Máx 10MB</div>
               <input type="file" id="ecgFile" accept=".csv,.txt,.edf,.xml,.hl7,.json" style="display:none;" onchange="procesarArchivoLocal(this)">
             </div>
             <div id="fileInfo" style="display:none;margin-top:8px;padding:8px 12px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:8px;font-size:11px;color:var(--green2);"></div>
@@ -3304,7 +3305,7 @@ body{
         <div style="font-size:28px;margin-bottom:6px;">&#x1F3E5;</div>
         <div style="font-size:13px;font-weight:700;margin-bottom:3px;">HL7 / FHIR R4</div>
         <div style="font-size:10px;color:var(--text2);margin-bottom:6px;">Est&#xE1;ndar hospitalario. Interoperabilidad con HIS, Epic, Cerner.</div>
-        <span style="font-size:9px;padding:2px 8px;border-radius:6px;background:rgba(16,185,129,.12);color:var(--green2);font-weight:600;">&#x2705; Activo</span>
+        <span style="font-size:9px;padding:2px 8px;border-radius:6px;background:rgba(245,158,11,.12);color:var(--amber2);font-weight:600;">&#x1F527; En desarrollo</span>
         <div style="font-size:9px;color:var(--text3);margin-top:4px;">Hospitales nivel III+</div>
       </div>
       <div class="conector-card activo" style="background:var(--bg3);border:1px solid rgba(16,185,129,.25);border-radius:12px;padding:14px;text-align:center;">
@@ -3318,28 +3319,28 @@ body{
         <div style="font-size:28px;margin-bottom:6px;">&#x1F4E1;</div>
         <div style="font-size:13px;font-weight:700;margin-bottom:3px;">DICOM ECG</div>
         <div style="font-size:10px;color:var(--text2);margin-bottom:6px;">Digital Imaging. GE, Philips, Siemens Healthineers.</div>
-        <span style="font-size:9px;padding:2px 8px;border-radius:6px;background:rgba(14,165,233,.12);color:var(--cyan);font-weight:600;">&#x2705; Activo</span>
+        <span style="font-size:9px;padding:2px 8px;border-radius:6px;background:rgba(245,158,11,.12);color:var(--amber2);font-weight:600;">&#x1F527; En desarrollo</span>
         <div style="font-size:9px;color:var(--text3);margin-top:4px;">PACS compatible</div>
       </div>
       <div class="conector-card" style="background:var(--bg3);border:1px solid rgba(14,165,233,.25);border-radius:12px;padding:14px;text-align:center;">
         <div style="font-size:28px;margin-bottom:6px;">&#x1F4BB;</div>
         <div style="font-size:13px;font-weight:700;margin-bottom:3px;">SCP-ECG</div>
         <div style="font-size:10px;color:var(--text2);margin-bottom:6px;">Standard Communications Protocol. EN 1064. Mortara, Welch Allyn.</div>
-        <span style="font-size:9px;padding:2px 8px;border-radius:6px;background:rgba(16,185,129,.12);color:var(--green2);font-weight:600;">&#x2705; Activo</span>
+        <span style="font-size:9px;padding:2px 8px;border-radius:6px;background:rgba(245,158,11,.12);color:var(--amber2);font-weight:600;">&#x1F527; En desarrollo</span>
         <div style="font-size:9px;color:var(--text3);margin-top:4px;">Est&#xE1;ndar IEC</div>
       </div>
       <div class="conector-card" style="background:var(--bg3);border:1px solid rgba(14,165,233,.25);border-radius:12px;padding:14px;text-align:center;">
         <div style="font-size:28px;margin-bottom:6px;">&#x1F517;</div>
         <div style="font-size:13px;font-weight:700;margin-bottom:3px;">XML / JSON</div>
         <div style="font-size:10px;color:var(--text2);margin-bottom:6px;">APIs propietarias de fabricantes. Cardiacare, Edan, Bionet.</div>
-        <span style="font-size:9px;padding:2px 8px;border-radius:6px;background:rgba(16,185,129,.12);color:var(--green2);font-weight:600;">&#x2705; Activo</span>
+        <span style="font-size:9px;padding:2px 8px;border-radius:6px;background:rgba(245,158,11,.12);color:var(--amber2);font-weight:600;">&#x1F527; En desarrollo</span>
         <div style="font-size:9px;color:var(--text3);margin-top:4px;">REST/SOAP</div>
       </div>
       <div class="conector-card" style="background:var(--bg3);border:1px solid rgba(139,92,246,.25);border-radius:12px;padding:14px;text-align:center;">
         <div style="font-size:28px;margin-bottom:6px;">&#x231A;</div>
         <div style="font-size:13px;font-weight:700;margin-bottom:3px;">Wearable SDK</div>
         <div style="font-size:10px;color:var(--text2);margin-bottom:6px;">HealthKit, Health Connect, Samsung Health, Garmin SDK.</div>
-        <span style="font-size:9px;padding:2px 8px;border-radius:6px;background:rgba(16,185,129,.12);color:var(--green2);font-weight:600;">&#x2705; Activo</span>
+        <span style="font-size:9px;padding:2px 8px;border-radius:6px;background:rgba(245,158,11,.12);color:var(--amber2);font-weight:600;">&#x1F527; En desarrollo</span>
         <div style="font-size:9px;color:var(--text3);margin-top:4px;">V&#xED;a App</div>
       </div>
       <div class="conector-card" style="background:var(--bg3);border:1px solid rgba(139,92,246,.25);border-radius:12px;padding:14px;text-align:center;">
@@ -3358,7 +3359,7 @@ body{
       </div>
     </div>
     <div style="background:rgba(37,99,235,.06);border:1px solid rgba(37,99,235,.14);border-radius:10px;padding:12px;font-size:11px;color:var(--text2);line-height:1.7;">
-      <strong style="color:var(--accent3);">&#x1F4A1; Auto-detecci&#xF3;n:</strong> Al subir cualquier archivo, el sistema detecta autom&#xE1;ticamente el formato (CSV, EDF, HL7, XML, SCP-ECG, DICOM) y lo procesa sin configuraci&#xF3;n adicional. Compatible con 12 derivaciones est&#xE1;ndar.
+      <strong style="color:var(--accent3);">&#x1F4A1; Auto-detecci&#xF3;n:</strong> Al subir un archivo, el sistema detecta el formato. Hoy procesa <strong>CSV y EDF</strong> (12 derivaciones); los dem&#xE1;s formatos est&#xE1;n en desarrollo. El formato detectado se muestra antes de analizar.
     </div>
   </div>
 
@@ -3500,18 +3501,18 @@ body{
           </tr>
         </thead>
         <tbody>
-          <tr><td><strong>GE Healthcare</strong><br><span style="color:var(--text3);font-size:10px;">MAC 800/1200/2000</span></td><td>XML / HL7 / DICOM</td><td>12 est&#xE1;ndar</td><td>Menu &#x2192; Export &#x2192; XML o HL7 &#x2192; USB o red</td><td>USB / Red / PACS</td><td><span class="badge b-ok">Certificado</span></td></tr>
-          <tr><td><strong>Philips</strong><br><span style="color:var(--text3);font-size:10px;">PageWriter TC / Trim III</span></td><td>XML / CSV / DICOM</td><td>12 est&#xE1;ndar</td><td>Reports &#x2192; Export &#x2192; CSV o XML &#x2192; guardar</td><td>USB / Red</td><td><span class="badge b-ok">Certificado</span></td></tr>
-          <tr><td><strong>Nihon Kohden</strong><br><span style="color:var(--text3);font-size:10px;">Cardiofax G / ECG-2550</span></td><td>EDF / EDF+ / CSV</td><td>12 est&#xE1;ndar</td><td>File &#x2192; Save As &#x2192; EDF &#x2192; exportar</td><td>USB / SD Card</td><td><span class="badge b-ok">Certificado</span></td></tr>
-          <tr><td><strong>Schiller</strong><br><span style="color:var(--text3);font-size:10px;">AT-102 / AT-2 Plus</span></td><td>CSV / HL7 / SCP</td><td>12 est&#xE1;ndar</td><td>Record &#x2192; Save &#x2192; ASCII CSV &#x2192; USB</td><td>USB / Bluetooth</td><td><span class="badge b-ok">Certificado</span></td></tr>
-          <tr><td><strong>Mortara / Welch Allyn</strong><br><span style="color:var(--text3);font-size:10px;">ELI 150c / 250c / 380</span></td><td>SCP-ECG / XML</td><td>12 est&#xE1;ndar</td><td>Utilities &#x2192; Export &#x2192; SCP-ECG &#x2192; red</td><td>WiFi / Ethernet</td><td><span class="badge b-ok">Certificado</span></td></tr>
-          <tr><td><strong>Edan</strong><br><span style="color:var(--text3);font-size:10px;">SE-1200 / SE-1515</span></td><td>CSV / XML / PDF</td><td>12 + 3 est&#xE1;ndar</td><td>Setup &#x2192; Data Export &#x2192; CSV &#x2192; USB</td><td>USB / WiFi</td><td><span class="badge b-ok">Certificado</span></td></tr>
-          <tr><td><strong>Bionet</strong><br><span style="color:var(--text3);font-size:10px;">Cardio7 / CardioTouch</span></td><td>CSV / HL7</td><td>12 est&#xE1;ndar</td><td>Menu &#x2192; Send &#x2192; File Export &#x2192; CSV</td><td>USB / WiFi</td><td><span class="badge b-ok">Certificado</span></td></tr>
-          <tr><td><strong>Siemens Healthineers</strong><br><span style="color:var(--text3);font-size:10px;">Cardiovit AT-10</span></td><td>DICOM ECG / XML</td><td>12 est&#xE1;ndar</td><td>PACS Export &#x2192; DICOM &#x2192; enviar a API</td><td>Red / PACS</td><td><span class="badge b-ok">Certificado</span></td></tr>
-          <tr><td><strong>Burdick / Cardiac Science</strong><br><span style="color:var(--text3);font-size:10px;">Atria 6100 / 3100</span></td><td>SCP / XML</td><td>12 est&#xE1;ndar</td><td>Export &#x2192; SCP-ECG &#x2192; red o USB</td><td>WiFi / USB</td><td><span class="badge b-ok">Certificado</span></td></tr>
+          <tr><td><strong>GE Healthcare</strong><br><span style="color:var(--text3);font-size:10px;">MAC 800/1200/2000</span></td><td>XML / HL7 / DICOM</td><td>12 est&#xE1;ndar</td><td>Menu &#x2192; Export &#x2192; XML o HL7 &#x2192; USB o red</td><td>USB / Red / PACS</td><td><span class="badge b-plan">Planificado</span></td></tr>
+          <tr><td><strong>Philips</strong><br><span style="color:var(--text3);font-size:10px;">PageWriter TC / Trim III</span></td><td>XML / CSV / DICOM</td><td>12 est&#xE1;ndar</td><td>Reports &#x2192; Export &#x2192; CSV o XML &#x2192; guardar</td><td>USB / Red</td><td><span class="badge b-plan">Planificado</span></td></tr>
+          <tr><td><strong>Nihon Kohden</strong><br><span style="color:var(--text3);font-size:10px;">Cardiofax G / ECG-2550</span></td><td>EDF / EDF+ / CSV</td><td>12 est&#xE1;ndar</td><td>File &#x2192; Save As &#x2192; EDF &#x2192; exportar</td><td>USB / SD Card</td><td><span class="badge b-plan">Planificado</span></td></tr>
+          <tr><td><strong>Schiller</strong><br><span style="color:var(--text3);font-size:10px;">AT-102 / AT-2 Plus</span></td><td>CSV / HL7 / SCP</td><td>12 est&#xE1;ndar</td><td>Record &#x2192; Save &#x2192; ASCII CSV &#x2192; USB</td><td>USB / Bluetooth</td><td><span class="badge b-plan">Planificado</span></td></tr>
+          <tr><td><strong>Mortara / Welch Allyn</strong><br><span style="color:var(--text3);font-size:10px;">ELI 150c / 250c / 380</span></td><td>SCP-ECG / XML</td><td>12 est&#xE1;ndar</td><td>Utilities &#x2192; Export &#x2192; SCP-ECG &#x2192; red</td><td>WiFi / Ethernet</td><td><span class="badge b-plan">Planificado</span></td></tr>
+          <tr><td><strong>Edan</strong><br><span style="color:var(--text3);font-size:10px;">SE-1200 / SE-1515</span></td><td>CSV / XML / PDF</td><td>12 + 3 est&#xE1;ndar</td><td>Setup &#x2192; Data Export &#x2192; CSV &#x2192; USB</td><td>USB / WiFi</td><td><span class="badge b-plan">Planificado</span></td></tr>
+          <tr><td><strong>Bionet</strong><br><span style="color:var(--text3);font-size:10px;">Cardio7 / CardioTouch</span></td><td>CSV / HL7</td><td>12 est&#xE1;ndar</td><td>Menu &#x2192; Send &#x2192; File Export &#x2192; CSV</td><td>USB / WiFi</td><td><span class="badge b-plan">Planificado</span></td></tr>
+          <tr><td><strong>Siemens Healthineers</strong><br><span style="color:var(--text3);font-size:10px;">Cardiovit AT-10</span></td><td>DICOM ECG / XML</td><td>12 est&#xE1;ndar</td><td>PACS Export &#x2192; DICOM &#x2192; enviar a API</td><td>Red / PACS</td><td><span class="badge b-plan">Planificado</span></td></tr>
+          <tr><td><strong>Burdick / Cardiac Science</strong><br><span style="color:var(--text3);font-size:10px;">Atria 6100 / 3100</span></td><td>SCP / XML</td><td>12 est&#xE1;ndar</td><td>Export &#x2192; SCP-ECG &#x2192; red o USB</td><td>WiFi / USB</td><td><span class="badge b-plan">Planificado</span></td></tr>
           <tr><td><strong>Fukuda Denshi</strong><br><span style="color:var(--text3);font-size:10px;">FX-8222 / FX-7542</span></td><td>MFER / CSV</td><td>12 est&#xE1;ndar</td><td>Output &#x2192; File &#x2192; MFER o CSV &#x2192; SD</td><td>SD Card / USB</td><td><span class="badge b-indet">Beta</span></td></tr>
-          <tr><td><strong>Mindray</strong><br><span style="color:var(--text3);font-size:10px;">BeneHeart R12</span></td><td>HL7 / XML / CSV</td><td>12 est&#xE1;ndar</td><td>System &#x2192; Export &#x2192; HL7 &#x2192; red</td><td>Ethernet / WiFi</td><td><span class="badge b-ok">Certificado</span></td></tr>
-          <tr><td><strong>KardiaMobile / AliveCor</strong><br><span style="color:var(--text3);font-size:10px;">6L</span></td><td>CSV / PDF</td><td>6 derivaciones</td><td>App &#x2192; Export &#x2192; CSV &#x2192; compartir</td><td>Bluetooth LE</td><td><span class="badge b-ok">Certificado</span></td></tr>
+          <tr><td><strong>Mindray</strong><br><span style="color:var(--text3);font-size:10px;">BeneHeart R12</span></td><td>HL7 / XML / CSV</td><td>12 est&#xE1;ndar</td><td>System &#x2192; Export &#x2192; HL7 &#x2192; red</td><td>Ethernet / WiFi</td><td><span class="badge b-plan">Planificado</span></td></tr>
+          <tr><td><strong>KardiaMobile / AliveCor</strong><br><span style="color:var(--text3);font-size:10px;">6L</span></td><td>CSV / PDF</td><td>6 derivaciones</td><td>App &#x2192; Export &#x2192; CSV &#x2192; compartir</td><td>Bluetooth LE</td><td><span class="badge b-plan">Planificado</span></td></tr>
         </tbody>
       </table>
     </div>
@@ -5798,6 +5799,30 @@ function guardarEnHistorialAuto(res) {
 var ecgDataActual = null;
 var ecgDataMatrix = null;
 var ecgEs12Derivaciones = false;
+var ecgArchivoOriginal = null;   // archivo crudo subido (para enviar tal cual al backend)
+var ecgFormatoDetectado = null;  // 'CSV' | 'EDF' | etc.
+// Formatos que el backend SI sabe procesar hoy (real). Los demas: en desarrollo.
+var FORMATOS_ACTIVOS = ['CSV', 'TXT', 'EDF'];
+// Detecta el formato por extension y, para EDF, por la firma binaria del archivo.
+function detectarFormatoECG(file, cb) {
+  var nombre = (file.name || '').toLowerCase();
+  if (nombre.endsWith('.edf')) {
+    var r = new FileReader();
+    r.onload = function(e) {
+      var head = new Uint8Array(e.target.result).slice(0, 8);
+      cb(head[0] === 48 ? 'EDF' : 'DESCONOCIDO'); // '0' = 48
+    };
+    r.readAsArrayBuffer(file.slice(0, 8));
+    return;
+  }
+  if (nombre.endsWith('.csv') || nombre.endsWith('.txt')) { cb('CSV'); return; }
+  if (nombre.endsWith('.xml')) { cb('XML'); return; }
+  if (nombre.endsWith('.hl7')) { cb('HL7'); return; }
+  if (nombre.endsWith('.scp')) { cb('SCP-ECG'); return; }
+  if (nombre.endsWith('.dcm')) { cb('DICOM'); return; }
+  if (nombre.endsWith('.json')) { cb('JSON'); return; }
+  cb('DESCONOCIDO');
+}
 var ultimoResultado = null;
 var ecgZoom = false;
 
@@ -6233,6 +6258,7 @@ function limpiarResultadoAnterior() {
 function limpiarAnalisisECG() {
   try {
     ecgDataActual = null; ecgDataMatrix = null; ecgEs12Derivaciones = false; ultimoResultado = null;
+    ecgArchivoOriginal = null; ecgFormatoDetectado = null;
     limpiarResultadoAnterior();
     var fi = document.getElementById('fileInfo'); if (fi) { fi.style.display = 'none'; fi.innerHTML = ''; }
     var card = document.getElementById('ecgGraficaCard'); if (card) card.style.display = 'none';
@@ -6248,6 +6274,39 @@ function procesarArchivoLocal(input) {
   // Limpiar resultado anterior (sin analizar) al cargar un archivo nuevo
   limpiarResultadoAnterior();
   var file = input.files[0];
+  // Guardar el archivo crudo para enviarlo tal cual al backend (permite EDF, etc.)
+  ecgArchivoOriginal = file;
+  detectarFormatoECG(file, function(fmt) {
+    ecgFormatoDetectado = fmt;
+    var activo = FORMATOS_ACTIVOS.indexOf(fmt) !== -1;
+    var fi = document.getElementById('fileInfo');
+    if (fmt === 'DESCONOCIDO') {
+      if (fi) { fi.style.display='block'; fi.style.color='var(--red2,#ef4444)';
+        fi.innerHTML = '&#x26A0;&#xFE0F; Formato no reconocido. Usa CSV o EDF.'; }
+      ecgArchivoOriginal = null; return;
+    }
+    if (!activo) {
+      // Formato valido pero aun NO soportado por el backend: honestidad, no analizar.
+      if (fi) { fi.style.display='block'; fi.style.color='var(--amber2,#f59e0b)';
+        fi.innerHTML = '&#x1F527; Formato <strong>'+fmt+'</strong> detectado &#xB7; en desarrollo, aun no disponible. Formatos activos hoy: CSV, EDF.'; }
+      var b0 = document.getElementById('btnAnalizar'); if (b0) b0.disabled = true;
+      ecgArchivoOriginal = null; return;
+    }
+    if (fmt === 'EDF') {
+      // EDF es binario: no se parsea en el navegador. Se envia crudo al backend al analizar.
+      ecgDataActual = null; ecgDataMatrix = null; ecgEs12Derivaciones = true;
+      var btnE = document.getElementById('btnAnalizar');
+      if (btnE) { btnE.disabled = false; btnE.innerHTML = '&#x1F52C; Analizar ECG con IA'; }
+      if (fi) { fi.style.display='block'; fi.style.color='var(--green2)';
+        fi.innerHTML = '&#x2705; '+file.name+' &#xB7; Formato <strong>EDF</strong> detectado &#xB7; se procesara en el servidor'; }
+      var cardE = document.getElementById('ecgGraficaCard'); if (cardE) cardE.style.display = 'none';
+      return;
+    }
+    // CSV / TXT: se parsea localmente como hasta ahora (para graficar), y tambien se envia crudo.
+    procesarCSVLocal(file);
+  });
+}
+function procesarCSVLocal(file) {
   var reader = new FileReader();
   reader.onload = function(e) {
     var text = e.target.result;
@@ -8343,16 +8402,24 @@ function procesarCSV(input) {
 
 // ===== ANALIZAR =====
 function analizarECG() {
+  // Debe haber datos numericos (CSV/demo) O un archivo original (EDF/CSV subido)
   var datos = ecgDataActual || senalData;
-  if (!datos || datos.length < 10) { alert('Carga un archivo ECG o selecciona un caso demo'); return; }
+  if ((!datos || datos.length < 10) && !ecgArchivoOriginal) {
+    alert('Carga un archivo ECG o selecciona un caso demo'); return;
+  }
   var btn = document.getElementById('btnAnalizar');
   if (btn) { btn.disabled = true; btn.innerHTML = '&#x23F3; Analizando...'; }
   var statusEl = document.getElementById('analizarStatus');
   if (statusEl) { statusEl.style.display = 'block'; statusEl.textContent = 'Analizando con modelo real (18 clases)...'; }
-  var csv = datos.map(function(v) { return v.toFixed(6); }).join('\n');
-  var blob = new Blob([csv], {type: 'text/plain'});
   var form = new FormData();
-  form.append('archivo', blob, 'ecg.csv');
+  if (ecgArchivoOriginal) {
+    // Enviar el archivo TAL CUAL (el backend detecta CSV/EDF y lo procesa)
+    form.append('archivo', ecgArchivoOriginal, ecgArchivoOriginal.name);
+  } else {
+    // Caso demo (sin archivo): reconstruir CSV desde los numeros
+    var csv = datos.map(function(v) { return v.toFixed(6); }).join('\n');
+    form.append('archivo', new Blob([csv], {type: 'text/plain'}), 'ecg.csv');
+  }
   form.append('pais', 'CO');
   var pn = document.getElementById('pacNombre'); if (pn) form.append('paciente_nombre', pn.value);
   var pm = document.getElementById('pacMedico'); if (pm) form.append('medico', pm.value);
