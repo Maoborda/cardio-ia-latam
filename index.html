@@ -2763,9 +2763,11 @@ body{
           <div class="modal" style="max-width:750px;max-height:85vh;overflow-y:auto;">
             <div class="modal-title" id="perfilPacModalTitle">Perfil del paciente</div>
             <div id="perfilPacModalContent"></div>
-            <div style="display:flex;gap:8px;margin-top:14px;">
+            <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;">
               <button class="btn btn-primary" style="flex:1;" onclick="analizarECGDesdePaciente()">&#x1F52C; Analizar ECG</button>
+              <button class="btn btn-ghost" onclick="editarPacienteActual()">&#x270F;&#xFE0F; Editar</button>
               <button class="btn btn-ghost" onclick="subirDocAPaciente()">&#x1F4C1; Subir documento</button>
+              <button class="btn btn-ghost" style="color:var(--red2);" onclick="borrarPacienteActual()">&#x1F5D1;&#xFE0F; Borrar</button>
               <button class="btn btn-secondary" style="flex:1;" onclick="closeModal('perfilPacienteModal')">Cerrar</button>
             </div>
           </div>
@@ -13233,6 +13235,7 @@ function filtrarPacientes(q) {
 function abrirPerfilPaciente(idx) {
   var p = pacientesData[idx];
   if (!p) return;
+  window._pacienteEnExpediente = p;   // recordar cual paciente esta abierto (para editar/borrar)
   var content = document.getElementById('perfilPacModalContent');
   var title = document.getElementById('perfilPacModalTitle');
   if (title) title.textContent = p.nombre;
@@ -13259,6 +13262,76 @@ function abrirPerfilPaciente(idx) {
       }).join('') : '<div style="color:var(--text3);font-size:12px;padding:8px 0;">Sin ECGs registrados</div>');
   }
   openModal('perfilPacienteModal');
+}
+
+// ===== EDITAR / BORRAR PACIENTE (backend v6) =====
+function editarPacienteActual() {
+  var p = window._pacienteEnExpediente;
+  if (!p || !p.id) { alert("No se pudo identificar el paciente (sin ID)."); return; }
+  var campos = [
+    ["nombre","Nombre",p.nombre], ["identificacion","Identificacion",p.identificacion||p.id_documento],
+    ["edad","Edad",p.edad], ["telefono","Telefono",p.telefono],
+    ["email","Email",p.email], ["direccion","Direccion",p.direccion],
+    ["alergias","Alergias",p.alergias], ["comorbilidades","Comorbilidades",p.comorbilidades],
+    ["medicamentos_actuales","Medicamentos",p.medicamentos_actuales]
+  ];
+  var html = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">';
+  campos.forEach(function(c){
+    html += '<div><label style="font-size:11px;color:var(--text3);display:block;margin-bottom:3px;">'+c[1]+'</label>'+
+            '<input id="edit_'+c[0]+'" value="'+(c[2]!=null?String(c[2]).replace(/"/g,"&quot;"):"")+'" '+
+            'style="width:100%;padding:8px;border-radius:8px;border:1px solid var(--border2);background:var(--bg3);color:var(--text);font-family:inherit;font-size:13px;box-sizing:border-box;"></div>';
+  });
+  html += '</div>'+
+    '<div style="display:flex;gap:8px;margin-top:14px;">'+
+    '<button class="btn btn-primary" style="flex:1;" id="btnGuardarEdit">&#x1F4BE; Guardar cambios</button>'+
+    '<button class="btn btn-secondary" style="flex:1;" id="btnCancelarEdit">Cancelar</button></div>';
+  var content = document.getElementById("perfilPacModalContent");
+  content.innerHTML = '<div style="font-size:15px;font-weight:700;margin-bottom:12px;">&#x270F;&#xFE0F; Editar paciente</div>' + html;
+  document.getElementById("btnCancelarEdit").onclick = function(){
+    var idx = pacientesData.indexOf(p);
+    if (idx >= 0) abrirPerfilPaciente(idx);
+  };
+  document.getElementById("btnGuardarEdit").onclick = function(){
+    var btn = this; btn.disabled = true; btn.innerHTML = "&#x23F3; Guardando...";
+    var data = {};
+    campos.forEach(function(c){
+      var el = document.getElementById("edit_"+c[0]);
+      if (el) data[c[0]] = c[0]==="edad" ? (parseInt(el.value)||null) : el.value;
+    });
+    fetch(API_DATOS + "/paciente/" + p.id, {
+      method: "PUT",
+      headers: Object.assign({}, H, {"Content-Type":"application/json"}),
+      body: JSON.stringify(data)
+    }).then(function(r){return r.json();}).then(function(res){
+      if (res.ok) {
+        if (typeof showToast==="function") showToast("Paciente actualizado","success");
+        closeModal("perfilPacienteModal");
+        if (typeof cargarPacientes==="function") cargarPacientes();
+      } else {
+        alert("Error al actualizar: " + (res.error||"desconocido"));
+        btn.disabled = false; btn.innerHTML = "&#x1F4BE; Guardar cambios";
+      }
+    }).catch(function(e){
+      alert("Error de conexion: " + e);
+      btn.disabled = false; btn.innerHTML = "&#x1F4BE; Guardar cambios";
+    });
+  };
+}
+
+function borrarPacienteActual() {
+  var p = window._pacienteEnExpediente;
+  if (!p || !p.id) { alert("No se pudo identificar el paciente (sin ID)."); return; }
+  if (!confirm("¿Borrar a " + (p.nombre||"este paciente") + "?\n\nSe archivara. Su historial se conserva.")) return;
+  fetch(API_DATOS + "/paciente/" + p.id, { method: "DELETE", headers: H })
+    .then(function(r){return r.json();}).then(function(res){
+      if (res.ok) {
+        if (typeof showToast==="function") showToast("Paciente archivado","success");
+        closeModal("perfilPacienteModal");
+        if (typeof cargarPacientes==="function") cargarPacientes();
+      } else {
+        alert("Error al borrar: " + (res.error||"desconocido"));
+      }
+    }).catch(function(e){ alert("Error de conexion: " + e); });
 }
 
 function analizarECGDesdePaciente() {
